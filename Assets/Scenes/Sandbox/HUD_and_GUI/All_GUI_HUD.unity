@@ -265,6 +265,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 51179503}
+  - component: {fileID: 51179504}
   m_Layer: 0
   m_Name: FuelHUD
   m_TagString: Untagged
@@ -296,6 +297,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &51179504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 51179502}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b66f4cb8046f49b6833f5bb45881afe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_slider: {fileID: 1704899245}
+  m_consumptionRate: 5
+  m_startingFuel: 100
+  m_currentFuel: {fileID: 11400000, guid: b44e1cdd7b2424528b00a2bb9c39b616, type: 2}
 --- !u!1 &160134088
 GameObject:
   m_ObjectHideFlags: 0
@@ -432,7 +449,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &223923694
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2345,7 +2362,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1650088302}
   m_FillRect: {fileID: 1102264941}
   m_HandleRect: {fileID: 1650088301}
@@ -2689,6 +2706,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_startCountDown: {fileID: 1716960647}
   m_counterStart: 5
+  m_delayTimeBeforeDisabling: 2
 --- !u!1 &1840595407
 GameObject:
   m_ObjectHideFlags: 0
