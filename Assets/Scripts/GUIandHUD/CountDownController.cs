@@ -6,6 +6,9 @@ public class CountDownController : MonoBehaviour
     [SerializeField] private TMP_Text m_startCountDown;
     [Tooltip("Difine how much the counter is going to take")]
     [SerializeField] private float m_counterStart = 3;
+    
+    [Tooltip("The time to wait after the counter is 0 to disable the component")]
+    [SerializeField] private uint m_delayTimeBeforeDisabling = 2;
 
     private void OnEnable()
     {
@@ -35,7 +38,7 @@ public class CountDownController : MonoBehaviour
     private void FadeOutCounter()
     {
         //TODO this method should fadeout the counter, for now is just disabling it
-        if (m_counterStart < -3) //wait 3 seconds more
+        if (m_counterStart < (m_delayTimeBeforeDisabling * -1)) //wait 3 seconds more
             gameObject.SetActive(false);
     }
 }
