@@ -310,9 +310,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_slider: {fileID: 1704899245}
+  m_fuelImage: {fileID: 1102264942}
   m_consumptionRate: 5
   m_startingFuel: 100
   m_currentFuel: {fileID: 11400000, guid: b44e1cdd7b2424528b00a2bb9c39b616, type: 2}
+  fuelColorBreakPoints:
+  - 0.4
+  - 0.6
 --- !u!1 &160134088
 GameObject:
   m_ObjectHideFlags: 0

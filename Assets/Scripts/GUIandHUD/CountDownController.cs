@@ -41,4 +41,6 @@ public class CountDownController : MonoBehaviour
         if (m_counterStart < (m_delayTimeBeforeDisabling * -1)) //wait 3 seconds more
             gameObject.SetActive(false);
     }
+
+    //TODO implement the triggering of the start game.
 }
