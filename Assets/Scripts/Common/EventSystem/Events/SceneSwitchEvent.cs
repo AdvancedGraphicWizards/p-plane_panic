@@ -2,6 +2,7 @@ using UnityEngine;
 
 public enum SceneName
 {
+    Intro,
     Lobby,
     Game,
     Result,
