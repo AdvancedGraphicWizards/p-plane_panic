@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class FuelController : MonoBehaviour
@@ -16,9 +17,9 @@ public class FuelController : MonoBehaviour
 
     [Tooltip("Scriptable Object of type UIntVariable, named Fuel")]
     [SerializeField] private UIntVariable m_currentFuel;
-    [SerializeField] private float[] fuelColorBreakPoints = new float[] { 0.3f, 0.5f};
+    [SerializeField] private float[] fuelColorBreakPoints = new float[] { 0.3f, 0.5f };
 
-    private void OnEnable()
+    private void Awake()
     {
         if (!m_slider || !m_fuelImage)
         {
@@ -61,9 +62,26 @@ public class FuelController : MonoBehaviour
 
     }
     //TODO implement the triggering of the Lossing event
+    public VoidEvent Event;
+    public UnityEvent Response;
+
+    void OnEnable()
+    {
+        Event.Subscribe(CallResponse);
+    }
+
+    void OnDisable()
+    {
+        Event.Unsubscribe(CallResponse);
+    }
+
+    private void CallResponse()
+    {
+        Response.Invoke();
+    }
     public void TriggerLoseEvent()
     {
-        //TODO
+        CallResponse();
         return;
     }
 }

@@ -1,15 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
 
 public class PlaneControllerFixed : MonoBehaviour
 {
+    [Header("Scriptable Object References")]
+    [SerializeField] private GameSettings _gameSettings;
     [Header("Manager References")]
     [SerializeField] private WeightManager _weightManager;
 
     [Header("Plane Attributes")]
-    [SerializeField] private float _forwardSpeed = 20f;
+    [Tooltip("The Forward Speed is controll on a higher level via GameSettings scriptable object")]
+    [SerializeField] private float _forwardSpeed;
     [SerializeField] private float _rollRotationSpeed = 5f;
     [SerializeField] private float _pitchRotationSpeed = 5f;
     [SerializeField] private float _maxHorizontalSpeed = 10f;
@@ -34,14 +35,25 @@ public class PlaneControllerFixed : MonoBehaviour
     [SerializeField] private float _totalRollWeight = 0f;
     [SerializeField] private float _totalPitchWeight = 0f;
 
+    private void Start()
+    {
+        if (_gameSettings)
+            _forwardSpeed = _gameSettings.PlaneBaseSpeed;
+        else
+            _forwardSpeed = 20f;
+        //TODO include the exception, once we agree on using the SO
+        //throw new NullReferenceException("GameSettings reference is missing, this context needs it to define the speed of the plane");
 
+
+    }
     private void FixedUpdate()
     {
         RotatePlane();
         MovePlane();
     }
 
-    private void RotatePlane(){
+    private void RotatePlane()
+    {
         _totalRollWeight = _weightManager.TotalRollWeight;
         _totalPitchWeight = _weightManager.TotalPitchWeight;
 
@@ -65,29 +77,34 @@ public class PlaneControllerFixed : MonoBehaviour
         // Clamp rotations to maximum defined values
         if (_nextRollAngle == _currentRollAngle && _nextPitchAngle == _currentPitchAngle) return;
 
-        if (_nextRollAngle < _maxRollAngle && _nextRollAngle > -_maxRollAngle) {
+        if (_nextRollAngle < _maxRollAngle && _nextRollAngle > -_maxRollAngle)
+        {
             transform.Rotate(Vector3.forward * -_rollChange * _rollRotationSpeed);
         }
-        else {
-            transform.Rotate(Vector3.forward * (_maxRollAngle*Math.Sign(_nextRollAngle) -_currentRollAngle));
+        else
+        {
+            transform.Rotate(Vector3.forward * (_maxRollAngle * Math.Sign(_nextRollAngle) - _currentRollAngle));
             _nextRollAngle = _maxRollAngle * Math.Sign(_nextRollAngle);
         }
         _currentRollAngle = _nextRollAngle;
 
-        if (_nextPitchAngle < _maxPitchAngle && _nextPitchAngle > -_maxPitchAngle) {
+        if (_nextPitchAngle < _maxPitchAngle && _nextPitchAngle > -_maxPitchAngle)
+        {
             transform.Rotate(Vector3.right * _pitchChange * _pitchRotationSpeed);
         }
-        else {
-            transform.Rotate(Vector3.right * (_maxPitchAngle*Math.Sign(_nextPitchAngle) -_currentPitchAngle));
+        else
+        {
+            transform.Rotate(Vector3.right * (_maxPitchAngle * Math.Sign(_nextPitchAngle) - _currentPitchAngle));
             _nextPitchAngle = _maxPitchAngle * Math.Sign(_nextPitchAngle);
         }
         _currentPitchAngle = _nextPitchAngle;
     }
 
-    private void MovePlane(){
-        _horizSpeed = _currentRollAngle /_maxRollAngle  * _maxHorizontalSpeed;
+    private void MovePlane()
+    {
+        _horizSpeed = _currentRollAngle / _maxRollAngle * _maxHorizontalSpeed;
         _vertSpeed = _currentPitchAngle / _maxPitchAngle * _maxVerticalSpeed;
 
-        transform.Translate((Vector3.forward * _forwardSpeed  + Vector3.right * -_horizSpeed + Vector3.up * -_vertSpeed ) * Time.deltaTime);
+        transform.Translate((Vector3.forward * _forwardSpeed + Vector3.right * -_horizSpeed + Vector3.up * -_vertSpeed) * Time.deltaTime);
     }
 }

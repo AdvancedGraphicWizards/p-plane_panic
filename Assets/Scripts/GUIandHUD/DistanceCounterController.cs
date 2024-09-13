@@ -3,10 +3,12 @@ using UnityEngine;
 
 public class DistanceCounterController : MonoBehaviour
 {
-    [SerializeField] private TMP_Text m_distanceCounter;
-    
+    [Header("Scriptable Object References")]
+    [SerializeField] private GameSettings _gameSettings;
     [Tooltip("Scriptable Object of type UIntVariable, named FlightDistance")]
     [SerializeField] private UIntVariable m_flightDistance; // so_ stands for Scriptable Object
+    [SerializeField] private TMP_Text m_distanceCounter;
+    
     [Tooltip("The speed m/s of the plane, this probably should be an Scriptable Object that hold all the player gameplay settings")]
     [SerializeField] private float m_flyingSpeed = 50.0f;
     private float m_distance = 0.0f;
@@ -21,6 +23,9 @@ public class DistanceCounterController : MonoBehaviour
         {
             throw new System.NullReferenceException("The Scriptable Object FlightDistance is missing, the DistanceCounterController needs is to keep track of the distance");
         }
+
+        m_flyingSpeed = _gameSettings.PlaneBaseSpeed;
+
     }
     private void Update()
     {
