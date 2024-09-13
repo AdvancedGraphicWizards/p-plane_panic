@@ -1295,6 +1295,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad121993a91f5914281077fc8a9f2601, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gameSettings: {fileID: 0}
   _weightManager: {fileID: 885353518}
   _forwardSpeed: 0
   _rollRotationSpeed: 10
@@ -2627,7 +2628,7 @@ PrefabInstance:
     - target: {fileID: 146393932968581931, guid: 186aeba532eda4bbc989490962251f1b,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SwitchToLobby
+      value: SwitchToGame
       objectReference: {fileID: 0}
     - target: {fileID: 146393932968581931, guid: 186aeba532eda4bbc989490962251f1b,
         type: 3}

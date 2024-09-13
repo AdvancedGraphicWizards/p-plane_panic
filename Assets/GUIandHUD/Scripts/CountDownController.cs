@@ -3,10 +3,11 @@ using UnityEngine;
 
 public class CountDownController : MonoBehaviour
 {
+    [SerializeField] private GameState gameStateSO;
     [SerializeField] private TMP_Text m_startCountDown;
     [Tooltip("Difine how much the counter is going to take")]
     [SerializeField] private float m_counterStart = 3;
-    
+
     [Tooltip("The time to wait after the counter is 0 to disable the component")]
     [SerializeField] private uint m_delayTimeBeforeDisabling = 2;
 
@@ -18,16 +19,20 @@ public class CountDownController : MonoBehaviour
         }
         m_counterStart++; //It add one more so when it gets casted to uint the user can see the whole number.
 
+        if (!gameStateSO)
+            throw new System.NullReferenceException("Missing GameState, HelloWorld purposes");
     }
     private void Update()
     {
+        if(!gameStateSO.HasStarted) return; //TODO quick fix for the HelloWorld
+
         CountDown();
         FadeOutCounter();
     }
 
     private void CountDown()
     {
-        
+
         m_counterStart -= 1 * Time.deltaTime; //Is outside the if because we need -t second more to display the "Go!" message
 
         if (m_counterStart < 0) return;
