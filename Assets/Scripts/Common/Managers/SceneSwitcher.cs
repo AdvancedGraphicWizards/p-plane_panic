@@ -4,6 +4,11 @@ using UnityEngine.SceneManagement;
 [CreateAssetMenu(fileName = "SceneSwitcher", menuName = "ScriptableObject/Manager/SceneSwitcher")]
 public class SceneSwitcher : ScriptableObject
 {
+    public void SwitchToIntro()
+    {
+        Debug.Log($"Switch to Intro scene");
+        SceneManager.LoadScene(SceneName.Intro.ToString(), LoadSceneMode.Single);
+    }
     public void SwitchToLobby()
     {
         Debug.Log($"Switch to Lobby scene");
