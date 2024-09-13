@@ -405,7 +405,7 @@ MonoBehaviour:
   m_groundedRadius: 0.5
   m_groundLayers:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
   _relPosition: {x: 0, y: 0}
   currentLoc: {x: 0, y: 0, z: 0}
   nextLoc: {x: 0, y: 0, z: 0}

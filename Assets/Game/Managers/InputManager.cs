@@ -1,5 +1,4 @@
 using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -42,7 +41,7 @@ public class InputManager : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        Direction = context.ReadValue<Vector2>();  
+        Direction = context.ReadValue<Vector2>();
     }
 
     public void OnJump(InputAction.CallbackContext context)
