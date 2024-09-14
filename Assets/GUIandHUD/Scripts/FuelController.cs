@@ -1,6 +1,8 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class FuelController : MonoBehaviour
@@ -39,6 +41,7 @@ public class FuelController : MonoBehaviour
         m_fuel = m_startingFuel;
 
     }
+
     private void Update()
     {
         if(!gameStateSO.HasStarted) return; //TODO quick fix for the HelloWorld
@@ -68,6 +71,12 @@ public class FuelController : MonoBehaviour
             m_fuelImage.color = Color.green;
 
     }
+
+    public void UpdateFuel(float amt) {
+        m_fuel += amt;
+        m_fuel = Math.Min(m_fuel, m_startingFuel);
+    }
+
     //TODO implement the triggering of the Lossing event
     public VoidEvent Event;
     public UnityEvent Response;
@@ -75,6 +84,7 @@ public class FuelController : MonoBehaviour
     void OnEnable()
     {
         Event.Subscribe(CallResponse);
+        HoopScript.OnRingEnter += fuel_amt => UpdateFuel(fuel_amt);
     }
 
     void OnDisable()
