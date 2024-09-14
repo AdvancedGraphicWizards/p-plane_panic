@@ -19,14 +19,13 @@ public class PlayerSpawnScript : MonoBehaviour
     [SerializeField] private int _currentPlayerColorIndex = 0;
 
     [SerializeField] private List<GameObject> _playerCharacters;
-    private int _activePlayerCount = 0;
 
 
     private void Awake()
     {
         _playerCharacters = new List<GameObject>();
-        ServerManager.OnPlayerSpawn += playerObject => SpawnPlayer(playerObject);
-        ServerManager.OnPlayerDisconnect += playerObject => DespawnPlayer(playerObject);
+        ServerManager.OnPlayerSpawn += playerData => SpawnPlayer(playerData);
+        ServerManager.OnPlayerDisconnect += playerData => DespawnPlayer(playerData.playerObject);
     }
 
     private void Start()
@@ -36,16 +35,12 @@ public class PlayerSpawnScript : MonoBehaviour
         //SetPlayerColor();
     }
 
-    private void SpawnPlayer(GameObject playerObject)
+    private void SpawnPlayer(PlayerData playerData)
     {
-        if (_activePlayerCount < _maxPlayerCount)
-        {
-            _playerCharacters.Add(playerObject);
-            _activePlayerCount++;
+        _playerCharacters.Add(playerData.playerObject);
 
-            ParentPlayer(playerObject, _targetParent);
-            SetPlayerColor(playerObject);
-        }
+        ParentPlayer(playerData.playerObject, _targetParent);
+        SetPlayerColor(playerData);
     }
 
     private void DespawnPlayer(GameObject playerObject)
@@ -54,7 +49,6 @@ public class PlayerSpawnScript : MonoBehaviour
         {
             _playerCharacters.Remove(playerObject);
             Destroy(playerObject);
-            if (_activePlayerCount > 0) _activePlayerCount--;
         }
     }
 
@@ -69,9 +63,12 @@ public class PlayerSpawnScript : MonoBehaviour
     }
 
     // currently hardcoded (and not working)
-    private void SetPlayerColor(GameObject playerObject)
+    private void SetPlayerColor(PlayerData playerData)
     {
-        playerObject.GetComponent<Renderer>().material.SetColor("_BaseColor", _playerColors[_currentPlayerColorIndex]);
-        _currentPlayerColorIndex = _currentPlayerColorIndex < _playerColors.Length - 1 ? _currentPlayerColorIndex + 1 : 0;
+        int colorIndex = (int)((playerData.clientID - 1) % (ulong)_playerColors.Length);
+        if (playerData.playerObject.TryGetComponent<Renderer>(out Renderer renderer))
+        {
+            renderer.material.SetColor("_BaseColor", _playerColors[colorIndex]);
+        }
     }
 }
