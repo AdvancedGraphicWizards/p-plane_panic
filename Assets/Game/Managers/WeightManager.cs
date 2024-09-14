@@ -14,7 +14,8 @@ public class WeightManager : MonoBehaviour
 
     private void Awake()
     {
-        PlayerSpawnScript.OnPlayerSpawn += playerObject => TrackWeightObject(playerObject);
+        ServerManager.OnPlayerSpawn += playerObject => TrackWeightObject(playerObject);
+        ServerManager.OnPlayerDisconnect += playerObject => RemoveWeightObject(playerObject);
 
         // update all weights on change (not sure if better than just using Update)
         WeightComponent.OnWeightUpdate += UpdateTotalWeight; 

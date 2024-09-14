@@ -1,13 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
-using Unity.Netcode.Transports.UTP;
-using Unity.Networking.Transport;
-using Unity.Networking.Transport.Relay;
-using Unity.Services.Authentication;
-using Unity.Services.Core;
-using Unity.Services.Relay;
-using Unity.Services.Relay.Models;
+using System;
 using UnityEngine;
 
 public struct PlayerData
@@ -28,6 +21,10 @@ public class ServerManager : MonoBehaviour
     // Server data
     private string m_joinCode;          // Code to join the relay server, defined when the relay is allocated.
     private Dictionary<ulong, PlayerData> m_players = new Dictionary<ulong, PlayerData>();
+
+    // UnityEvents, replace with event system?
+    public static event Action<GameObject> OnPlayerSpawn;
+    public static event Action<GameObject> OnPlayerDisconnect;
 
     // Setup
     private async void Start()
@@ -58,9 +55,11 @@ public class ServerManager : MonoBehaviour
             networkObject = NetworkManager.Singleton.ConnectedClients[clientID].PlayerObject.gameObject
         });
 
+        OnPlayerSpawn?.Invoke(m_players[clientID].playerObject);
+
         // Assign the player data to the player object
-        if (m_players[clientID].playerObject.TryGetComponent<CubeController>(out CubeController cubeController)) {
-            cubeController.AssignPhoneController(NetworkManager.Singleton.ConnectedClients[clientID].PlayerObject.GetComponent<PhoneController>());
+        if (m_players[clientID].playerObject.TryGetComponent<InputManager>(out InputManager playerInput)) {
+            playerInput.AssignPhoneController(NetworkManager.Singleton.ConnectedClients[clientID].PlayerObject.GetComponent<PhoneController>());
         }
     }
 
@@ -72,7 +71,7 @@ public class ServerManager : MonoBehaviour
         // Remove the player from the dictionary and destroy the player object.
         if (m_players.ContainsKey(clientID))
         {
-            Destroy(m_players[clientID].playerObject);
+            OnPlayerDisconnect?.Invoke(m_players[clientID].playerObject);
             m_players.Remove(clientID);
         }
     }
