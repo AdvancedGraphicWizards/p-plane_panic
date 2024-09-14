@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
+    
     //[SerializeField] private PlayerState so_playerState;
     private float m_startEvent; // A bool triggered by the Space bar to test anything
     private Vector2 m_direction; // Unit 2D vector, default state is [0,0]
@@ -16,6 +17,10 @@ public class InputManager : MonoBehaviour
     public Vector2 Look { get => m_look; set => m_look = value; }
     private InputAction m_mouse;
     public Vector2 Direction;
+
+    private void Awake()
+    {
+    }
 
     public bool Jump
     {
@@ -41,6 +46,7 @@ public class InputManager : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
+        
         Direction = context.ReadValue<Vector2>();
     }
 

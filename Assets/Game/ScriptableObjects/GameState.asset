@@ -12,5 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35b7e6915eac942a89199e92bef52c62, type: 3}
   m_Name: GameState
   m_EditorClassIdentifier: 
-  Score: 0
-  Fuel: 0
+  HasStarted: 0

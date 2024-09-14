@@ -4,7 +4,11 @@ using System;
 public class PlaneControllerFixed : MonoBehaviour
 {
     [Header("Scriptable Object References")]
+
+    [Tooltip("Holds the values of pre-runtime variables, this do not change during gameplay")]
     [SerializeField] private GameSettings _gameSettings;
+    [Tooltip("Holds the state of runtime varibales")]
+    [SerializeField] private GameState gameStateSO;
     [Header("Manager References")]
     [SerializeField] private WeightManager _weightManager;
 
@@ -43,11 +47,15 @@ public class PlaneControllerFixed : MonoBehaviour
             _forwardSpeed = 20f;
         //TODO include the exception, once we agree on using the SO
         //throw new NullReferenceException("GameSettings reference is missing, this context needs it to define the speed of the plane");
+        if (!gameStateSO)
+            throw new NullReferenceException("Missing GameState, HelloWorld purposes");
 
+        gameStateSO.HasStarted = false; //TODO This should be done by a hight entity, a singleton probably that handles the GamePlay.
 
     }
     private void FixedUpdate()
     {
+        if (!gameStateSO.HasStarted) return;
         RotatePlane();
         MovePlane();
     }

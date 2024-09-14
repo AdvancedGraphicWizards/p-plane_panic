@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class FuelController : MonoBehaviour
 {
+    [SerializeField] private GameState gameStateSO;
     [Tooltip("The Slide Game Object FuelSliderIndicator")]
     [SerializeField] private Slider m_slider;
     [Tooltip("You can find it on the Game Object hierarchy FuelSliderIndicator -> FillArea -> Fill ")]
@@ -30,12 +31,18 @@ public class FuelController : MonoBehaviour
             throw new System.NullReferenceException("The Scriptable Object CurrentFuel is missing, the DistanceCounterController needs is to keep track of the distance");
         }
 
+        if (!gameStateSO)
+            throw new System.NullReferenceException("Missing GameState, HelloWorld purposes");
+
+
         m_currentFuel.Value = (uint)m_startingFuel;
         m_fuel = m_startingFuel;
 
     }
     private void Update()
     {
+        if(!gameStateSO.HasStarted) return; //TODO quick fix for the HelloWorld
+
         ConsumeFuel();
         UpdateColor();
     }

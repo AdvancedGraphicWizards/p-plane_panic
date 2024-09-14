@@ -3,7 +3,7 @@ using UnityEngine;
 public enum SceneName
 {
     Intro,
-    Lobby,
+    //Lobby, //TODO Temporarlly removed for the HelloWorld demo
     Game,
     Result,
 }
