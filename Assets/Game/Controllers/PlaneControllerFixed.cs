@@ -34,6 +34,12 @@ public class PlaneControllerFixed : MonoBehaviour
     [SerializeField] private float _weightDampingSpeed = 5;
     [SerializeField] private float _weightDampingThreshold = 0.1f; // weight threshold to begin Damping to zero
 
+    [Header("Audio Settings")]
+    [SerializeField] private AudioSource engineSoundSource;
+    [SerializeField] private float maxEngineSound = 1f;
+    [SerializeField] private float defaultSoundPitch = 1f;
+    [SerializeField] private float turboSoundPitch = 1.5f;
+
     [Header("Read Only")]
     [SerializeField] private float _maxForwardSpeed = 0f;
     [SerializeField] private float _maxHorizSpeed = 0f;
@@ -49,6 +55,7 @@ public class PlaneControllerFixed : MonoBehaviour
     [SerializeField] private float _totalRollWeight = 0f;
     [SerializeField] private float _totalPitchWeight = 0f;
     [SerializeField] public int _isTurbo = 0;
+    [SerializeField] private float currentEngineSoundPitch = 0f;
 
     private void Start()
     {
@@ -60,6 +67,7 @@ public class PlaneControllerFixed : MonoBehaviour
         _maxHorizSpeed = _maxHorizontalSpeed;
         _maxVertSpeed = _maxVerticalSpeed;
         _maxForwardSpeed = _forwardSpeed;
+        currentEngineSoundPitch = defaultSoundPitch;
 
         HoopScript.OnRingEnter += amt => ActivateTurbo(amt);
 
@@ -73,9 +81,11 @@ public class PlaneControllerFixed : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        AudioSystem();
         if (!gameStateSO.HasStarted) return;
         RotatePlane();
         MovePlane();
+        
     }
 
     private void RotatePlane()
@@ -162,6 +172,7 @@ public class PlaneControllerFixed : MonoBehaviour
 
     private IEnumerator TurboBoost() {
         _isTurbo ++;
+        currentEngineSoundPitch = turboSoundPitch;
         _maxForwardSpeed += _turboSpeed * 2;
         _maxHorizSpeed += _turboSpeed;
         _maxVertSpeed += _turboSpeed;
@@ -173,6 +184,7 @@ public class PlaneControllerFixed : MonoBehaviour
         _maxVertSpeed -= _turboSpeed;
         _rollRotationSpeed -= _turboSpeed;
         _pitchRotationSpeed -= _turboSpeed;
+        currentEngineSoundPitch = defaultSoundPitch;
         _isTurbo --;
     }
 
@@ -182,5 +194,13 @@ public class PlaneControllerFixed : MonoBehaviour
         _vertSpeed = _currentPitchAngle / _maxPitchAngle * _maxVerticalSpeed;
 
         transform.Translate((Vector3.forward * _forwardSpeed + Vector3.right * -_horizSpeed + Vector3.up * -_vertSpeed) * Time.deltaTime);
+    }
+
+
+    private void AudioSystem(){
+        if (engineSoundSource != null) {
+            engineSoundSource.pitch = Mathf.Lerp(engineSoundSource.pitch, currentEngineSoundPitch, 10f * Time.deltaTime);
+            engineSoundSource.volume = Mathf.Lerp(engineSoundSource.volume, maxEngineSound, 1f * Time.deltaTime);
+        }
     }
 }
