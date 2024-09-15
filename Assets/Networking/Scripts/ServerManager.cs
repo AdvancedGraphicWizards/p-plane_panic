@@ -9,9 +9,10 @@ public struct PlayerData
     public string playerName;           // The name of the player
     public GameObject playerObject;     // The player object in the scene
     public GameObject networkObject;    // The networked object
+    public Color playerColor;           // The player colour
 }
 
-public class ServerManager : MonoBehaviour
+public class ServerManager : Singleton<ServerManager>
 {
 
     [Header("Server Settings")]
@@ -68,9 +69,10 @@ public class ServerManager : MonoBehaviour
         m_players.Add(clientID, new PlayerData()
         {
             clientID = clientID,
-            playerName = NetworkManager.Singleton.ConnectedClients[clientID].PlayerObject.GetComponent<PhoneController>().playerName.Value.ToString(),
+            playerName = "Player " + clientID,
             playerObject = Instantiate(playerPrefab),
-            networkObject = NetworkManager.Singleton.ConnectedClients[clientID].PlayerObject.gameObject
+            networkObject = NetworkManager.Singleton.ConnectedClients[clientID].PlayerObject.gameObject,
+            playerColor = Color.black
         });
 
         m_connectedPlayersSO.Value = m_players.Count;

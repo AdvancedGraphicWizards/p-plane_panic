@@ -10,6 +10,8 @@ public class PlayerThumbnailController : MonoBehaviour
     [SerializeField] private TMP_Text m_playerName;
     [SerializeField] private bool m_isAssigned;
     private PlayerData m_playerData;
+    private PhoneController m_phoneController;
+    private Coroutine updateNameCoroutine;
 
     private void Awake()
     {
@@ -18,15 +20,26 @@ public class PlayerThumbnailController : MonoBehaviour
 
     public void AssignPlayer(PlayerData playerData)
     {
-        // Change this when we actually send the player name
-        m_playerName.text = "Player " + playerData.clientID;
-        m_playerName.enabled = true;
         m_isAssigned = true;
         m_playerData = playerData;
+        m_phoneController = m_playerData.networkObject.GetComponent<PhoneController>();
+
+        // Start updating the player's name every second
+        if (updateNameCoroutine == null)
+        {
+            updateNameCoroutine = StartCoroutine(UpdatePlayerNameRoutine());
+        }
     }
 
     public void UnassignPlayer()
     {
+        // Stop updating the player's name
+        if (updateNameCoroutine != null)
+        {
+            StopCoroutine(updateNameCoroutine);
+            updateNameCoroutine = null;
+        }
+
         m_playerName.text = "";
         m_playerName.enabled = false;
         m_isAssigned = false;
@@ -44,5 +57,25 @@ public class PlayerThumbnailController : MonoBehaviour
         if (m_playerData.clientID == clientID) return true;
 
         return false;
+    }
+
+
+    private void UpdatePlayerName()
+    {
+        if (m_phoneController != null)
+        {
+            m_playerData.playerName = m_phoneController.GetName();
+            m_playerName.text = m_playerData.playerName;
+            m_playerName.enabled = true;
+        }
+    }
+
+    private IEnumerator UpdatePlayerNameRoutine()
+    {
+        while (m_isAssigned)
+        {
+            UpdatePlayerName();
+            yield return new WaitForSeconds(0.5f);
+        }
     }
 }

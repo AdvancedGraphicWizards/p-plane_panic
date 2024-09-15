@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Collections;
 using Unity.Netcode;
 using UnityEngine;
@@ -23,27 +21,50 @@ public class PhoneController : NetworkBehaviour
     );
 
     // Network player name variable
-    public NetworkVariable<FixedString32Bytes> playerName = new NetworkVariable<FixedString32Bytes>(
+    public NetworkVariable<FixedString64Bytes> playerName = new NetworkVariable<FixedString64Bytes>(
         string.Empty,
         NetworkVariableReadPermission.Everyone,
         NetworkVariableWritePermission.Owner
     );
+
+    // Network player colour variable
+    public NetworkVariable<Color> playerColor = new NetworkVariable<Color>(
+        Color.black,
+        readPerm: NetworkVariableReadPermission.Everyone,
+        writePerm: NetworkVariableWritePermission.Server
+    );
+
+    public void Awake()
+    {
+        playerName.Value = m_playerName;
+    }
 
     // Called when the object is spawned on the network
     public override void OnNetworkSpawn()
     {
         base.OnNetworkSpawn();
         Debug.Log("is owner: " + IsOwner + " is spawned: " + IsSpawned + " is client: " + IsClient);
-        if (!IsOwner) return;
 
-        // Enable the gyroscope if it is supported, otherwise use the accelerometer
-        if (SystemInfo.supportsGyroscope)
-            Input.gyro.enabled = m_gyroEnabled = true;
-        else
-            accelerometerInput = Input.acceleration;
+        if (!IsOwner)
+        {
+            // Do nothing
+        }
 
-        // Set the player name
-        playerName.Value = m_playerName == "Player" ? "Player " + OwnerClientId : m_playerName;
+        if (IsOwner)
+        {
+
+            // Enable the gyroscope if it is supported, otherwise use the accelerometer
+            if (SystemInfo.supportsGyroscope)
+                Input.gyro.enabled = m_gyroEnabled = true;
+            else
+                accelerometerInput = Input.acceleration;
+
+            SetName(ClientUI.Instance.playerName);
+            playerColor.OnValueChanged += (prevValue, newValue) =>
+            {
+                ClientUI.Instance.playerColor = newValue;
+            };
+        }
     }
 
     public void Start()
@@ -82,13 +103,18 @@ public class PhoneController : NetworkBehaviour
         RelayManager.JoinRelay(joinCode);
     }
 
-    public void SetName(string name)
-    {
-        if (name != "") m_playerName = name;
-    }
-
     public Quaternion GetRotation()
     {
         return m_rotation.Value;
+    }
+
+    public string GetName()
+    {
+        return playerName.Value.ToString();
+    }
+
+    public void SetName(string name)
+    {
+        playerName.Value = m_playerName = name;
     }
 }

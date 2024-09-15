@@ -13,11 +13,15 @@ public class ClientUI : Singleton<ClientUI>
 
     // Private members
     [Header("Phone Controller Reference")]
-    [SerializeField] private PhoneController m_phoneController;
+    public PhoneController phoneController;
+
+    [Header("UI Elements")]
+    public string playerName = "Player";
+    public Color playerColor = new Color(0.5235849f, 1.0f, 0.6483989f);
 
     private void Awake()
     {
-        if (m_phoneController == null)
+        if (phoneController == null)
         {
             Debug.LogError("No PhoneController found on the GameObject.");
         }
@@ -55,8 +59,9 @@ public class ClientUI : Singleton<ClientUI>
 
         Debug.Log($"Attempting to join game with code {code} as {name}");
 
-        m_phoneController.SetName(name);
-        m_phoneController.Connect(code);
+        phoneController.SetName(name);
+        playerName = name;
+        phoneController.Connect(code);
 
         joinButtonText.text = "Connecting";
     }
