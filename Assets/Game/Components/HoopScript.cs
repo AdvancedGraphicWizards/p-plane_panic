@@ -23,13 +23,9 @@ public class HoopScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("entered");
         if (other.gameObject.CompareTag(_playerTag)){
-            Debug.Log("gaming");
             OnRingEnter?.Invoke(_fuelRecoverAmount);
-
             StartCoroutine(Deactivate());
-
         }
     }
 

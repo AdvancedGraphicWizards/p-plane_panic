@@ -1,5 +1,7 @@
 using UnityEngine;
 using System;
+using System.Collections;
+using Unity.VisualScripting;
 
 public class PlaneControllerFixed : MonoBehaviour
 {
@@ -11,10 +13,13 @@ public class PlaneControllerFixed : MonoBehaviour
     [SerializeField] private GameState gameStateSO;
     [Header("Manager References")]
     [SerializeField] private WeightManager _weightManager;
+    [SerializeField] private PlaneCameraController _planeCameraController;
 
     [Header("Plane Attributes")]
     [Tooltip("The Forward Speed is controll on a higher level via GameSettings scriptable object")]
     [SerializeField] private float _forwardSpeed;
+    [SerializeField] private float _accelerating = 1f;
+    [SerializeField] private float _decelerating = 1f;
     [SerializeField] private float _rollRotationSpeed = 5f;
     [SerializeField] private float _pitchRotationSpeed = 5f;
     [SerializeField] private float _maxHorizontalSpeed = 10f;
@@ -23,11 +28,16 @@ public class PlaneControllerFixed : MonoBehaviour
     [SerializeField] private float _maxRollAngle = 40f;
     [Range(0f, 90f)]
     [SerializeField] private float _maxPitchAngle = 40f;
+    [SerializeField] private float _turboTime = 4f;
+    [SerializeField] private float _turboSpeed = 10f;
     [Range(0f, 100f)]
     [SerializeField] private float _weightDampingSpeed = 5;
     [SerializeField] private float _weightDampingThreshold = 0.1f; // weight threshold to begin Damping to zero
 
     [Header("Read Only")]
+    [SerializeField] private float _maxForwardSpeed = 0f;
+    [SerializeField] private float _maxHorizSpeed = 0f;
+    [SerializeField] private float _maxVertSpeed = 0f;
     [SerializeField] private float _horizSpeed = 0f;
     [SerializeField] private float _vertSpeed = 0f;
     [SerializeField] private float _rollChange = 0f;
@@ -38,6 +48,7 @@ public class PlaneControllerFixed : MonoBehaviour
     [SerializeField] private float _nextRollAngle = 0f;
     [SerializeField] private float _totalRollWeight = 0f;
     [SerializeField] private float _totalPitchWeight = 0f;
+    [SerializeField] public int _isTurbo = 0;
 
     private void Start()
     {
@@ -45,6 +56,13 @@ public class PlaneControllerFixed : MonoBehaviour
             _forwardSpeed = _gameSettings.PlaneBaseSpeed;
         else
             _forwardSpeed = 20f;
+
+        _maxHorizSpeed = _maxHorizontalSpeed;
+        _maxVertSpeed = _maxVerticalSpeed;
+        _maxForwardSpeed = _forwardSpeed;
+
+        HoopScript.OnRingEnter += amt => ActivateTurbo(amt);
+
         //TODO include the exception, once we agree on using the SO
         //throw new NullReferenceException("GameSettings reference is missing, this context needs it to define the speed of the plane");
         if (!gameStateSO)
@@ -106,6 +124,56 @@ public class PlaneControllerFixed : MonoBehaviour
             _nextPitchAngle = _maxPitchAngle * Math.Sign(_nextPitchAngle);
         }
         _currentPitchAngle = _nextPitchAngle;
+
+        
+        
+        if (_forwardSpeed < _maxForwardSpeed)
+        {
+            _forwardSpeed += _accelerating * Time.deltaTime;
+        }
+        else
+        {
+            _forwardSpeed -= _decelerating * Time.deltaTime;
+        }
+
+        if (_maxHorizontalSpeed < _maxHorizSpeed)
+        {
+            _maxHorizontalSpeed += _accelerating * Time.deltaTime;
+        }
+        else
+        {
+            _maxHorizontalSpeed -= _decelerating * Time.deltaTime;
+        }
+
+        if (_maxVerticalSpeed < _maxVertSpeed)
+        {
+            _maxVerticalSpeed += _accelerating * Time.deltaTime;
+        }
+        else
+        {
+            _maxVerticalSpeed -= _decelerating * Time.deltaTime;
+        }
+    }
+
+    // Activates turbo boost, strength modifier currently unused
+    public void ActivateTurbo(float strength) {
+        StartCoroutine(TurboBoost());
+    }
+
+    private IEnumerator TurboBoost() {
+        _isTurbo ++;
+        _maxForwardSpeed += _turboSpeed * 2;
+        _maxHorizSpeed += _turboSpeed;
+        _maxVertSpeed += _turboSpeed;
+        _rollRotationSpeed += _turboSpeed;
+        _pitchRotationSpeed += _turboSpeed;
+        yield return new WaitForSeconds(_turboTime);
+        _maxForwardSpeed -= _turboSpeed * 2;
+        _maxHorizSpeed -= _turboSpeed;
+        _maxVertSpeed -= _turboSpeed;
+        _rollRotationSpeed -= _turboSpeed;
+        _pitchRotationSpeed -= _turboSpeed;
+        _isTurbo --;
     }
 
     private void MovePlane()
