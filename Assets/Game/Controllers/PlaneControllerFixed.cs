@@ -29,7 +29,7 @@ public class PlaneControllerFixed : MonoBehaviour
     [Range(0f, 90f)]
     [SerializeField] private float _maxPitchAngle = 40f;
     [SerializeField] private float _turboTime = 4f;
-    [SerializeField] private float _turboSpeed = 10f;
+    [SerializeField] private float _turboSpeed = 2f;
     [Range(0f, 100f)]
     [SerializeField] private float _weightDampingSpeed = 5;
     [SerializeField] private float _weightDampingThreshold = 0.1f; // weight threshold to begin Damping to zero
