@@ -85,6 +85,7 @@ public class FuelController : MonoBehaviour
     {
         Event.Subscribe(CallResponse);
         HoopScript.OnRingEnter += fuel_amt => UpdateFuel(fuel_amt);
+        FireComponent.FireDamageEvent += fuel_amt => UpdateFuel(fuel_amt);
     }
 
     void OnDisable()

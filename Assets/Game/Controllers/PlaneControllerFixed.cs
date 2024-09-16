@@ -81,11 +81,10 @@ public class PlaneControllerFixed : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        AudioSystem();
         if (!gameStateSO.HasStarted) return;
+        AudioSystem();
         RotatePlane();
         MovePlane();
-        
     }
 
     private void RotatePlane()
