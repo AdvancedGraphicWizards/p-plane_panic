@@ -16,55 +16,59 @@ public class PlayerSpawnScript : MonoBehaviour
     [SerializeField] private int _maxPlayerCount;
 
     [SerializeField] private int _playerCount = 4;
-    [SerializeField] private String[] _controlSchemes = new String[4] {"Keyboard_wasd", "keyboard_ijkl", "keyboard_arrows", "keyboard_numpad"};
+    [SerializeField] private int _currentPlayerColorIndex = 0;
 
-    [SerializeField] private GameObject[] _playerCharacters;
-    private int _activePlayerCount = 0;
-
-    public static event Action<GameObject> OnPlayerSpawn;
+    [SerializeField] private List<GameObject> _playerCharacters;
 
 
     private void Awake()
     {
-        _playerCharacters = new GameObject[_maxPlayerCount];
+        _playerCharacters = new List<GameObject>();
+        ServerManager.OnPlayerSpawn += playerData => SpawnPlayer(playerData);
+        ServerManager.OnPlayerDisconnect += playerData => DespawnPlayer(playerData.playerObject);
     }
 
     private void Start()
     {
-        SpawnPlayers();
+        //SpawnPlayers();
 
-        if (_targetParent != null) ParentPlayers(_targetParent);
-
-        SetPlayerColor();
+        //SetPlayerColor();
     }
 
-    // Instantiate all Players
-    // Currently hardcoded to only spawn 4 player characters from a set of 4 possible keyboard controls
-    private void SpawnPlayers(){
-        for (int i = 0; i < _playerCount; i++)
+    private void SpawnPlayer(PlayerData playerData)
+    {
+        _playerCharacters.Add(playerData.playerObject);
+
+        ParentPlayer(playerData.playerObject, _targetParent);
+        SetPlayerColor(playerData);
+    }
+
+    private void DespawnPlayer(GameObject playerObject)
+    {
+        if (_playerCharacters.Contains(playerObject))
         {
-            _playerCharacters[i] = PlayerInput.Instantiate(_playerPrefab, controlScheme: _controlSchemes[i], pairWithDevice: Keyboard.current).gameObject;
-            OnPlayerSpawn?.Invoke(_playerCharacters[i]);
-            _activePlayerCount++;
+            _playerCharacters.Remove(playerObject);
+            Destroy(playerObject);
         }
     }
 
-    private void DespawnPlayer(){
-        //TODO
-    }
 
-
-    private void ParentPlayers(Transform targetParent){
-        for (int i = 0; i < _activePlayerCount; i++) {
-            _playerCharacters[i].transform.SetParent(targetParent);
-            _playerCharacters[i].transform.position = _targetParent.position;
+    private void ParentPlayer(GameObject playerObject, Transform targetParent)
+    {
+        if (targetParent != null)
+        {
+            playerObject.transform.SetParent(targetParent);
+            playerObject.transform.position = targetParent.position;
         }
     }
 
     // currently hardcoded (and not working)
-    private void SetPlayerColor(){
-        for (int i = 0; i < _activePlayerCount; i++) {
-            _playerCharacters[i].GetComponent<Renderer>().material.SetColor("_BaseColor", _playerColors[i]);
+    private void SetPlayerColor(PlayerData playerData)
+    {
+        int colorIndex = (int)((playerData.clientID - 1) % (ulong)_playerColors.Length);
+        if (playerData.playerObject.TryGetComponent<Renderer>(out Renderer renderer))
+        {
+            renderer.material.SetColor("_BaseColor", _playerColors[colorIndex]);
         }
     }
 }

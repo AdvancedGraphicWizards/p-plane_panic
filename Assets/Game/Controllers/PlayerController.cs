@@ -120,6 +120,7 @@ public class PlayerController : MonoBehaviour
 
 
     // CURRENTLY UNUSED
+    /*
     private void HandleJump()
     {
         if (!m_isJumping && m_inputManager.Jump && m_isGrounded)
@@ -132,6 +133,7 @@ public class PlayerController : MonoBehaviour
             m_isJumping = false;
         }
     }
+    */
 
     // CURRENTLY UNUSED
     private void ApplyGravity()
