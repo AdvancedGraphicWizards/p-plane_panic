@@ -87,19 +87,12 @@ public class PlaneControllerFixed : MonoBehaviour
         MovePlane();
     }
 
+
+    // Rotate the plane transform about the z and x axes according to weight values
     private void RotatePlane()
     {
         _totalRollWeight = _weightManager.TotalRollWeight;
         _totalPitchWeight = _weightManager.TotalPitchWeight;
-
-        // if (_totalRollWeight < _weightDampingThreshold) {
-        //     _nextRollAngle += _weightDampingSpeed * Math.Sign(_rollChange) * Time.deltaTime;
-        // }
-
-        // if (_totalPitchWeight < _weightDampingThreshold) {
-        //     _nextPitchAngle += -_weightDampingSpeed * Math.Sign(_pitchChange) * Time.deltaTime;
-        // }
-
 
         _rollChange = _totalRollWeight * Time.deltaTime;
         _pitchChange = _totalPitchWeight * Time.deltaTime;
@@ -169,6 +162,7 @@ public class PlaneControllerFixed : MonoBehaviour
         StartCoroutine(TurboBoost());
     }
 
+    // Coroutine that updates the speed and sounds values when boosting
     private IEnumerator TurboBoost() {
         _isTurbo ++;
         currentEngineSoundPitch = turboSoundPitch;
@@ -187,6 +181,8 @@ public class PlaneControllerFixed : MonoBehaviour
         _isTurbo --;
     }
 
+    // Update speed values according to current roll and pitch
+    // Then move plane forward via translation according to speed values
     private void MovePlane()
     {
         _horizSpeed = _currentRollAngle / _maxRollAngle * _maxHorizontalSpeed;
@@ -195,7 +191,7 @@ public class PlaneControllerFixed : MonoBehaviour
         transform.Translate((Vector3.forward * _forwardSpeed + Vector3.right * -_horizSpeed + Vector3.up * -_vertSpeed) * Time.deltaTime);
     }
 
-
+    // Update engine sound depending on pitch and volume variables
     private void AudioSystem(){
         if (engineSoundSource != null) {
             engineSoundSource.pitch = Mathf.Lerp(engineSoundSource.pitch, currentEngineSoundPitch, 10f * Time.deltaTime);

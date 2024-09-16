@@ -45,7 +45,6 @@ public class FireSpawner : MonoBehaviour
         if (_fireSpawnZone == null) _fireSpawnZone = GetComponent<BoxCollider>();
         if (_targetParent == null) _targetParent = gameObject.transform;
         _fireArray = new GameObject[_maxFires];
-        // _hoopArray[i] = Instantiate(_hoopPrefab, new Vector3(_randomSeed[i]*_ringOffsetRange, _randomSeed[i+1]*(_ringOffsetRange/2f) + _baseHeight, _zValue), Quaternion.identity);
         _timeToFire = _timeToFirstFire;
     }
 
@@ -55,7 +54,6 @@ public class FireSpawner : MonoBehaviour
         if (!canSpawnFires) return;
         if (_numActiveFires >= _maxFires) return;
 
-    
         if (_timeToFire <= 0) {
             SpawnFire();
 
