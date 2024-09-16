@@ -3,64 +3,69 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
+
 {
-    
-    //[SerializeField] private PlayerState so_playerState;
-    private float m_startEvent; // A bool triggered by the Space bar to test anything
-    private Vector2 m_direction; // Unit 2D vector, default state is [0,0]
-    private bool m_jump;
-    private Vector2 m_pointer;
-    private float m_mousePressed;
-    //private static bool m_giveControl = true;
-    //public bool GiveControl { get { return m_giveControl; } set { m_giveControl = value; } }
-    private Vector2 m_look;
-    public Vector2 Look { get => m_look; set => m_look = value; }
-    private InputAction m_mouse;
-    public Vector2 Direction;
+    [Header("Locally Scoped Members")]
+    [SerializeField] private PhoneController m_phoneController;
 
-    private void Awake()
+    [Header("Movement Variables")]
+    [Tooltip("Maximum movement speed of the player character.")]
+    [SerializeField] private float moveSpeed = 0.03f;
+    [Tooltip("Low pass factor, lower values make movement more responsive but add jitter from the gyroscope.")]
+    [SerializeField] private float lowPassFactor = 0.1f;
+    [Tooltip("Tilt dead zone, when tilting within this zone we treat the input as zero.")]
+    [SerializeField] private float tiltDeadZone = 10f;
+    [Tooltip("Threshold for ignoring small movement values.")]
+    [SerializeField] private float movementThreshold = 0.001f;
+    public Vector2 Direction = Vector2.zero;
+
+    void FixedUpdate()
     {
-    }
-
-    public bool Jump
-    {
-        get => m_jump;
-        private set => m_jump = value;
-    }
-
-    // public void EnablePlayerInteraction()
-    // {
-    //     Cursor.lockState = CursorLockMode.Locked;
-    //     Cursor.visible = false;
-    //     m_giveControl = true;
-    //     //so_playerState.Init();
-    // }
-    // public void DisablePlayerInteraction()
-    // {
-    //     Cursor.lockState = CursorLockMode.None;
-    //     Cursor.visible = true;
-    //     m_giveControl = false;
-    //     m_direction = Vector2.zero;
-    //     m_jump = false;
-    // }
-
-    public void OnMove(InputAction.CallbackContext context)
-    {
-        
-        Direction = context.ReadValue<Vector2>();
-    }
-
-    public void OnJump(InputAction.CallbackContext context)
-    {
-        if (context.started)
+        if (m_phoneController)
         {
-            Jump = context.ReadValueAsButton();
-        }
-        else if (context.canceled)
-        {
-            Jump = context.ReadValueAsButton();
+            Quaternion rotation = m_phoneController.GetRotation();
+            //transform.rotation = rotation;
+
+            Vector3 targetMovement = GetMovementFromRotation(rotation);
+            Direction = Vector3.Lerp(Direction, targetMovement, lowPassFactor);
+            Direction = ApplyMovementThreshold(Direction);
         }
     }
 
+    private Vector2 GetMovementFromRotation(Quaternion rotation)
+    {
+        Vector3 euler = rotation.eulerAngles;
+        float tiltX = (euler.x > 180) ? euler.x - 360 : euler.x; // Tilt forward/backward
+        float tiltZ = (euler.z > 180) ? euler.z - 360 : euler.z; // Tilt left/right
 
+        if (Mathf.Abs(tiltX) < tiltDeadZone) tiltX = 0;
+        if (Mathf.Abs(tiltZ) < tiltDeadZone) tiltZ = 0;
+
+        // Normalize the tilts to the range -1 to 1 for movement
+        tiltX = Mathf.Clamp(tiltX, -45, 45) / 45;
+        tiltZ = Mathf.Clamp(tiltZ, -45, 45) / 45;
+
+        Vector2 movement = new Vector2(tiltZ, -tiltX);
+        return movement;
+    }
+
+    private Vector2 ApplyMovementThreshold(Vector2 movement)
+    {
+        if (Mathf.Abs(movement.x) < movementThreshold)
+        {
+            movement.x = 0;
+        }
+
+        if (Mathf.Abs(movement.y) < movementThreshold)
+        {
+            movement.y = 0;
+        }
+
+        return movement;
+    }
+
+    public void AssignPhoneController(PhoneController phoneController)
+    {
+        m_phoneController = phoneController;
+    }
 }
