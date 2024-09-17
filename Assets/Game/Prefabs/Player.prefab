@@ -94,7 +94,6 @@ GameObject:
   - component: {fileID: 8974895940527870634}
   - component: {fileID: 2005564064721620647}
   - component: {fileID: 143955918285286066}
-  - component: {fileID: 3377104683151909339}
   - component: {fileID: 1888221772200208406}
   - component: {fileID: 454857393364728385}
   - component: {fileID: 1299140551018497404}
@@ -173,29 +172,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7669386811948332398
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6830070950919627530}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!143 &1888221772200208406
 CharacterController:
   m_ObjectHideFlags: 0
@@ -215,13 +191,13 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2
+  m_Height: 1
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.5, z: 0}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &454857393364728385
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -237,8 +213,6 @@ MonoBehaviour:
   m_phoneController: {fileID: 0}
   moveSpeed: 0.03
   lowPassFactor: 0.1
-  tiltDeadZone: 10
-  movementThreshold: 0.001
   Direction: {x: 0, y: 0}
 --- !u!114 &1299140551018497404
 MonoBehaviour:
@@ -266,10 +240,6 @@ MonoBehaviour:
   m_groundLayers:
     serializedVersion: 2
     m_Bits: 0
-  _relPosition: {x: 0, y: 0}
-  currentLoc: {x: 0, y: 0, z: 0}
-  nextLoc: {x: 0, y: 0, z: 0}
-  directionVector: {x: 0, y: 0, z: 0}
 --- !u!114 &8468020443362394756
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,8 +254,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rollWeightModifier: 1
   pitchWeightModifier: 1
-  rollThreshold: 0.2
-  pitchThreshold: 0.2
+  rollThreshold: 0
+  pitchThreshold: 0.076
 --- !u!54 &1474321284461550872
 Rigidbody:
   m_ObjectHideFlags: 0

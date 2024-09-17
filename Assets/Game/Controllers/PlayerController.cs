@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
     [Header("Manager References")]
     private CharacterController m_characterController;
     private WeightComponent m_weightComponent;
-    private Vector3 m_currentMovementVector;
+    private Vector3 m_currentMovementVector = Vector3.zero;
     [SerializeField] private PlatformData _platformData;
     [SerializeField] private InputManager m_inputManager;
 
@@ -21,7 +21,7 @@ public class PlayerController : MonoBehaviour
 
     //* Player Attributes
     [Range(0f, 20f)]
-    [SerializeField] private float m_walkingSpeed  = 1.0f;
+    [SerializeField] private float m_walkingSpeed = 1.0f;
 
     [Header("Gravity")]
     [SerializeField] private float m_gravity = -9.80f;
@@ -38,15 +38,12 @@ public class PlayerController : MonoBehaviour
     [Tooltip("What layers the character uses as ground")]
     [SerializeField] private LayerMask m_groundLayers;
 
-    [Header("Read Only: Relative position")]
-    [SerializeField] private Vector2 _relPosition;
-
     private bool m_isJumping = false;
     private float m_initialJumpVelocity;
-    [SerializeField] private Vector3 currentLoc;
-    [SerializeField] private Vector3 nextLoc;
-    [SerializeField] private Vector3 directionVector;
 
+    // Player movement data
+    private Transform m_offsetTransform;
+    private Vector3 relativePos;
 
     private void Awake()
     {
@@ -54,68 +51,42 @@ public class PlayerController : MonoBehaviour
         m_weightComponent = GetComponent<WeightComponent>();
 
         m_characterController.detectCollisions = true;
-        m_currentMovementVector = Vector3.zero;
-        _relPosition = Vector2.zero;
     }
 
     private void FixedUpdate()
-    {
+    {   
+        // TEMPORARY: Find the platform object and set the offset to its position
+        if (m_offsetTransform == null) {
+            if (GameObject.Find("Plane") != null) {
+                m_offsetTransform = GameObject.Find("Plane").transform;
+            }
+        }
+
         CheckIfGrounded(); // currently unused
         Move();
         UpdateWeight();
     }
 
-    private void UpdateModelDirection(Vector3 directionVector){
-        _playerModel.transform.forward = directionVector;
-    }
-
-    private void UpdateWeight(){
-        _relPosition.x = (currentLoc.x / _platformData.BoundsX);
-        _relPosition.y = (currentLoc.z / _platformData.BoundsY);
-
-        m_weightComponent.UpdateWeights(_relPosition);
-
+    private void UpdateWeight()
+    {
+        m_weightComponent.UpdateWeights(new Vector2(relativePos.x / _platformData.BoundsX, relativePos.z / _platformData.BoundsY));
     }
 
     private void Move()
     {
-        m_currentMovementVector.z =  m_inputManager.Direction.y * m_walkingSpeed * Time.deltaTime;
-        m_currentMovementVector.x =  m_inputManager.Direction.x * m_walkingSpeed * Time.deltaTime;
+        // Update movement vector
+        m_currentMovementVector.x = m_inputManager.Direction.x * m_walkingSpeed * Time.deltaTime;
+        m_currentMovementVector.z = m_inputManager.Direction.y * m_walkingSpeed * Time.deltaTime;
 
-        nextLoc = currentLoc + m_currentMovementVector;
+        // Look towards the direction of movement
+        if (m_currentMovementVector != Vector3.zero)
+            _playerModel.transform.forward = new Vector3(m_currentMovementVector.x, 0, m_currentMovementVector.z);
 
-
-        // If change in movement Translate relative to localposition
-        // If resulting position would be out of bounds set to closest in-bounds position
-        if (nextLoc == currentLoc){return;}
-        else {UpdateModelDirection(nextLoc - currentLoc);}
-
-        if (nextLoc.z < _platformData.BoundsY && nextLoc.z > -_platformData.BoundsY) {
-            transform.position += transform.forward * m_currentMovementVector.z;
-
-            // m_characterController.Move(transform.forward * m_currentMovementVector.z);
-        }
-        else {
-            nextLoc.z = _platformData.BoundsY * Math.Sign(nextLoc.z);
-            transform.position += transform.forward * (nextLoc.z - currentLoc.z);
-
-            // m_characterController.Move(transform.forward * (nextLoc.z - currentLoc.z));
-        }
-        currentLoc.z = nextLoc.z;
-
-        if (nextLoc.x < _platformData.BoundsX && nextLoc.x > -_platformData.BoundsX){
-            transform.position += transform.right * m_currentMovementVector.x;
-
-            // m_characterController.Move(transform.right * m_currentMovementVector.x);
-        } else {
-            nextLoc.x = _platformData.BoundsX * Math.Sign(nextLoc.x);
-            transform.position += transform.right * (nextLoc.x - currentLoc.x);
-
-            // m_characterController.Move(transform.right * (nextLoc.x - currentLoc.x));
-        }
-
-        
-        currentLoc.x = nextLoc.x;
+        // Update position and move the player
+        relativePos += m_currentMovementVector;
+        relativePos.x = Mathf.Clamp(relativePos.x, -_platformData.BoundsX, _platformData.BoundsX);
+        relativePos.z = Mathf.Clamp(relativePos.z, -_platformData.BoundsY, _platformData.BoundsY);
+        transform.position = m_offsetTransform.position + relativePos.x * m_offsetTransform.right + relativePos.z * m_offsetTransform.forward + m_offsetTransform.up * 0.5f;
     }
 
 
