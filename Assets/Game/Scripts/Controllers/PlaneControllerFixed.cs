@@ -17,23 +17,21 @@ public class PlaneControllerFixed : MonoBehaviour
 
     [Header("Plane Attributes")]
     [Tooltip("The Forward Speed is controll on a higher level via GameSettings scriptable object")]
-    [SerializeField] private float _forwardSpeed = 120f;
-    [SerializeField] private float _maxHorizontalSpeed = 10f;
-    [SerializeField] private float _maxVerticalSpeed = 10f;
-    [SerializeField] private float _accelerating = 1f;
-    [SerializeField] private float _decelerating = 1f;
+    [SerializeField] private float maxForwardSpeed = 20f;
+    [SerializeField] private float maxHorizontalSpeed = 10f;
+    [SerializeField] private float maxVerticalSpeed = 10f;
+    [SerializeField] private float acceleration = 1f;
+    [SerializeField] private float deacceleration = 1f;
+    
+    [Header("Plane tilt Settings")]
     [SerializeField] private float rollSpeed = 1f;
+    [Range(0f, 90f)] [SerializeField] private float maxRoll = 40f;
     [SerializeField] private float pitchSpeed = 1f;
+    [Range(0f, 90f)] [SerializeField] private float maxPitch = 30f;
 
-    [Range(0f, 90f)]
-    [SerializeField] private float maxRoll = 30f;
-    [Range(0f, 90f)]
-    [SerializeField] private float maxPitch = 30f;
+    [Header("Turbo Settings")]
     [SerializeField] private float _turboTime = 4f;
     [SerializeField] private float _turboSpeed = 2f;
-    [Range(0f, 100f)]
-    [SerializeField] private float _weightDampingSpeed = 5;
-    [SerializeField] private float _weightDampingThreshold = 0.1f; // weight threshold to begin Damping to zero
 
     [Header("Audio Settings")]
     [SerializeField] private AudioSource engineSoundSource;
@@ -41,10 +39,10 @@ public class PlaneControllerFixed : MonoBehaviour
     [SerializeField] private float defaultSoundPitch = 1f;
     [SerializeField] private float turboSoundPitch = 1.5f;
 
-    [Header("Read Only")]
-    private float _maxForwardSpeed = 0f;
-    private float _maxHorizSpeed = 0f;
-    private float _maxVertSpeed = 0f;
+    // Plane variables
+    private float forwardSpeed = 0f;
+    private float horizontalSpeed = 0f;
+    private float verticalSpeed = 0f;
     private float currPitch = 0f;
     private float currRoll = 0f;
     public int _isTurbo = 0;
@@ -53,15 +51,15 @@ public class PlaneControllerFixed : MonoBehaviour
     private void Start()
     {
         if (_gameSettings)
-            _forwardSpeed = _gameSettings.PlaneBaseSpeed;
+            maxForwardSpeed = _gameSettings.PlaneBaseSpeed;
         else
-            _forwardSpeed = 20f;
+            maxForwardSpeed = 20f;
 
-        _maxHorizSpeed = _maxHorizontalSpeed;
-        _maxVertSpeed = _maxVerticalSpeed;
-        _maxForwardSpeed = _forwardSpeed;
+        // Set the initial values of the plane
+        forwardSpeed = maxForwardSpeed;
         currentEngineSoundPitch = defaultSoundPitch;
 
+        // Add the turbo callback on ring enter
         HoopScript.OnRingEnter += amt => ActivateTurbo(amt);
 
         //TODO include the exception, once we agree on using the SO
@@ -72,6 +70,7 @@ public class PlaneControllerFixed : MonoBehaviour
         gameStateSO.HasStarted = false; //TODO This should be done by a hight entity, a singleton probably that handles the GamePlay.
 
     }
+
     private void FixedUpdate()
     {
         if (!gameStateSO.HasStarted) return;
@@ -79,7 +78,6 @@ public class PlaneControllerFixed : MonoBehaviour
         RotatePlane();
         MovePlane();
     }
-
 
     // Rotate the plane transform about the z and x axes according to weight values
     private void RotatePlane()
@@ -92,44 +90,47 @@ public class PlaneControllerFixed : MonoBehaviour
         transform.localRotation = Quaternion.Euler(currPitch, 0, currRoll);
 
         // Speed up or slow down the plane
-        _forwardSpeed += (_forwardSpeed < _maxForwardSpeed ? _accelerating : -_decelerating) * Time.deltaTime;
-        _maxHorizontalSpeed += (_maxHorizontalSpeed < _maxHorizSpeed ? _accelerating : -_decelerating) * Time.deltaTime;
-        _maxVerticalSpeed += (_maxVerticalSpeed < _maxVertSpeed ? _accelerating : -_decelerating) * Time.deltaTime;
+        forwardSpeed += (forwardSpeed < maxForwardSpeed ? acceleration : -deacceleration) * Time.deltaTime;
+        horizontalSpeed += (horizontalSpeed < maxHorizontalSpeed ? acceleration : -deacceleration) * Time.deltaTime;
+        verticalSpeed += (verticalSpeed < maxVerticalSpeed ? acceleration : -deacceleration) * Time.deltaTime;
     }
 
     // Activates turbo boost, strength modifier currently unused
-    public void ActivateTurbo(float strength) {
+    public void ActivateTurbo(float strength)
+    {
         StartCoroutine(TurboBoost());
     }
 
     // Coroutine that updates the speed and sounds values when boosting
-    private IEnumerator TurboBoost() {
-        _isTurbo ++;
+    private IEnumerator TurboBoost()
+    {
+        _isTurbo++;
         currentEngineSoundPitch = turboSoundPitch;
-        _maxForwardSpeed += _turboSpeed * 2;
-        _maxHorizSpeed += _turboSpeed;
-        _maxVertSpeed += _turboSpeed;
+        forwardSpeed += _turboSpeed * 2;
+        maxHorizontalSpeed += _turboSpeed;
+        maxVerticalSpeed += _turboSpeed;
         yield return new WaitForSeconds(_turboTime);
-        _maxForwardSpeed -= _turboSpeed * 2;
-        _maxHorizSpeed -= _turboSpeed;
-        _maxVertSpeed -= _turboSpeed;
+        forwardSpeed -= _turboSpeed * 2;
+        maxHorizontalSpeed -= _turboSpeed;
+        maxVerticalSpeed -= _turboSpeed;
         currentEngineSoundPitch = defaultSoundPitch;
-        _isTurbo --;
+        _isTurbo--;
     }
 
     // Update speed values according to current roll and pitch
     // Then move plane forward via translation according to speed values
     private void MovePlane()
     {
-        float _horizSpeed = currRoll / maxRoll * _maxHorizontalSpeed;
-        float _vertSpeed = currPitch / maxPitch * _maxVerticalSpeed;
-
-        transform.Translate(new Vector3(-_horizSpeed, -_vertSpeed, _forwardSpeed) * Time.deltaTime);
+        float _horizSpeed = currRoll / maxRoll * maxHorizontalSpeed;
+        float _vertSpeed = currPitch / maxPitch * maxVerticalSpeed;
+        transform.Translate(new Vector3(-_horizSpeed, -_vertSpeed, forwardSpeed) * Time.deltaTime);
     }
 
     // Update engine sound depending on pitch and volume variables
-    private void AudioSystem(){
-        if (engineSoundSource != null) {
+    private void AudioSystem()
+    {
+        if (engineSoundSource != null)
+        {
             engineSoundSource.pitch = Mathf.Lerp(engineSoundSource.pitch, currentEngineSoundPitch, 10f * Time.deltaTime);
             engineSoundSource.volume = Mathf.Lerp(engineSoundSource.volume, maxEngineSound, 1f * Time.deltaTime);
         }

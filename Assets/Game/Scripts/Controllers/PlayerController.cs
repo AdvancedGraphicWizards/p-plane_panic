@@ -14,22 +14,18 @@ public class PlayerController : MonoBehaviour
     private Vector3 m_currentMovementVector = Vector3.zero;
     [SerializeField] private PlatformData _platformData;
     [SerializeField] private InputManager m_inputManager;
-
     [SerializeField] private GameObject _playerModel;
 
     [Space(5)]
 
-    //* Player Attributes
+    [Header("Player Attributes")]
     [Range(0f, 20f)]
     [SerializeField] private float m_walkingSpeed = 1.0f;
+    [SerializeField] private float m_maxJumpHeight = 1.0f;
 
     [Header("Gravity")]
     [SerializeField] private float m_gravity = -9.80f;
     [SerializeField] private float m_groundedGravity = -0.05f;
-    [SerializeField] private bool m_isGrounded = true;
-    [Header("Jump")]
-    [SerializeField] private float m_maxJumpHeight = 1.0f;
-    [SerializeField] private float m_maxJumpTime = 0.5f;
 
     [Header("Player Grounded")]
     [SerializeField] private float m_groundedOffset = 0.4f;
@@ -38,6 +34,7 @@ public class PlayerController : MonoBehaviour
     [Tooltip("What layers the character uses as ground")]
     [SerializeField] private LayerMask m_groundLayers;
 
+    private bool m_isGrounded = true;
     private bool m_isJumping = false;
     private float m_initialJumpVelocity;
 
@@ -62,14 +59,9 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        CheckIfGrounded(); // currently unused
+        //CheckIfGrounded(); // currently unused
         Move();
         UpdateWeight();
-    }
-
-    private void UpdateWeight()
-    {
-        m_weightComponent.UpdateWeights(new Vector2(relativePos.x / _platformData.BoundsX, relativePos.z / _platformData.BoundsY));
     }
 
     private void Move()
@@ -89,42 +81,44 @@ public class PlayerController : MonoBehaviour
         transform.position = m_offsetTransform.position + relativePos.x * m_offsetTransform.right + relativePos.z * m_offsetTransform.forward + m_offsetTransform.up * 0.5f;
     }
 
-
-    // CURRENTLY UNUSED
-    /*
-    private void HandleJump()
+    private void UpdateWeight()
     {
-        if (!m_isJumping && m_inputManager.Jump && m_isGrounded)
-        {
-            m_isJumping = true;
-            m_currentMovementVector.y = m_initialJumpVelocity;
-        }
-        else if (m_isJumping && !m_inputManager.Jump && m_isGrounded)
-        {
-            m_isJumping = false;
-        }
-    }
-    */
-
-    // CURRENTLY UNUSED
-    private void ApplyGravity()
-    {
-        if (m_isGrounded)
-            m_currentMovementVector.y = m_groundedGravity;
-        else
-            m_currentMovementVector.y += m_gravity * Time.deltaTime;
+        m_weightComponent.UpdateWeights(new Vector2(relativePos.x / _platformData.BoundsX, relativePos.z / _platformData.BoundsY));
     }
 
-    // CURRENTLY UNUSED
-    private void CheckIfGrounded()
-    {
-        /*
-        In this model the body lays on the [0,0,0]
-        The radious of the character controller is 0.5
-        The sphere radious is 0.5, and is elevated 0.4 units from the ground, meaning, 0.1 units are always in contact with the ground.
-        */
-        Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y + m_groundedOffset, transform.position.z);
-        Debug.DrawLine(transform.position, spherePosition, Color.yellow);
-        m_isGrounded = Physics.CheckSphere(spherePosition, m_groundedRadius, m_groundLayers, QueryTriggerInteraction.Ignore);
-    }
+    // // CURRENTLY UNUSED
+    // private void HandleJump()
+    // {
+    //     if (!m_isJumping && m_inputManager.Jump && m_isGrounded)
+    //     {
+    //         m_isJumping = true;
+    //         m_currentMovementVector.y = m_initialJumpVelocity;
+    //     }
+    //     else if (m_isJumping && !m_inputManager.Jump && m_isGrounded)
+    //     {
+    //         m_isJumping = false;
+    //     }
+    // }
+
+    // // CURRENTLY UNUSED
+    // private void ApplyGravity()
+    // {
+    //     if (m_isGrounded)
+    //         m_currentMovementVector.y = m_groundedGravity;
+    //     else
+    //         m_currentMovementVector.y += m_gravity * Time.deltaTime;
+    // }
+
+    // // CURRENTLY UNUSED
+    // private void CheckIfGrounded()
+    // {
+    //     /*
+    //     In this model the body lays on the [0,0,0]
+    //     The radious of the character controller is 0.5
+    //     The sphere radious is 0.5, and is elevated 0.4 units from the ground, meaning, 0.1 units are always in contact with the ground.
+    //     */
+    //     Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y + m_groundedOffset, transform.position.z);
+    //     Debug.DrawLine(transform.position, spherePosition, Color.yellow);
+    //     m_isGrounded = Physics.CheckSphere(spherePosition, m_groundedRadius, m_groundLayers, QueryTriggerInteraction.Ignore);
+    // }
 }

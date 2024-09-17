@@ -122,99 +122,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &29371670
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2535189707244896182, guid: 0cc61a1f3d1f8d747a6f4a793f02b58a,
-        type: 3}
-      propertyPath: GlobalObjectIdHash
-      value: 3288061636
-      objectReference: {fileID: 0}
-    - target: {fileID: 2535189707244896182, guid: 0cc61a1f3d1f8d747a6f4a793f02b58a,
-        type: 3}
-      propertyPath: AutoObjectParentSync
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2535189707244896182, guid: 0cc61a1f3d1f8d747a6f4a793f02b58a,
-        type: 3}
-      propertyPath: SceneMigrationSynchronization
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2535189707244896182, guid: 0cc61a1f3d1f8d747a6f4a793f02b58a,
-        type: 3}
-      propertyPath: InScenePlacedSourceGlobalObjectIdHash
-      value: 2673428530
-      objectReference: {fileID: 0}
-    - target: {fileID: 6562607305702005474, guid: 0cc61a1f3d1f8d747a6f4a793f02b58a,
-        type: 3}
-      propertyPath: m_Name
-      value: PhoneClient
-      objectReference: {fileID: 0}
-    - target: {fileID: 6562607305702005474, guid: 0cc61a1f3d1f8d747a6f4a793f02b58a,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7135178864581855324, guid: 0cc61a1f3d1f8d747a6f4a793f02b58a,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7135178864581855324, guid: 0cc61a1f3d1f8d747a6f4a793f02b58a,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7135178864581855324, guid: 0cc61a1f3d1f8d747a6f4a793f02b58a,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7135178864581855324, guid: 0cc61a1f3d1f8d747a6f4a793f02b58a,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7135178864581855324, guid: 0cc61a1f3d1f8d747a6f4a793f02b58a,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7135178864581855324, guid: 0cc61a1f3d1f8d747a6f4a793f02b58a,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7135178864581855324, guid: 0cc61a1f3d1f8d747a6f4a793f02b58a,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7135178864581855324, guid: 0cc61a1f3d1f8d747a6f4a793f02b58a,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7135178864581855324, guid: 0cc61a1f3d1f8d747a6f4a793f02b58a,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7135178864581855324, guid: 0cc61a1f3d1f8d747a6f4a793f02b58a,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 0cc61a1f3d1f8d747a6f4a793f02b58a, type: 3}
 --- !u!1 &277376069
 GameObject:
   m_ObjectHideFlags: 0
@@ -307,9 +214,6 @@ MonoBehaviour:
   - {r: 0.9659159, g: 1, b: 0, a: 0}
   - {r: 1, g: 1, b: 1, a: 0}
   _maxPlayerCount: 20
-  _playerCount: 4
-  _currentPlayerColorIndex: 0
-  _playerCharacters: []
 --- !u!4 &1171995483
 Transform:
   m_ObjectHideFlags: 0
@@ -431,5 +335,4 @@ SceneRoots:
   m_Roots:
   - {fileID: 277376070}
   - {fileID: 4151681535047125048}
-  - {fileID: 29371670}
   - {fileID: 1171995483}

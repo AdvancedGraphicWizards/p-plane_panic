@@ -43,6 +43,9 @@ public class RingSpawnScript : MonoBehaviour
             _hoopArray[i] = Instantiate(_hoopPrefab, new Vector3(_randomSeed[i]*_ringOffsetRange, _randomSeed[i+1]*(_ringOffsetRange/2f) + _baseHeight, _zValue), Quaternion.identity);
             _superHoopArray[i] = Instantiate(_superHoopPrefab, new Vector3(_randomSeed[100-i]*_ringOffsetRange*2, _randomSeed[100-i+1]*_ringOffsetRange*2 + _baseHeight*2, _zValue*3 - 20), Quaternion.identity);
             
+            _hoopArray[i].transform.SetParent(transform);
+            _superHoopArray[i].transform.SetParent(transform);
+
             _ringOffsetRange += _increaseOffsetFactor;
             _zValue += _distanceBetweenRings;
             _distanceBetweenRings += _increaseDistanceFactor;

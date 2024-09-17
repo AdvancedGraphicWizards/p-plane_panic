@@ -15,15 +15,10 @@ public class PlayerSpawnScript : MonoBehaviour
     [SerializeField] private Color[] _playerColors;
     [SerializeField] private int _maxPlayerCount;
 
-    [SerializeField] private int _playerCount = 4;
-    [SerializeField] private int _currentPlayerColorIndex = 0;
-
-    [SerializeField] private List<GameObject> _playerCharacters;
-
+    private List<GameObject> _playerCharacters = new List<GameObject>();
 
     private void Awake()
     {
-        _playerCharacters = new List<GameObject>();
         ServerManager.OnPlayerSpawn += playerData => SpawnPlayer(playerData);
         ServerManager.OnPlayerDisconnect += playerData => DespawnPlayer(playerData.playerObject);
     }

@@ -8,10 +8,8 @@ public class InputManager : MonoBehaviour
     [Header("Locally Scoped Members")]
     [SerializeField] private PhoneController m_phoneController;
 
-    [Header("Movement Variables")]
-    [Tooltip("Maximum movement speed of the player character.")]
-    [SerializeField] private float moveSpeed = 0.03f;
-    [Tooltip("Low pass factor, lower values make movement more responsive but add jitter from the gyroscope.")]
+    [Header("Input Filter Variables")]
+    [Tooltip("Low pass factor, higher values make movement more responsive but add jitter from the gyroscope.")]
     [SerializeField] private float lowPassFactor = 0.1f;
     public Vector2 Direction = Vector2.zero;
 

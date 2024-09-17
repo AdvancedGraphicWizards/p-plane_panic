@@ -15,7 +15,6 @@ public struct PlayerData
 
 public class ServerManager : Singleton<ServerManager>
 {
-
     [Header("Server Settings")]
     public GameObject playerPrefab;     // The player prefab to spawn in the scene
     public int maxPlayers = 9;          // The maximum number of players in the server
@@ -87,6 +86,10 @@ public class ServerManager : Singleton<ServerManager>
             networkObject = NetworkManager.Singleton.ConnectedClients[clientID].PlayerObject.gameObject,
             playerColor = Color.black
         });
+
+        // Make player-network object persistent between scenes
+        m_players[clientID].playerObject.transform.parent = m_players[clientID].networkObject.transform;
+        DontDestroyOnLoad(m_players[clientID].networkObject);
 
         // Assign the player data to the player object
         if (m_players[clientID].playerObject.TryGetComponent<InputManager>(out InputManager playerInput))
