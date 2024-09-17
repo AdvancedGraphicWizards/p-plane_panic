@@ -1290,22 +1290,35 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 885353517}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ad121993a91f5914281077fc8a9f2601, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameSettings: {fileID: 0}
+  _gameSettings: {fileID: 11400000, guid: 661b5843715494964a1d8e53593b94d4, type: 2}
+  gameStateSO: {fileID: 11400000, guid: 85360dc2073a049ff8bf7a5f7c97d427, type: 2}
   _weightManager: {fileID: 885353518}
+  _planeCameraController: {fileID: 0}
   _forwardSpeed: 0
+  _accelerating: 1
+  _decelerating: 1
   _rollRotationSpeed: 10
   _pitchRotationSpeed: 10
   _maxHorizontalSpeed: 5
   _maxVerticalSpeed: 5
   _maxRollAngle: 30
   _maxPitchAngle: 40
+  _turboTime: 4
+  _turboSpeed: 2
   _weightDampingSpeed: 5
   _weightDampingThreshold: 0.1
+  engineSoundSource: {fileID: 0}
+  maxEngineSound: 1
+  defaultSoundPitch: 1
+  turboSoundPitch: 1.5
+  _maxForwardSpeed: 0
+  _maxHorizSpeed: 0
+  _maxVertSpeed: 0
   _horizSpeed: 0
   _vertSpeed: 0
   _rollChange: 0
@@ -1316,6 +1329,8 @@ MonoBehaviour:
   _nextRollAngle: 0
   _totalRollWeight: 0
   _totalPitchWeight: 0
+  _isTurbo: 0
+  currentEngineSoundPitch: 0
 --- !u!4 &885353520
 Transform:
   m_ObjectHideFlags: 0
