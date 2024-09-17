@@ -40,14 +40,15 @@ public static class RelayManager {
     // Join a relay server using a join code.
     public static async void JoinRelay(string joinCode) {
 
+        // If the network manager is already running, shut it down before joining a new relay.
+        NetworkManager.Singleton.Shutdown();
+
         // Initialize all Unity Services subscribed to Core, and sign in anonymously to use Relay.
         await UnityServices.InitializeAsync();
         if (!AuthenticationService.Instance.IsSignedIn)
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
 
         try {
-            // If the network manager is already running, shut it down before joining a new relay.
-            NetworkManager.Singleton.Shutdown();
 
             // Get the allocation from the join code and set the relay server data for the network manager.
             JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinCode);

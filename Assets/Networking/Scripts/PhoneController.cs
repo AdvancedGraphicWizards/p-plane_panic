@@ -112,9 +112,4 @@ public class PhoneController : NetworkBehaviour
     {
         playerName.Value = m_playerName = name;
     }
-
-    void OnDestroy()
-    {
-        NetworkManager.Singleton.Shutdown();
-    }
 }
