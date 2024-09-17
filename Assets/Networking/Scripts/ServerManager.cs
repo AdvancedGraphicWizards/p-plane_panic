@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public struct PlayerData
 {
@@ -35,10 +36,13 @@ public class ServerManager : Singleton<ServerManager>
 
     // Setup
     private async void Start()
-    {
+    {   
         // VERY TEMPORARY, REPLACE LATER
         if (!m_gameStateSO) throw new NullReferenceException("Missing GameState, HelloWorld purposes");
         if (!m_connectedPlayersSO) throw new NullReferenceException("Missing connected players, HelloWorld purposes?");
+
+        // Make sure the server manager persists between scenes.
+        DontDestroyOnLoad(this.gameObject);
 
         // Create a new relay allocation with a maximum number of participants.
         m_joinCode = await RelayManager.CreateRelay(maxPlayers);
@@ -50,6 +54,15 @@ public class ServerManager : Singleton<ServerManager>
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnect;
         NetworkManager.Singleton.OnServerStarted += OnServerStarted;
         NetworkManager.Singleton.OnServerStopped += OnServerStopped;
+
+        // Switch to next scene.
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+    // Get the game code
+    public string GetGameCode()
+    {
+        return m_joinCode;
     }
 
     // Called when a client connects to the server.
@@ -75,15 +88,15 @@ public class ServerManager : Singleton<ServerManager>
             playerColor = Color.black
         });
 
-        m_connectedPlayersSO.Value = m_players.Count;
-
-        OnPlayerSpawn?.Invoke(m_players[clientID]);
-
         // Assign the player data to the player object
         if (m_players[clientID].playerObject.TryGetComponent<InputManager>(out InputManager playerInput))
         {
             playerInput.AssignPhoneController(NetworkManager.Singleton.ConnectedClients[clientID].PlayerObject.GetComponent<PhoneController>());
         }
+
+        // Update player count and invoke callback for player spawn
+        m_connectedPlayersSO.Value = m_players.Count;
+        OnPlayerSpawn?.Invoke(m_players[clientID]);
     }
 
     // Called when a client disconnects from the server.

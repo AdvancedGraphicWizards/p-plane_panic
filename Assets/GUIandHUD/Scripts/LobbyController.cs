@@ -15,7 +15,20 @@ public class LobbyController : MonoBehaviour
     {
         ServerManager.OnPlayerSpawn += playerData => AssignPlayer(playerData);
         ServerManager.OnPlayerDisconnect += playerData => UnassignPlayer(playerData);
-        ServerManager.OnGameCode += gameCode => DisplayGameCode(gameCode);
+        //ServerManager.OnGameCode += gameCode => DisplayGameCode(gameCode);
+    }
+
+    private void Start()
+    {
+        if (GameObject.Find("Server") == null)
+        {
+            Debug.LogError("Setup scene not loaded, no server manager found.");
+            return;
+        }
+        else
+        {
+            DisplayGameCode(GameObject.Find("Server").GetComponent<ServerManager>().GetGameCode());
+        }
     }
 
     private void AssignPlayer(PlayerData playerData)
@@ -61,8 +74,10 @@ public class LobbyController : MonoBehaviour
         m_gameCode.text = gameCode;
     }
 
-    private void UpdatePlayerCounter() {
-        if (!m_connectedPlayersSO) {
+    private void UpdatePlayerCounter()
+    {
+        if (!m_connectedPlayersSO)
+        {
             throw new NullReferenceException("Missing connected players, HelloWorld purposes?");
         }
 
