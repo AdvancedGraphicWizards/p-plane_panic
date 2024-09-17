@@ -59,7 +59,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        //CheckIfGrounded(); // currently unused
+        if (m_offsetTransform == null) return;
         Move();
         UpdateWeight();
     }

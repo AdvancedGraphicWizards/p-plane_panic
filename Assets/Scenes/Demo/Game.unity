@@ -2571,8 +2571,8 @@ MonoBehaviour:
   - {fileID: 2117880962}
   m_playerCounter: {fileID: 953982768}
   m_gameCode: {fileID: 1209604251}
-  m_connectedPlayersSO: {fileID: 11400000, guid: ae9d5a0c5b7af3444b19b63b9102829e,
-    type: 2}
+  m_playersSO: {fileID: 11400000, guid: d1166f5170eda6047a2793dbb7379591, type: 2}
+  m_gameStateSO: {fileID: 11400000, guid: 85360dc2073a049ff8bf7a5f7c97d427, type: 2}
 --- !u!1001 &953982766
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3830,18 +3830,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34b8b62495636d842965f7923c9b56fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerPrefab: {fileID: 6830070950919627530, guid: b8406928d9efc4160a9d2edc2570689b,
-    type: 3}
-  _targetParent: {fileID: 3368519073940884682}
   _playerColors:
   - {r: 0.7584905, g: 0, b: 0, a: 1}
   - {r: 0, g: 0.113204, b: 1, a: 1}
   - {r: 1, g: 0, b: 0.8447895, a: 1}
   - {r: 1, g: 0.51216507, b: 0, a: 1}
-  _maxPlayerCount: 20
-  _playerCount: 4
-  _currentPlayerColorIndex: 0
-  _playerCharacters: []
+  m_playersSO: {fileID: 0}
 --- !u!4 &1365206190
 Transform:
   m_ObjectHideFlags: 0
@@ -5323,6 +5317,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weightedObjects: []
   _numWeightedObjects: 0
+  m_playersSO: {fileID: 11400000, guid: d1166f5170eda6047a2793dbb7379591, type: 2}
 --- !u!23 &1379568560064630149
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -6118,19 +6113,17 @@ MonoBehaviour:
   gameStateSO: {fileID: 11400000, guid: 85360dc2073a049ff8bf7a5f7c97d427, type: 2}
   _weightManager: {fileID: 1358000264728225284}
   _planeCameraController: {fileID: 8959675291590359426}
-  _forwardSpeed: 120
-  _maxHorizontalSpeed: 5
-  _maxVerticalSpeed: 5
-  _accelerating: 1
-  _decelerating: 1
+  maxForwardSpeed: 20
+  maxHorizontalSpeed: 10
+  maxVerticalSpeed: 5
+  acceleration: 1
+  deacceleration: 1
   rollSpeed: 1
-  pitchSpeed: 1
   maxRoll: 40
+  pitchSpeed: 1
   maxPitch: 30
   _turboTime: 2
   _turboSpeed: 10
-  _weightDampingSpeed: 5
-  _weightDampingThreshold: 0.1
   engineSoundSource: {fileID: 8120440645441756921}
   maxEngineSound: 0.05
   defaultSoundPitch: 0.5

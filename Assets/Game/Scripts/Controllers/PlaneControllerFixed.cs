@@ -60,7 +60,8 @@ public class PlaneControllerFixed : MonoBehaviour
         currentEngineSoundPitch = defaultSoundPitch;
 
         // Add the turbo callback on ring enter
-        HoopScript.OnRingEnter += amt => ActivateTurbo(amt);
+        Debug.Log("PlaneControllerFixed created");
+        HoopScript.OnRingEnter += ActivateTurbo;
 
         //TODO include the exception, once we agree on using the SO
         //throw new NullReferenceException("GameSettings reference is missing, this context needs it to define the speed of the plane");
@@ -68,7 +69,6 @@ public class PlaneControllerFixed : MonoBehaviour
             throw new NullReferenceException("Missing GameState, HelloWorld purposes");
 
         gameStateSO.HasStarted = false; //TODO This should be done by a hight entity, a singleton probably that handles the GamePlay.
-
     }
 
     private void FixedUpdate()
@@ -134,5 +134,11 @@ public class PlaneControllerFixed : MonoBehaviour
             engineSoundSource.pitch = Mathf.Lerp(engineSoundSource.pitch, currentEngineSoundPitch, 10f * Time.deltaTime);
             engineSoundSource.volume = Mathf.Lerp(engineSoundSource.volume, maxEngineSound, 1f * Time.deltaTime);
         }
+    }
+
+    void OnDestroy()
+    {
+        Debug.Log("PlaneControllerFixed destroyed");
+        HoopScript.OnRingEnter -= ActivateTurbo;
     }
 }

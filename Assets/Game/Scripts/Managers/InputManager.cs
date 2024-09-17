@@ -32,8 +32,8 @@ public class InputManager : MonoBehaviour
         float tiltZ = (euler.z > 180) ? euler.z - 360 : euler.z; // Tilt left/right
 
         // Normalize the tilts to the range -1 to 1 for movement
-        tiltX = Mathf.Clamp(tiltX, -45, 45) / 45;
-        tiltZ = Mathf.Clamp(tiltZ, -45, 45) / 45;
+        tiltX = Mathf.Clamp(tiltX, -45, 45) / 45f;
+        tiltZ = Mathf.Clamp(tiltZ, -45, 45) / 45f;
 
         Vector2 movement = new Vector2(tiltZ, -tiltX);
         return movement;

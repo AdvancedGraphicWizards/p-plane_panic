@@ -65,6 +65,7 @@ public class PlayerThumbnailController : MonoBehaviour
         if (m_phoneController != null)
         {
             m_playerData.playerName = m_phoneController.GetName();
+            m_playerData.playerObject.GetComponentInChildren<TMP_Text>().text = m_playerData.playerName;
             m_playerName.text = m_playerData.playerName;
             m_playerName.enabled = true;
         }

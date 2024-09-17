@@ -169,6 +169,7 @@ MonoBehaviour:
   playerPrefab: {fileID: 6830070950919627530, guid: b8406928d9efc4160a9d2edc2570689b,
     type: 3}
   maxPlayers: 9
+  m_playersSO: {fileID: 11400000, guid: d1166f5170eda6047a2793dbb7379591, type: 2}
   m_gameStateSO: {fileID: 11400000, guid: 85360dc2073a049ff8bf7a5f7c97d427, type: 2}
   m_connectedPlayersSO: {fileID: 11400000, guid: ae9d5a0c5b7af3444b19b63b9102829e,
     type: 2}
@@ -201,9 +202,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34b8b62495636d842965f7923c9b56fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerPrefab: {fileID: 6830070950919627530, guid: b8406928d9efc4160a9d2edc2570689b,
-    type: 3}
-  _targetParent: {fileID: 0}
   _playerColors:
   - {r: 1, g: 0, b: 0, a: 0}
   - {r: 1, g: 0.47529262, b: 0, a: 0}
@@ -213,7 +211,7 @@ MonoBehaviour:
   - {r: 0, g: 1, b: 0.0816164, a: 0}
   - {r: 0.9659159, g: 1, b: 0, a: 0}
   - {r: 1, g: 1, b: 1, a: 0}
-  _maxPlayerCount: 20
+  m_playersSO: {fileID: 11400000, guid: d1166f5170eda6047a2793dbb7379591, type: 2}
 --- !u!4 &1171995483
 Transform:
   m_ObjectHideFlags: 0
@@ -319,8 +317,8 @@ MonoBehaviour:
   m_MaxPayloadSize: 6144
   m_HeartbeatTimeoutMS: 500
   m_ConnectTimeoutMS: 1000
-  m_MaxConnectAttempts: 60
-  m_DisconnectTimeoutMS: 30000
+  m_MaxConnectAttempts: 5
+  m_DisconnectTimeoutMS: 5000
   ConnectionData:
     Address: 127.0.0.1
     Port: 7777

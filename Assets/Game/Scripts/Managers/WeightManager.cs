@@ -8,12 +8,20 @@ public class WeightManager : MonoBehaviour
     [Header("Read-Only")]
     [SerializeField] private List<WeightComponent> _weightedObjects;
     [SerializeField] private int _numWeightedObjects;
+    [SerializeField] private Players m_playersSO;
 
     public float TotalRollWeight { get; private set; }
     public float TotalPitchWeight { get; private set; }
 
     private void Awake()
-    {
+    {   
+        // Listen for existing players
+        foreach (PlayerData playerData in m_playersSO.players.Values)
+        {
+            TrackWeightObject(playerData.playerObject);
+        }
+
+        // Listen for player spawn and disconnect events
         ServerManager.OnPlayerSpawn += playerData => TrackWeightObject(playerData.playerObject);
         ServerManager.OnPlayerDisconnect += playerData => RemoveWeightObject(playerData.playerObject);
 

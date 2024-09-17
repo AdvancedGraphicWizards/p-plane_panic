@@ -46,6 +46,9 @@ public static class RelayManager {
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
 
         try {
+            // If the network manager is already running, shut it down before joining a new relay.
+            NetworkManager.Singleton.Shutdown();
+
             // Get the allocation from the join code and set the relay server data for the network manager.
             JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinCode);
             RelayServerData relayServerData = new RelayServerData(joinAllocation, "wss");

@@ -34,11 +34,6 @@ public class PhoneController : NetworkBehaviour
         writePerm: NetworkVariableWritePermission.Server
     );
 
-    public void Awake()
-    {
-        playerName.Value = m_playerName;
-    }
-
     // Called when the object is spawned on the network
     public override void OnNetworkSpawn()
     {
@@ -116,5 +111,10 @@ public class PhoneController : NetworkBehaviour
     public void SetName(string name)
     {
         playerName.Value = m_playerName = name;
+    }
+
+    void OnDestroy()
+    {
+        NetworkManager.Singleton.Shutdown();
     }
 }
