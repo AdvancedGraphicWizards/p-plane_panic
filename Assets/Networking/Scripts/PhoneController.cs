@@ -42,7 +42,10 @@ public class PhoneController : NetworkBehaviour
 
         if (!IsOwner)
         {
-            // Do nothing
+            playerName.OnValueChanged += (prevValue, newValue) =>
+            {
+                ServerManager.Instance.UpdateNames();
+            };
         }
 
         if (IsOwner)

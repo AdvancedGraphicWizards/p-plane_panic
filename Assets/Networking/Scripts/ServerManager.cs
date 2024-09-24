@@ -3,6 +3,7 @@ using Unity.Netcode;
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 public struct PlayerData
 {
@@ -27,6 +28,7 @@ public class ServerManager : Singleton<ServerManager>
     public static event Action<PlayerData> OnPlayerSpawn;
     public static event Action<PlayerData> OnPlayerDisconnect;
     public static event Action<string> OnGameCode;
+    public static event Action<string> OnPlayerName;
 
     [Header("Game State Scriptable Objects")]
     [Tooltip("Holds the state of runtime variables.")]
@@ -38,7 +40,7 @@ public class ServerManager : Singleton<ServerManager>
 
     // Setup
     private async void Start()
-    {   
+    {
         // VERY TEMPORARY, REPLACE LATER
         if (!m_gameStateSO) throw new NullReferenceException("Missing GameState, HelloWorld purposes");
         if (!m_connectedPlayersSO) throw new NullReferenceException("Missing connected players scriptable object.");
@@ -102,6 +104,11 @@ public class ServerManager : Singleton<ServerManager>
         {
             playerInput.AssignPhoneController(phoneController);
         }
+        if (m_playersSO.players[clientID].playerObject.TryGetComponent<PlayerNameComponent>(out PlayerNameComponent playerName))
+        {
+            playerName.AssignPlayerData(m_playersSO.players[clientID]);
+            playerName.AssignPhoneController(phoneController);
+        }
 
         // Update player count and invoke callback for player spawn
         m_connectedPlayersSO.Value = m_playersSO.players.Count;
@@ -143,5 +150,11 @@ public class ServerManager : Singleton<ServerManager>
         {
             OnPlayerDisconnect?.Invoke(m_playersSO.players[clientID]);
         }
+    }
+
+    // Called when a name is updated
+    public void UpdateNames()
+    {
+        OnPlayerName?.Invoke("Player");
     }
 }
