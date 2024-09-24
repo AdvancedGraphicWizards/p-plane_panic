@@ -6,10 +6,12 @@ public class LobbyController : MonoBehaviour
 {
     [Header("Internal Members")]
     //[SerializeField] private RenderTexture m_playerRenderTexture;
-    [SerializeField] private GameObject[] m_playerThumbnails;
+    //[SerializeField] private GameObject[] m_playerThumbnails;
     [SerializeField] private TMP_Text m_playerCounter;
     [SerializeField] private TMP_Text m_gameCode;
     [SerializeField] private Players m_playersSO;
+    [Tooltip("Holds the amount of connected players. We hold it like this because we call the disconnect event before we actually remove the player.")]
+    [SerializeField] private IntVariable m_connectedPlayersSO;
     [SerializeField] private GameState m_gameStateSO;
 
     private void Awake()
@@ -36,11 +38,15 @@ public class LobbyController : MonoBehaviour
         {
             DisplayGameCode(GameObject.Find("Server").GetComponent<ServerManager>().GetGameCode());
         }
+
+        if (!m_connectedPlayersSO) throw new NullReferenceException("Missing connected players scriptable object.");
+
         m_gameStateSO.HasStarted = false;
     }
 
     private void AssignPlayer(PlayerData playerData)
     {
+        /*
         for (int i = 0; i < m_playerThumbnails.Length; i++)
         {
             if (m_playerThumbnails[i].TryGetComponent<PlayerThumbnailController>(out PlayerThumbnailController thumbnailController))
@@ -53,13 +59,14 @@ public class LobbyController : MonoBehaviour
                 }
             }
         }
+        */
 
-        // If we get here something is wrong
-        Debug.LogError("Lobby not full but couldn't assign player.");
+        UpdatePlayerCounter();
     }
 
     private void UnassignPlayer(PlayerData playerData)
     {
+        /*
         for (int i = 0; i < m_playerThumbnails.Length; i++)
         {
             if (m_playerThumbnails[i].TryGetComponent<PlayerThumbnailController>(out PlayerThumbnailController thumbnailController))
@@ -67,14 +74,13 @@ public class LobbyController : MonoBehaviour
                 if (thumbnailController.CheckClientID(playerData.clientID))
                 {
                     thumbnailController.UnassignPlayer();
-                    UpdatePlayerCounter();
                     return;
                 }
             }
         }
-
-        // If we get here something is wrong
-        Debug.LogError("Couldn't find player to unassign.");
+        */
+        
+        UpdatePlayerCounter();
     }
 
     private void DisplayGameCode(string gameCode)
@@ -84,7 +90,7 @@ public class LobbyController : MonoBehaviour
 
     private void UpdatePlayerCounter()
     {
-        m_playerCounter.text = "Players: " + m_playersSO.players.Count + "/9";
+        m_playerCounter.text = m_connectedPlayersSO.Value + "/9";
     }
 
     private void OnDestroy()

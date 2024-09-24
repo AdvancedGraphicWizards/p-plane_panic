@@ -3,6 +3,7 @@ using Unity.Netcode;
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Events;
 
 public struct PlayerData
 {
@@ -27,18 +28,23 @@ public class ServerManager : Singleton<ServerManager>
     public static event Action<PlayerData> OnPlayerSpawn;
     public static event Action<PlayerData> OnPlayerDisconnect;
     public static event Action<string> OnGameCode;
+    public static event Action<string> OnPlayerName;
 
-    // Temporary, just to make sure we have game state info
-    [Tooltip("Holds the state of runtime variables")]
+    [Header("Game State Scriptable Objects")]
+    [Tooltip("Holds the state of runtime variables.")]
     [SerializeField] private GameState m_gameStateSO;
+    [Tooltip("Holds the amount of connected players.")]
     [SerializeField] private IntVariable m_connectedPlayersSO;
+    [Tooltip("Holds the Color Manager Scriptable Object.")]
+    [SerializeField] private ColorManager m_colorManager;
 
     // Setup
     private async void Start()
-    {   
+    {
         // VERY TEMPORARY, REPLACE LATER
         if (!m_gameStateSO) throw new NullReferenceException("Missing GameState, HelloWorld purposes");
-        if (!m_connectedPlayersSO) throw new NullReferenceException("Missing connected players, HelloWorld purposes?");
+        if (!m_connectedPlayersSO) throw new NullReferenceException("Missing connected players scriptable object.");
+        if (!m_colorManager) throw new NullReferenceException("Missing color manager scriptable object.");
 
         // Make sure the server manager persists between scenes.
         DontDestroyOnLoad(this.gameObject);
@@ -84,17 +90,24 @@ public class ServerManager : Singleton<ServerManager>
             playerName = "Player " + clientID,
             playerObject = Instantiate(playerPrefab),
             networkObject = NetworkManager.Singleton.ConnectedClients[clientID].PlayerObject.gameObject,
-            playerColor = Color.black
+            playerColor = m_colorManager.GetColor()
         });
 
         // Make player-network object persistent between scenes
         m_playersSO.players[clientID].playerObject.transform.parent = m_playersSO.players[clientID].networkObject.transform;
         DontDestroyOnLoad(m_playersSO.players[clientID].networkObject);
+        PhoneController phoneController = NetworkManager.Singleton.ConnectedClients[clientID].PlayerObject.GetComponent<PhoneController>();
+        phoneController.SetColor(m_playersSO.players[clientID].playerColor);
 
         // Assign the player data to the player object
         if (m_playersSO.players[clientID].playerObject.TryGetComponent<InputManager>(out InputManager playerInput))
         {
-            playerInput.AssignPhoneController(NetworkManager.Singleton.ConnectedClients[clientID].PlayerObject.GetComponent<PhoneController>());
+            playerInput.AssignPhoneController(phoneController);
+        }
+        if (m_playersSO.players[clientID].playerObject.TryGetComponent<PlayerNameComponent>(out PlayerNameComponent playerName))
+        {
+            playerName.AssignPlayerData(m_playersSO.players[clientID]);
+            playerName.AssignPhoneController(phoneController);
         }
 
         // Update player count and invoke callback for player spawn
@@ -137,5 +150,11 @@ public class ServerManager : Singleton<ServerManager>
         {
             OnPlayerDisconnect?.Invoke(m_playersSO.players[clientID]);
         }
+    }
+
+    // Called when a name is updated
+    public void UpdateNames()
+    {
+        OnPlayerName?.Invoke("Player");
     }
 }

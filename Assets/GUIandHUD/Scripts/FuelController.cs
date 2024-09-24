@@ -44,7 +44,7 @@ public class FuelController : MonoBehaviour
 
     private void Update()
     {
-        if(!gameStateSO.HasStarted) return; //TODO quick fix for the HelloWorld
+        if (!gameStateSO.HasStarted) return; //TODO quick fix for the HelloWorld
 
         ConsumeFuel();
         UpdateColor();
@@ -54,7 +54,14 @@ public class FuelController : MonoBehaviour
     {
 
         if (m_fuel <= 0)
-            TriggerLoseEvent();
+        {
+            gameStateSO.OutOfFuel = true;
+            //TriggerLoseEvent();
+        }
+        else
+        {
+            gameStateSO.OutOfFuel = false;
+        }
 
         m_fuel -= m_consumptionRate * Time.deltaTime;
         m_slider.normalizedValue = m_fuel / m_startingFuel;
@@ -72,34 +79,15 @@ public class FuelController : MonoBehaviour
 
     }
 
-    public void UpdateFuel(float amt) {
+    public void UpdateFuel(float amt)
+    {
         m_fuel += amt;
         m_fuel = Math.Min(m_fuel, m_startingFuel);
     }
 
-    //TODO implement the triggering of the Lossing event
-    public VoidEvent Event;
-    public UnityEvent Response;
-
     void OnEnable()
     {
-        Event.Subscribe(CallResponse);
         HoopScript.OnRingEnter += fuel_amt => UpdateFuel(fuel_amt);
         FireComponent.FireDamageEvent += fuel_amt => UpdateFuel(fuel_amt);
-    }
-
-    void OnDisable()
-    {
-        Event.Unsubscribe(CallResponse);
-    }
-
-    private void CallResponse()
-    {
-        Response.Invoke();
-    }
-    public void TriggerLoseEvent()
-    {
-        CallResponse();
-        return;
     }
 }

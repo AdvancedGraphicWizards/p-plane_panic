@@ -16,18 +16,20 @@ public class PlaneControllerFixed : MonoBehaviour
     [SerializeField] private PlaneCameraController _planeCameraController;
 
     [Header("Plane Attributes")]
+    [Tooltip("Controls if the plane moves forward in the lobby.")]
+    [SerializeField] private bool planeMovesInLobby = false;
     [Tooltip("The Forward Speed is controll on a higher level via GameSettings scriptable object")]
     [SerializeField] private float maxForwardSpeed = 20f;
     [SerializeField] private float maxHorizontalSpeed = 10f;
     [SerializeField] private float maxVerticalSpeed = 10f;
     [SerializeField] private float acceleration = 1f;
     [SerializeField] private float deacceleration = 1f;
-    
+
     [Header("Plane tilt Settings")]
     [SerializeField] private float rollSpeed = 1f;
-    [Range(0f, 90f)] [SerializeField] private float maxRoll = 40f;
+    [Range(0f, 90f)][SerializeField] private float maxRoll = 40f;
     [SerializeField] private float pitchSpeed = 1f;
-    [Range(0f, 90f)] [SerializeField] private float maxPitch = 30f;
+    [Range(0f, 90f)][SerializeField] private float maxPitch = 30f;
 
     [Header("Turbo Settings")]
     [SerializeField] private float _turboTime = 4f;
@@ -73,18 +75,35 @@ public class PlaneControllerFixed : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!gameStateSO.HasStarted) return;
-        AudioSystem();
-        RotatePlane();
-        MovePlane();
+        if (!gameStateSO.OutOfFuel) AudioSystem();
+        if (!gameStateSO.HasStarted && planeMovesInLobby)
+        {
+            currPitch = 0f;
+            currRoll = 0f;
+            MovePlane();
+        }
+        else if (gameStateSO.HasStarted)
+        {
+            RotatePlane();
+            MovePlane();
+        }
     }
 
     // Rotate the plane transform about the z and x axes according to weight values
     private void RotatePlane()
     {
-        // Calculate the new roll and pitch values
-        currRoll = Mathf.Lerp(currRoll, -_weightManager.TotalRollWeight * maxRoll, rollSpeed * Time.deltaTime);
-        currPitch = Mathf.Lerp(currPitch, _weightManager.TotalPitchWeight * maxPitch, pitchSpeed * Time.deltaTime);
+        if (gameStateSO.OutOfFuel)
+        {
+            // If we are out of fuel then we lose pitch control
+            currRoll = Mathf.Lerp(currRoll, -_weightManager.TotalRollWeight * maxRoll, rollSpeed * Time.deltaTime);
+            currPitch = Mathf.Lerp(currPitch, maxPitch, pitchSpeed * Time.deltaTime);
+        }
+        else
+        {
+            // Calculate the new roll and pitch values
+            currRoll = Mathf.Lerp(currRoll, -_weightManager.TotalRollWeight * maxRoll, rollSpeed * Time.deltaTime);
+            currPitch = Mathf.Lerp(currPitch, _weightManager.TotalPitchWeight * maxPitch, pitchSpeed * Time.deltaTime);
+        }
 
         // Rotate the plane
         transform.localRotation = Quaternion.Euler(currPitch, 0, currRoll);

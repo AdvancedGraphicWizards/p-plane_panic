@@ -5,10 +5,11 @@ public class DistanceCounterController : MonoBehaviour
 {
     [Header("Scriptable Object References")]
     [SerializeField] private GameSettings _gameSettings;
+    [SerializeField] private GameState gameStateSO;
     [Tooltip("Scriptable Object of type UIntVariable, named FlightDistance")]
     [SerializeField] private UIntVariable m_flightDistance; // so_ stands for Scriptable Object
     [SerializeField] private TMP_Text m_distanceCounter;
-    
+
     [Tooltip("The speed m/s of the plane, this probably should be an Scriptable Object that hold all the player gameplay settings")]
     [SerializeField] private float m_flyingSpeed = 50.0f;
     private float m_distance = 0.0f;
@@ -23,6 +24,10 @@ public class DistanceCounterController : MonoBehaviour
         {
             throw new System.NullReferenceException("The Scriptable Object FlightDistance is missing, the DistanceCounterController needs is to keep track of the distance");
         }
+        if (!gameStateSO)
+        {
+            throw new System.NullReferenceException("Missing GameState, HelloWorld purposes");
+        }
 
         m_flyingSpeed = _gameSettings.PlaneBaseSpeed;
 
@@ -34,7 +39,7 @@ public class DistanceCounterController : MonoBehaviour
 
     private void CountDistance()
     {
-        m_distance += m_flyingSpeed * Time.deltaTime;
+        if (gameStateSO.HasStarted) m_distance += m_flyingSpeed * Time.deltaTime;
 
         m_flightDistance.Value = (uint)m_distance;
         m_distanceCounter.text = m_flightDistance.Value.ToString() + " m";

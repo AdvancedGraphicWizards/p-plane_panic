@@ -10,12 +10,9 @@ public class PlayerSpawnScript : MonoBehaviour
 {
 
     [Header("Player and Spawn Settings")]
-    [SerializeField] private GameObject _playerPrefab;
     [SerializeField] private Transform _targetParent;
-    [SerializeField] private Color[] _playerColors;
-    [SerializeField] private int _maxPlayerCount;
+    [SerializeField] private List<GameObject> _playerCharacters;
 
-    private List<GameObject> _playerCharacters = new List<GameObject>();
 
     private void Awake()
     {
@@ -57,14 +54,11 @@ public class PlayerSpawnScript : MonoBehaviour
         }
     }
 
-    // currently hardcoded (and not working)
     private void SetPlayerColor(PlayerData playerData)
     {
-        int colorIndex = (int)((playerData.clientID - 1) % (ulong)_playerColors.Length);
-        Debug.Log($"SetPlayerColor{_playerColors[colorIndex]}"); 
         if (playerData.playerObject.TryGetComponent<SetColorComponent>(out SetColorComponent colorComponent))
         {
-            colorComponent.SetColor(_playerColors[colorIndex]);
+            colorComponent.SetColor(playerData.playerColor);
         }
     }
 }

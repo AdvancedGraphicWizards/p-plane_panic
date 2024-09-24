@@ -11,6 +11,7 @@ class GameState : ScriptableObject
     //public uint Score;
     //public uint Fuel;
     public bool HasStarted = false;
+    public bool OutOfFuel = false;
 
     public void StartGame()
     {
@@ -21,5 +22,6 @@ class GameState : ScriptableObject
         - David
         */
         HasStarted = true;
+        OutOfFuel = false;
     }
 }
