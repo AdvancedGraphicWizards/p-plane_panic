@@ -9,13 +9,34 @@ public class LobbyController : MonoBehaviour
     [SerializeField] private GameObject[] m_playerThumbnails;
     [SerializeField] private TMP_Text m_playerCounter;
     [SerializeField] private TMP_Text m_gameCode;
-    [SerializeField] private IntVariable m_connectedPlayersSO;
+    [SerializeField] private Players m_playersSO;
+    [SerializeField] private GameState m_gameStateSO;
 
     private void Awake()
     {
-        ServerManager.OnPlayerSpawn += playerData => AssignPlayer(playerData);
-        ServerManager.OnPlayerDisconnect += playerData => UnassignPlayer(playerData);
-        ServerManager.OnGameCode += gameCode => DisplayGameCode(gameCode);
+        // Listen for existing players
+        foreach (PlayerData playerData in m_playersSO.players.Values)
+        {
+            AssignPlayer(playerData);
+        }
+
+        // Listen for player spawn and disconnect events
+        ServerManager.OnPlayerSpawn += AssignPlayer;
+        ServerManager.OnPlayerDisconnect += UnassignPlayer;
+    }
+
+    private void Start()
+    {
+        if (GameObject.Find("Server") == null)
+        {
+            Debug.LogError("Setup scene not loaded, no server manager found.");
+            return;
+        }
+        else
+        {
+            DisplayGameCode(GameObject.Find("Server").GetComponent<ServerManager>().GetGameCode());
+        }
+        m_gameStateSO.HasStarted = false;
     }
 
     private void AssignPlayer(PlayerData playerData)
@@ -61,11 +82,14 @@ public class LobbyController : MonoBehaviour
         m_gameCode.text = gameCode;
     }
 
-    private void UpdatePlayerCounter() {
-        if (!m_connectedPlayersSO) {
-            throw new NullReferenceException("Missing connected players, HelloWorld purposes?");
-        }
+    private void UpdatePlayerCounter()
+    {
+        m_playerCounter.text = "Players: " + m_playersSO.players.Count + "/9";
+    }
 
-        m_playerCounter.text = m_connectedPlayersSO.Value + " / 9";
+    private void OnDestroy()
+    {
+        ServerManager.OnPlayerSpawn -= AssignPlayer;
+        ServerManager.OnPlayerDisconnect -= UnassignPlayer;
     }
 }

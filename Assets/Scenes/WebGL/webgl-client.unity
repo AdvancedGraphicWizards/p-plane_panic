@@ -1575,6 +1575,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6908785122302260981, guid: 6a6a5165b34ec3e4d88622ccecfdbf48,
+        type: 3}
+      propertyPath: m_MaxConnectAttempts
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6908785122302260981, guid: 6a6a5165b34ec3e4d88622ccecfdbf48,
+        type: 3}
+      propertyPath: m_DisconnectTimeoutMS
+      value: 5000
+      objectReference: {fileID: 0}
     - target: {fileID: 8426608484092905784, guid: 6a6a5165b34ec3e4d88622ccecfdbf48,
         type: 3}
       propertyPath: m_Name
