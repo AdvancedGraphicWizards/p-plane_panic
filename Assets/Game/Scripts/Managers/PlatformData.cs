@@ -5,6 +5,6 @@ public class PlatformData : ScriptableObject
 {
     public string platformName;
 
-    public int BoundsX;
-    public int BoundsY;
+    public float BoundsX;
+    public float BoundsY;
 }

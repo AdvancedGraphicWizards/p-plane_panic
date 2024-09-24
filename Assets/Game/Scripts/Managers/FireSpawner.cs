@@ -12,8 +12,7 @@ public class FireSpawner : MonoBehaviour
     [SerializeField] private GameObject _firePrefab;
     [Tooltip("Parent that fires will be spawned under (defaults to attached gameObject)")]
     [SerializeField] private Transform _targetParent;
-    [Tooltip("BoxCollider that determines potential spawn locations (defaults to attached gameObject)")]
-    [SerializeField] private BoxCollider _fireSpawnZone;
+    [SerializeField] private Vector2 m_fireSpawnBounds;
 
 
     [Header("Fire Spawning Attributes")]
@@ -42,7 +41,6 @@ public class FireSpawner : MonoBehaviour
 
     private void Awake()
     {
-        if (_fireSpawnZone == null) _fireSpawnZone = GetComponent<BoxCollider>();
         if (_targetParent == null) _targetParent = gameObject.transform;
         _fireArray = new GameObject[_maxFires];
         _timeToFire = _timeToFirstFire;
@@ -67,9 +65,9 @@ public class FireSpawner : MonoBehaviour
     // Spawns a fire range in the specified BoxCollider
     private void SpawnFire() {
         _spawnLocation = new Vector3(
-            Random.Range(-_fireSpawnZone.size.x, _fireSpawnZone.size.x), 
+            Random.Range(-m_fireSpawnBounds.x, m_fireSpawnBounds.x), 
             0,
-            Random.Range(-_fireSpawnZone.size.z, _fireSpawnZone.size.z));
+            Random.Range(-m_fireSpawnBounds.y, m_fireSpawnBounds.y));
 
         _fireArray[_numActiveFires] = Instantiate(_firePrefab, Vector3.zero, _targetParent.rotation);
         _fireArray[_numActiveFires].transform.SetParent(_targetParent);

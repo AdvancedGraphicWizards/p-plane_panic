@@ -56,9 +56,9 @@ public class PlayerSpawnScript : MonoBehaviour
 
     private void SetPlayerColor(PlayerData playerData)
     {
-        if (playerData.playerObject.TryGetComponent<Renderer>(out Renderer renderer))
+        if (playerData.playerObject.TryGetComponent<SetColorComponent>(out SetColorComponent colorComponent))
         {
-            renderer.material.SetColor("_BaseColor", playerData.playerColor);
+            colorComponent.SetColor(playerData.playerColor);
         }
     }
 }

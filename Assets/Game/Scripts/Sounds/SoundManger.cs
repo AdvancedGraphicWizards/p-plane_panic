@@ -213,6 +213,29 @@ namespace Rellac.Audio
 			}
 		}
 
+		/// <summary>
+		/// Play a randomly chosen single audio clip one time from a specific clip group, with randomized pitch within given range
+		/// </summary>
+		/// <param name="clipGroup">clipGroup</param>
+		/// /// <param name="range">range 0-1 for pitch change 0.1 means 10% change</param>
+		public AudioSource PlayOneShotRandomPitch(string clipGroup, float range)
+		{
+			for (int i = 0; i < clipGroups.Length; i++)
+			{
+				if (clipGroups[i].id == clipGroup)
+				{
+					range = Mathf.Abs(range);
+					int idx = Random.Range(0, clipGroups[i].clips.Length);
+					AudioSource source = PlayOneShot(clipGroups[i].clips[idx]);
+					source.outputAudioMixerGroup = clipGroups[i].mixer;
+					source.pitch += source.pitch * Random.Range(-range,range);
+					return source;
+				}
+			}
+			Debug.LogError("Tried to get an AudioClip from unspecified group: " + clipGroup);
+			return null;
+		}
+
 		[System.Serializable]
 		private struct ClipGroup
 		{

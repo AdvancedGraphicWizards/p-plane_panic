@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using Rellac.Audio;
 using TMPro;
+using UnityEditor.Networking.PlayerConnection;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,10 +17,10 @@ public class FireComponent : MonoBehaviour
     [SerializeField] private MeshRenderer _fireRenderer;
     [SerializeField] private String _playerTag = "Player";
     [SerializeField] private float _fireFuelDamage = -10;
-    private int _activePlayers = 4; 
+    [SerializeField] private IntVariable m_connectedPlayers;
+    [SerializeField] private SoundManager m_SoundManager;
     
 
-    // Should be determined by spawner!
     private float _fireDamageTimer = 10f;
     private float _fireExtinguishTimer = 2f;
     private bool _extinguishing = false;
@@ -47,20 +49,20 @@ public class FireComponent : MonoBehaviour
     }
 
     private void UpdateText(){
-        _requiredPlayersLabel.text = _extinguishingPlayers + " / " + _playersToPutOut[_activePlayers];
-        _timeToBurn.text = Math.Round(_fireDamageTimer,2).ToString();
+        _requiredPlayersLabel.text = _extinguishingPlayers + " / " + _playersToPutOut[m_connectedPlayers.Value];
+        _timeToBurn.text = Mathf.Round(_fireDamageTimer).ToString();
     }
 
     private void FireDamage() {
-        // cause damage-event and delete instance WIP
         Debug.Log("FireDamage!");
+        m_SoundManager.PlayOneShotRandomPitch("fireDamage",0.05f);
         FireDamageEvent?.Invoke(_fireFuelDamage);
         Destroy(gameObject);
     }
 
     private void FireExtinguish() {
-        // cause damage-event and delete instance WIP
         Debug.Log("FireExtinguish!");
+        m_SoundManager.PlayOneShotRandomPitch("fireExtinguish",0.05f);
         FireDamageEvent?.Invoke(-_fireFuelDamage); // gain fuel on success? (Should use its own event)
         Destroy(gameObject);
     }
@@ -82,7 +84,7 @@ public class FireComponent : MonoBehaviour
     }
 
     private void CheckExtinguishingStatus() {
-        if (_extinguishingPlayers >= _playersToPutOut[_activePlayers]){
+        if (_extinguishingPlayers >= _playersToPutOut[m_connectedPlayers.Value]){
             _extinguishing = true;
             _fireRenderer.material.color = Color.green;
         }

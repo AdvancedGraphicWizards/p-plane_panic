@@ -5,12 +5,11 @@ using UnityEngine;
 using UnityEngine.Timeline;
 
 [RequireComponent(typeof(CharacterController))]
-[RequireComponent(typeof(WeightComponent))]
 public class PlayerController : MonoBehaviour
 {
     [Header("Manager References")]
     private CharacterController m_characterController;
-    private WeightComponent m_weightComponent;
+    [SerializeField] private WeightComponent m_weightComponent;
     private Vector3 m_currentMovementVector = Vector3.zero;
     [SerializeField] private PlatformData _platformData;
     [SerializeField] private InputManager m_inputManager;
@@ -44,8 +43,11 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
-        m_characterController = GetComponent<CharacterController>();
-        m_weightComponent = GetComponent<WeightComponent>();
+        if (m_characterController == null)
+            m_characterController = GetComponent<CharacterController>();
+
+        if (m_weightComponent == null)
+            m_weightComponent = GetComponent<WeightComponent>();
 
         m_characterController.detectCollisions = true;
     }
@@ -72,7 +74,7 @@ public class PlayerController : MonoBehaviour
 
         // Look towards the direction of movement
         if (m_currentMovementVector != Vector3.zero)
-            _playerModel.transform.forward = new Vector3(m_currentMovementVector.x, 0, m_currentMovementVector.z);
+            _playerModel.transform.forward = new Vector3(m_currentMovementVector.x, m_currentMovementVector.y, m_currentMovementVector.z);
 
         // Update position and move the player
         relativePos += m_currentMovementVector;
