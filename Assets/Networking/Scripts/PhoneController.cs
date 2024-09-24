@@ -34,11 +34,6 @@ public class PhoneController : NetworkBehaviour
         writePerm: NetworkVariableWritePermission.Server
     );
 
-    public void Awake()
-    {
-        playerName.Value = m_playerName;
-    }
-
     // Called when the object is spawned on the network
     public override void OnNetworkSpawn()
     {

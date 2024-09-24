@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public struct PlayerData
 {
@@ -14,14 +15,13 @@ public struct PlayerData
 
 public class ServerManager : Singleton<ServerManager>
 {
-
     [Header("Server Settings")]
     public GameObject playerPrefab;     // The player prefab to spawn in the scene
     public int maxPlayers = 9;          // The maximum number of players in the server
 
     // Server data
     private string m_joinCode;          // Code to join the relay server, defined when the relay is allocated.
-    private Dictionary<ulong, PlayerData> m_players = new Dictionary<ulong, PlayerData>();
+    [SerializeField] private Players m_playersSO; // Scriptable object to hold player data
 
     // UnityEvents, replace with event system?
     public static event Action<PlayerData> OnPlayerSpawn;
@@ -35,10 +35,13 @@ public class ServerManager : Singleton<ServerManager>
 
     // Setup
     private async void Start()
-    {
+    {   
         // VERY TEMPORARY, REPLACE LATER
         if (!m_gameStateSO) throw new NullReferenceException("Missing GameState, HelloWorld purposes");
         if (!m_connectedPlayersSO) throw new NullReferenceException("Missing connected players, HelloWorld purposes?");
+
+        // Make sure the server manager persists between scenes.
+        DontDestroyOnLoad(this.gameObject);
 
         // Create a new relay allocation with a maximum number of participants.
         m_joinCode = await RelayManager.CreateRelay(maxPlayers);
@@ -50,23 +53,32 @@ public class ServerManager : Singleton<ServerManager>
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnect;
         NetworkManager.Singleton.OnServerStarted += OnServerStarted;
         NetworkManager.Singleton.OnServerStopped += OnServerStopped;
+
+        // Switch to next scene.
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+    // Get the game code
+    public string GetGameCode()
+    {
+        return m_joinCode;
     }
 
     // Called when a client connects to the server.
     private void OnClientConnected(ulong clientID)
     {
+        Debug.Log("Client connected: " + clientID);
+
         // Because the ApprovalCheck needs to be on the same object as the
         // network manager it is easier for now to just handle it in this script
-        if (m_players.Count >= maxPlayers || m_gameStateSO.HasStarted)
+        if (m_playersSO.players.Count >= maxPlayers || m_gameStateSO.HasStarted)
         {
             DisconnectPlayer(clientID);
             return;
         }
 
-        Debug.Log("Client connected: " + clientID);
-
         // Create a new player object and add it to the dictionary.
-        m_players.Add(clientID, new PlayerData()
+        m_playersSO.players.Add(clientID, new PlayerData()
         {
             clientID = clientID,
             playerName = "Player " + clientID,
@@ -75,15 +87,19 @@ public class ServerManager : Singleton<ServerManager>
             playerColor = Color.black
         });
 
-        m_connectedPlayersSO.Value = m_players.Count;
-
-        OnPlayerSpawn?.Invoke(m_players[clientID]);
+        // Make player-network object persistent between scenes
+        m_playersSO.players[clientID].playerObject.transform.parent = m_playersSO.players[clientID].networkObject.transform;
+        DontDestroyOnLoad(m_playersSO.players[clientID].networkObject);
 
         // Assign the player data to the player object
-        if (m_players[clientID].playerObject.TryGetComponent<InputManager>(out InputManager playerInput))
+        if (m_playersSO.players[clientID].playerObject.TryGetComponent<InputManager>(out InputManager playerInput))
         {
             playerInput.AssignPhoneController(NetworkManager.Singleton.ConnectedClients[clientID].PlayerObject.GetComponent<PhoneController>());
         }
+
+        // Update player count and invoke callback for player spawn
+        m_connectedPlayersSO.Value = m_playersSO.players.Count;
+        OnPlayerSpawn?.Invoke(m_playersSO.players[clientID]);
     }
 
     // Called when a client disconnects from the server.
@@ -92,11 +108,11 @@ public class ServerManager : Singleton<ServerManager>
         Debug.Log("Client disconnected: " + clientID);
 
         // Remove the player from the dictionary and destroy the player object.
-        if (m_players.ContainsKey(clientID))
+        if (m_playersSO.players.ContainsKey(clientID))
         {
             m_connectedPlayersSO.Value--;
-            OnPlayerDisconnect?.Invoke(m_players[clientID]);
-            m_players.Remove(clientID);
+            OnPlayerDisconnect?.Invoke(m_playersSO.players[clientID]);
+            m_playersSO.players.Remove(clientID);
         }
     }
 
@@ -115,11 +131,11 @@ public class ServerManager : Singleton<ServerManager>
     // Called to disconnect a player
     public void DisconnectPlayer(ulong clientID)
     {
+        Debug.Log($"Client {clientID} has been disconnected.");
         NetworkManager.Singleton.DisconnectClient(clientID);
-        if (m_players.ContainsKey(clientID))
+        if (m_playersSO.players.ContainsKey(clientID))
         {
-            OnPlayerDisconnect?.Invoke(m_players[clientID]);
-            Debug.Log($"Client {clientID} has been disconnected.");
+            OnPlayerDisconnect?.Invoke(m_playersSO.players[clientID]);
         }
     }
 }

@@ -5,22 +5,25 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
+    path: Assets/Scenes/Setup.unity
+    guid: f60a28e84664bd34ba0efb720d480604
+  - enabled: 1
     path: Assets/Scenes/Demo/Intro.unity
     guid: ce3d64e24dbca465da0ca50a3546dfe7
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Demo/Game.unity
     guid: 1cfb56fdd49a2f4479b7e440dea3011a
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Demo/Result.unity
     guid: 49750a171191142db8d23aa4800cf815
   - enabled: 0
     path: Assets/Scenes/Demo/Lobby_NOT_INCLUDED_IN_BUILD.unity
     guid: 9ef7c3e075a244770a6f75fedc30838f
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/Demo/Game_.unity
     guid: 0dfc0fce5f5e040b9a9f82eb6dc5c13d
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/WebGL/webgl-client.unity
     guid: 400440431c9298c4e8bf13c14dfa4384
   m_configObjects: {}
