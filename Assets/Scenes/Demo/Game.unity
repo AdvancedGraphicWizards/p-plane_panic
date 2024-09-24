@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 19727673}
   m_Layer: 0
   m_Name: mountain_block (2)
-  m_TagString: Untagged
+  m_TagString: Terrain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -687,7 +687,7 @@ GameObject:
   - component: {fileID: 363940894}
   m_Layer: 0
   m_Name: mountain_block (1)
-  m_TagString: Untagged
+  m_TagString: Terrain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -807,7 +807,7 @@ GameObject:
   - component: {fileID: 405625381}
   m_Layer: 0
   m_Name: Terrain
-  m_TagString: Untagged
+  m_TagString: Terrain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -1182,7 +1182,7 @@ GameObject:
   - component: {fileID: 595233676}
   m_Layer: 0
   m_Name: mountain_block (4)
-  m_TagString: Untagged
+  m_TagString: Terrain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1293,7 +1293,7 @@ GameObject:
   - component: {fileID: 665200179}
   m_Layer: 0
   m_Name: mountain_block (5)
-  m_TagString: Untagged
+  m_TagString: Terrain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1397,7 +1397,7 @@ GameObject:
   - component: {fileID: 699041512}
   m_Layer: 0
   m_Name: Terrain (1)
-  m_TagString: Untagged
+  m_TagString: Terrain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -1793,7 +1793,7 @@ GameObject:
   - component: {fileID: 733155134}
   m_Layer: 0
   m_Name: mountain_block
-  m_TagString: Untagged
+  m_TagString: Terrain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2557,7 +2557,7 @@ GameObject:
   - component: {fileID: 934014194}
   m_Layer: 0
   m_Name: Water
-  m_TagString: Untagged
+  m_TagString: Terrain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3419,17 +3419,17 @@ PrefabInstance:
     - target: {fileID: 5038046395293333119, guid: 18de40225c9664fbf9e47ffa3263a0a9,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5038046395293333119, guid: 18de40225c9664fbf9e47ffa3263a0a9,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5038046395293333119, guid: 18de40225c9664fbf9e47ffa3263a0a9,
         type: 3}
       propertyPath: m_AnchorMin.x
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5762393844600401132, guid: 18de40225c9664fbf9e47ffa3263a0a9,
         type: 3}
@@ -3810,7 +3810,7 @@ GameObject:
   - component: {fileID: 1200821615}
   m_Layer: 0
   m_Name: mountain_block (3)
-  m_TagString: Untagged
+  m_TagString: Terrain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4066,7 +4066,7 @@ GameObject:
   - component: {fileID: 1221065207}
   m_Layer: 0
   m_Name: mountain_block (6)
-  m_TagString: Untagged
+  m_TagString: Terrain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4445,14 +4445,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34b8b62495636d842965f7923c9b56fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerPrefab: {fileID: 0}
   _targetParent: {fileID: 0}
-  _playerColors:
-  - {r: 0.7584905, g: 0, b: 0, a: 1}
-  - {r: 0, g: 0.113204, b: 1, a: 1}
-  - {r: 1, g: 0, b: 0.8447895, a: 1}
-  - {r: 1, g: 0.51216507, b: 0, a: 1}
-  _maxPlayerCount: 0
+  _playerCharacters: []
 --- !u!4 &1365206190
 Transform:
   m_ObjectHideFlags: 0
@@ -4720,7 +4714,7 @@ GameObject:
   - component: {fileID: 1532392177}
   m_Layer: 0
   m_Name: Terrain (2)
-  m_TagString: Untagged
+  m_TagString: Terrain
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -5104,6 +5098,12 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4052483182180137836, guid: 5025f8bb245d243378de6e83482052ee,
         type: 3}
+      propertyPath: gameStateSO
+      value: 
+      objectReference: {fileID: 11400000, guid: 85360dc2073a049ff8bf7a5f7c97d427,
+        type: 2}
+    - target: {fileID: 4052483182180137836, guid: 5025f8bb245d243378de6e83482052ee,
+        type: 3}
       propertyPath: _gameSettings
       value: 
       objectReference: {fileID: 11400000, guid: 661b5843715494964a1d8e53593b94d4,
@@ -5479,7 +5479,7 @@ PrefabInstance:
     - target: {fileID: 4253837131930813279, guid: 68de05756df7f4239a7bcc199e4b5e80,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5851,7 +5851,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2057420010
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7526,6 +7526,7 @@ MonoBehaviour:
   gameStateSO: {fileID: 11400000, guid: 85360dc2073a049ff8bf7a5f7c97d427, type: 2}
   _weightManager: {fileID: 1358000264728225284}
   _planeCameraController: {fileID: 8959675291590359426}
+  planeMovesInLobby: 0
   maxForwardSpeed: 20
   maxHorizontalSpeed: 10
   maxVerticalSpeed: 5
@@ -8237,6 +8238,7 @@ GameObject:
   - component: {fileID: 8120440645441756920}
   - component: {fileID: 8120440645441756921}
   - component: {fileID: 8120440645441756922}
+  - component: {fileID: 8120440645441756923}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Plane
@@ -8259,7 +8261,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -8411,6 +8413,35 @@ MonoBehaviour:
   _fireDamageSpeed: 10
   _fireClearSpeed: 1
   canSpawnFires: 1
+--- !u!114 &8120440645441756923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8120440645441756918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54a2e3af5c4e9ea4e812806b4a8b8ba9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: 3b903569d247bea4f8fed9bcf6a35beb, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 6d71b8a7f752549fbbfec6b8296af4a4, type: 2}
+        m_TargetAssemblyTypeName: SceneSwitcher, Assembly-CSharp
+        m_MethodName: SwitchToResult
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  terrainTag: Terrain
 --- !u!1 &8163371137845440395
 GameObject:
   m_ObjectHideFlags: 0
