@@ -5,8 +5,13 @@ using UnityEngine;
 public class ProceduralAnimController : MonoBehaviour
 {
     [SerializeField] private Transform m_bodyTransform;
+    [SerializeField] private Transform m_rcTransform;
     [SerializeField] private IKLeg[] m_legs;
     [SerializeField] private float m_bodyHeightBase = 0.3f;
+    
+    [SerializeField] private Transform m_offsetTransform;
+    [SerializeField] private int m_LayerInclude = 3; // Layer target for raycast
+
 
     [SerializeField] private float m_minStepWait = 0.5f;
     [SerializeField] private float m_posAdjustRatio = 0.1f;
@@ -18,6 +23,7 @@ public class ProceduralAnimController : MonoBehaviour
     [SerializeField] private float m_lookTime = 1f;
     [SerializeField] private float m_idleGlanceAngleRange = 45f;
     [SerializeField] private ParticleSystem m_cloudTrail;
+    
     
     private float m_idleBounceTimer = 0f;
     private float m_stepWaitTimer = 0.5f;
@@ -33,12 +39,30 @@ public class ProceduralAnimController : MonoBehaviour
     private Vector3 m_bodyRight;
     private Quaternion m_bodyRotation;
 
+    void Awake()
+    {
+        // convert layer to bitmask (invert to ONLY include selected layer)
+        m_LayerInclude = 1 << m_LayerInclude;
+    }
+
     private void Start()
     {
+        if (m_offsetTransform == null) {
+            if (GameObject.Find("Plane") != null) {
+                m_offsetTransform = GameObject.Find("Plane").transform;
+
+                m_bodyTransform.transform.SetParent(m_offsetTransform);  //EXPERIMENT
+            }
+        }
+        
+        if (m_offsetTransform == null) return;
+
         m_stepWaitTimer = m_minStepWait;
         m_idleBounceTimer = m_idleBouncePeriod;
         m_idleTimer = m_idleTime;
         m_lookTimer = m_lookTime;
+
+        //m_bodyTransform.position = m_offsetTransform.position;
 
         // Start coroutine to adjust body transform
         StartCoroutine(AdjustBodyTransform());
@@ -93,7 +117,7 @@ public class ProceduralAnimController : MonoBehaviour
             }
 
             RaycastHit hit;
-            if (Physics.Raycast(m_bodyTransform.position, m_bodyTransform.up * -1, out hit, 10.0f))
+            if (Physics.Raycast(m_rcTransform.position, m_rcTransform.up * -1, out hit, 10.0f))
             {
                 m_bodyUp += hit.normal;
             }
@@ -137,14 +161,13 @@ public class ProceduralAnimController : MonoBehaviour
 
             m_bodyTransform.position = Vector3.Lerp(m_bodyTransform.position, m_bodyPos, m_posAdjustRatio);
 
-            // Calculate new body axis
-            m_bodyRight = Vector3.Cross(m_bodyUp, m_bodyTransform.forward);
-            m_bodyForward = Vector3.Cross(m_bodyRight, m_bodyUp);
+            // Calculate new body axis (CURRENTLY CHANGED TO NOT LET FEET AFFECT HEAD ROTATION)
+            //m_bodyRight = Vector3.Cross(m_bodyUp, m_rcTransform.forward);
+            //m_bodyForward = Vector3.Cross(m_bodyRight, m_bodyUp);
 
             // Interpolate rotation from old to new
-            // Quaternion.AngleAxis(m_idleGlanceAngle, m_bodyUp) *
-            m_bodyRotation = Quaternion.LookRotation(m_bodyForward, m_bodyUp);
-            m_bodyTransform.rotation = Quaternion.Slerp(m_bodyTransform.rotation, m_bodyRotation, m_rotAdjustRatio);
+            //m_bodyRotation = Quaternion.LookRotation(m_bodyForward, m_bodyUp);
+            m_bodyTransform.rotation = Quaternion.Slerp(m_bodyTransform.rotation, m_rcTransform.rotation, m_rotAdjustRatio);
 
             yield return new WaitForFixedUpdate();
         }

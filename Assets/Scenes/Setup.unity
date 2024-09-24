@@ -202,6 +202,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34b8b62495636d842965f7923c9b56fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _playerPrefab: {fileID: 0}
+  _targetParent: {fileID: 0}
   _playerColors:
   - {r: 1, g: 0, b: 0, a: 0}
   - {r: 1, g: 0.47529262, b: 0, a: 0}
@@ -211,7 +213,7 @@ MonoBehaviour:
   - {r: 0, g: 1, b: 0.0816164, a: 0}
   - {r: 0.9659159, g: 1, b: 0, a: 0}
   - {r: 1, g: 1, b: 1, a: 0}
-  m_playersSO: {fileID: 11400000, guid: d1166f5170eda6047a2793dbb7379591, type: 2}
+  _maxPlayerCount: 0
 --- !u!4 &1171995483
 Transform:
   m_ObjectHideFlags: 0

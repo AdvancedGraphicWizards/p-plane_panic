@@ -12,7 +12,9 @@ public class IKLeg : MonoBehaviour
 
     [SerializeField] private Transform m_bodyTransform;
     [SerializeField] private Transform m_raySource;
+    [SerializeField] private Transform m_offsetTransform;
     public GameObject ikTarget; // foot object to be moved
+    public GameObject stepTarget; // foot object to be moved
 
     [SerializeField] private AnimationCurve m_speedCurve; // should start at 0 and end at 1
     [SerializeField] private AnimationCurve m_heightCurve; // should start and end at 0
@@ -26,6 +28,7 @@ public class IKLeg : MonoBehaviour
     [SerializeField] private float m_maxRaycastDist = 7.0f;
     [SerializeField] private float m_footOvershoot = 0.55f / 2.0f; // Overshoot passed target along foot forward direction
     [SerializeField] private float m_footOffset = 0f; // offset of ikTarget away from the hit position Parallel to the normal
+    [SerializeField] private int m_LayerInclude = 3; // Layer target for raycast
 
     public Vector3 m_currentPos { get; private set; }
     public Vector3 m_footUpDir { get; private set; }
@@ -42,23 +45,51 @@ public class IKLeg : MonoBehaviour
     private void Awake()
     {
         m_currentPos = ikTarget.transform.position;
+
+        // convert layer to bitmask (invert to ONLY include selected layer)
+        m_LayerInclude = 1 << m_LayerInclude;
     }
 
     private void Start()
     {
+        if (m_offsetTransform == null) {
+            if (GameObject.Find("Plane") != null) {
+                m_offsetTransform = GameObject.Find("Plane").transform;
+
+                stepTarget = new GameObject($"{gameObject.name}_stepTarget");
+                stepTarget.transform.SetParent(m_offsetTransform);
+
+                ikTarget.transform.SetParent(m_offsetTransform);  //EXPERIMENT
+            }
+        }
+        
+        
+        if (m_offsetTransform == null) return;
+
+
+        
         UpdateIKTargetTransform();
     }
         
     private void Update()
     {
-        RaycastHit hit;
+        
 
         // Calculate target position
-        if (Physics.Raycast(m_raySource.position, m_bodyTransform.up.normalized * -1, out hit, m_maxRaycastDist))
-        {
-            m_raycastHitPos = hit.point;
-            m_raycastHitNormal = hit.normal;
+        if (!Animating) {
+            RaycastHit hit;
+            if (Physics.Raycast(m_raySource.position, m_bodyTransform.up.normalized * -1, out hit, m_maxRaycastDist, m_LayerInclude))
+            {
+                stepTarget.transform.position = hit.point;
+                stepTarget.transform.up = hit.normal;
+                //m_raycastHitPos = hit.point;
+                //m_raycastHitNormal = hit.normal;
+                
+            }
         }
+        m_raycastHitPos = stepTarget.transform.position;
+        m_raycastHitNormal = stepTarget.transform.up;
+
 
         DistFromTarget = (m_raycastHitPos - m_currentPos).magnitude;
 
@@ -112,7 +143,7 @@ public class IKLeg : MonoBehaviour
 
     private void UpdateIKTargetTransform()
     {
-        ikTarget.transform.position = m_currentPos + m_bodyTransform.up.normalized * m_footOffset;
+        ikTarget.transform.position = m_currentPos + m_bodyTransform.up.normalized * m_footOffset +;
         ikTarget.transform.rotation = Quaternion.LookRotation(m_rotatedForwardDir, m_raycastHitNormal);
     }
 
@@ -126,6 +157,9 @@ public class IKLeg : MonoBehaviour
 
         Gizmos.color = Color.red;
         Gizmos.DrawLine(m_currentPos, m_raycastHitPos);
+
+        //Gizmos.color = Color.green;
+        //Gizmos.DrawSphere(stepTarget.transform.position);
 
         Gizmos.color = Color.yellow;
         if (ikTarget != null)
