@@ -173,6 +173,7 @@ MonoBehaviour:
   m_gameStateSO: {fileID: 11400000, guid: 85360dc2073a049ff8bf7a5f7c97d427, type: 2}
   m_connectedPlayersSO: {fileID: 11400000, guid: ae9d5a0c5b7af3444b19b63b9102829e,
     type: 2}
+  m_colorManager: {fileID: 11400000, guid: b2bfa68ebd5fd7b49b0857012d5ae09a, type: 2}
 --- !u!1 &1171995481
 GameObject:
   m_ObjectHideFlags: 0
@@ -202,16 +203,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34b8b62495636d842965f7923c9b56fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerColors:
-  - {r: 1, g: 0, b: 0, a: 0}
-  - {r: 1, g: 0.47529262, b: 0, a: 0}
-  - {r: 1, g: 0, b: 0.5952401, a: 0}
-  - {r: 0.027350426, g: 0, b: 1, a: 0}
-  - {r: 0, g: 0.9999995, b: 1, a: 0}
-  - {r: 0, g: 1, b: 0.0816164, a: 0}
-  - {r: 0.9659159, g: 1, b: 0, a: 0}
-  - {r: 1, g: 1, b: 1, a: 0}
-  m_playersSO: {fileID: 11400000, guid: d1166f5170eda6047a2793dbb7379591, type: 2}
+  _targetParent: {fileID: 0}
+  _playerCharacters: []
 --- !u!4 &1171995483
 Transform:
   m_ObjectHideFlags: 0
