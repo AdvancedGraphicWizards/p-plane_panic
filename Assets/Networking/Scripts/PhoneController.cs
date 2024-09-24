@@ -52,7 +52,6 @@ public class PhoneController : NetworkBehaviour
 
         if (IsOwner)
         {
-
             // Enable the gyroscope if it is supported, otherwise use the accelerometer
             if (SystemInfo.supportsGyroscope)
                 Input.gyro.enabled = m_gyroEnabled = true;
@@ -60,10 +59,16 @@ public class PhoneController : NetworkBehaviour
                 accelerometerInput = Input.acceleration;
 
             SetName(ClientUI.Instance.playerName);
+            ClientUI.Instance.IsConnected(true);
+
+            // Change the colour of the player represented on the phone UI
             playerColor.OnValueChanged += (prevValue, newValue) =>
             {
-                ClientUI.Instance.playerColor = newValue;
+                ClientUI.Instance.ChangeColor(newValue);
             };
+
+            // Register for disconnection events
+            NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnected;
         }
     }
 
@@ -91,18 +96,6 @@ public class PhoneController : NetworkBehaviour
         }
     }
 
-    // Overloaded method, connecting with a code defined in the prefab
-    public void Connect()
-    {
-        Connect(m_joinCode);
-    }
-
-    public void Connect(string joinCode)
-    {
-        Debug.Log("Joining relay server with join code: " + joinCode);
-        RelayManager.JoinRelay(joinCode);
-    }
-
     public Quaternion GetRotation()
     {
         return m_rotation.Value;
@@ -116,5 +109,30 @@ public class PhoneController : NetworkBehaviour
     public void SetName(string name)
     {
         playerName.Value = m_playerName = name;
+    }
+
+    public void SetColor(Color color)
+    {
+        playerColor.Value = color;
+    }
+
+    // Callback for handling unexpected disconnections
+    private void OnClientDisconnected(ulong clientId)
+    {
+        if (clientId == NetworkManager.Singleton.LocalClientId)
+        {
+            Debug.Log("Disconnected from server.");
+            ClientUI.Instance.IsConnected(false);
+        }
+    }
+
+    new private void OnDestroy()
+    {
+        // Unregister the disconnection callback
+        if (NetworkManager.Singleton != null)
+        {
+            Debug.Log("Unregistering network disconnection callback.");
+            NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnected;
+        }
     }
 }

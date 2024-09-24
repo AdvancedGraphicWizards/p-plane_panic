@@ -72,17 +72,19 @@ public class ServerManager : Singleton<ServerManager>
             playerName = "Player " + clientID,
             playerObject = Instantiate(playerPrefab),
             networkObject = NetworkManager.Singleton.ConnectedClients[clientID].PlayerObject.gameObject,
-            playerColor = Color.black
+            playerColor = Color.green
         });
 
         m_connectedPlayersSO.Value = m_players.Count;
 
         OnPlayerSpawn?.Invoke(m_players[clientID]);
+        PhoneController phoneController = NetworkManager.Singleton.ConnectedClients[clientID].PlayerObject.GetComponent<PhoneController>();
+        phoneController.SetColor(m_players[clientID].playerColor);
 
         // Assign the player data to the player object
         if (m_players[clientID].playerObject.TryGetComponent<InputManager>(out InputManager playerInput))
         {
-            playerInput.AssignPhoneController(NetworkManager.Singleton.ConnectedClients[clientID].PlayerObject.GetComponent<PhoneController>());
+            playerInput.AssignPhoneController(phoneController);
         }
     }
 
