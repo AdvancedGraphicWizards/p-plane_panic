@@ -47,22 +47,10 @@ public class ProceduralAnimController : MonoBehaviour
 
     private void Start()
     {
-        if (m_offsetTransform == null) {
-            if (GameObject.Find("Plane") != null) {
-                m_offsetTransform = GameObject.Find("Plane").transform;
-
-                m_bodyTransform.transform.SetParent(m_offsetTransform);  //EXPERIMENT
-            }
-        }
-        
-        if (m_offsetTransform == null) return;
-
         m_stepWaitTimer = m_minStepWait;
         m_idleBounceTimer = m_idleBouncePeriod;
         m_idleTimer = m_idleTime;
         m_lookTimer = m_lookTime;
-
-        //m_bodyTransform.position = m_offsetTransform.position;
 
         // Start coroutine to adjust body transform
         StartCoroutine(AdjustBodyTransform());
@@ -104,7 +92,6 @@ public class ProceduralAnimController : MonoBehaviour
     {
         while (true)
         {
-
             // Centering Body based on leg position
 
             Vector3 footCenter = Vector3.zero;
@@ -128,7 +115,8 @@ public class ProceduralAnimController : MonoBehaviour
 
             float bounceConst = 0f;
             var emission = m_cloudTrail.emission;
-            //Passive Bounce (currently always active)
+
+            //Passive Bounce (currently only active during idle)
             if (m_isIdle) {
                 m_idleBounceTimer += Time.deltaTime;
                 bounceConst = Mathf.Sin((m_idleBounceTimer * 2 * Mathf.PI) / m_idleBouncePeriod); // could open to be animatable
@@ -138,9 +126,7 @@ public class ProceduralAnimController : MonoBehaviour
                 emission.enabled = true;
             }
             
-
-
-            //Idle lookaround (NOT CURRENTLY WORKING)
+            //Idle lookaround (NOT CURRENTLY IMPLEMENTED)
             // if (m_isIdle){
             //     m_lookTimer -= Time.deltaTime;
                 
@@ -159,14 +145,9 @@ public class ProceduralAnimController : MonoBehaviour
             // Interpolate postition from old to new
             m_bodyPos = footCenter + m_bodyUp * m_bodyHeightBase + m_bodyUp * bounceConst * m_idleBounceRange;
 
-            m_bodyTransform.position = Vector3.Lerp(m_bodyTransform.position, m_bodyPos, m_posAdjustRatio);
+            m_bodyTransform.localPosition = Vector3.Lerp(m_bodyTransform.position, m_bodyPos, m_posAdjustRatio);
 
-            // Calculate new body axis (CURRENTLY CHANGED TO NOT LET FEET AFFECT HEAD ROTATION)
-            //m_bodyRight = Vector3.Cross(m_bodyUp, m_rcTransform.forward);
-            //m_bodyForward = Vector3.Cross(m_bodyRight, m_bodyUp);
-
-            // Interpolate rotation from old to new
-            //m_bodyRotation = Quaternion.LookRotation(m_bodyForward, m_bodyUp);
+            // Match rc_transformLocation
             m_bodyTransform.rotation = Quaternion.Slerp(m_bodyTransform.rotation, m_rcTransform.rotation, m_rotAdjustRatio);
 
             yield return new WaitForFixedUpdate();

@@ -61,9 +61,10 @@ public class PlayerSpawnScript : MonoBehaviour
     private void SetPlayerColor(PlayerData playerData)
     {
         int colorIndex = (int)((playerData.clientID - 1) % (ulong)_playerColors.Length);
-        if (playerData.playerObject.TryGetComponent<Renderer>(out Renderer renderer))
+        Debug.Log($"SetPlayerColor{_playerColors[colorIndex]}"); 
+        if (playerData.playerObject.TryGetComponent<SetColorComponent>(out SetColorComponent colorComponent))
         {
-            renderer.material.SetColor("_BaseColor", _playerColors[colorIndex]);
+            colorComponent.SetColor(_playerColors[colorIndex]);
         }
     }
 }
