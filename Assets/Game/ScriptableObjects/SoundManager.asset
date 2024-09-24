@@ -23,3 +23,15 @@ MonoBehaviour:
     mixer: {fileID: 0}
     clips:
     - {fileID: 8300000, guid: 38cf2b56927e09f4482a0a1067ae205a, type: 3}
+  - id: fireCrackle
+    mixer: {fileID: 0}
+    clips:
+    - {fileID: 8300000, guid: 41c333f504ee31146a7cc3d65bdb91e9, type: 3}
+  - id: fireDamage
+    mixer: {fileID: 0}
+    clips:
+    - {fileID: 8300000, guid: 432f4dc5e3d82e845a12bb240b601332, type: 3}
+  - id: fireExtinguish
+    mixer: {fileID: 0}
+    clips:
+    - {fileID: 8300000, guid: 733712e1ee288004d92378b0fa207f34, type: 3}

@@ -233,6 +233,37 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1593665444}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &42121509
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 42121510}
+  m_Layer: 0
+  m_Name: Fires
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &42121510
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 42121509}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3961382649873011698}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &124691867
 GameObject:
   m_ObjectHideFlags: 0
@@ -7022,6 +7053,7 @@ Transform:
   - {fileID: 5904808572624734929}
   - {fileID: 707378479}
   - {fileID: 732754995}
+  - {fileID: 42121510}
   m_Father: {fileID: 822082353}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4087593957770605113
@@ -8204,6 +8236,7 @@ GameObject:
   - component: {fileID: 8120440645441756919}
   - component: {fileID: 8120440645441756920}
   - component: {fileID: 8120440645441756921}
+  - component: {fileID: 8120440645441756922}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Plane
@@ -8355,6 +8388,29 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8120440645441756922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8120440645441756918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41959c813ac94024fa88286ecad5a153, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameStateSO: {fileID: 11400000, guid: 85360dc2073a049ff8bf7a5f7c97d427, type: 2}
+  _firePrefab: {fileID: 5879210077752640541, guid: 7d736ab8fc2fe48459cdbebf3e4f30e9,
+    type: 3}
+  _targetParent: {fileID: 42121510}
+  m_fireSpawnBounds: {x: 6, y: 1}
+  _timeToFirstFire: 40
+  _timeBetweenFireSpawns: 12
+  _maxFires: 3
+  _fireDamageSpeed: 10
+  _fireClearSpeed: 1
+  canSpawnFires: 1
 --- !u!1 &8163371137845440395
 GameObject:
   m_ObjectHideFlags: 0
