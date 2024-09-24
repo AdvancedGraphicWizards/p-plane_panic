@@ -131,6 +131,7 @@ MonoBehaviour:
   m_bodyTransform: {fileID: 2033168589968291008}
   m_raySource: {fileID: 2750174727194175967}
   m_offsetTransform: {fileID: 0}
+  m_soundManager: {fileID: 11400000, guid: 7cd1bd6edca55df43b3a34c2ede55fe0, type: 2}
   ikTarget: {fileID: 645905607212970512}
   stepTarget: {fileID: 3256126761481145007}
   m_speedCurve:
@@ -569,7 +570,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.8
+      scalar: 0.5
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -1033,7 +1034,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 0.2
+      value: 0.05
       mode: 0
       spread: 0
       speed:
@@ -5339,6 +5340,7 @@ MonoBehaviour:
   m_bodyTransform: {fileID: 2033168589968291008}
   m_raySource: {fileID: 6372983010947632136}
   m_offsetTransform: {fileID: 0}
+  m_soundManager: {fileID: 11400000, guid: 7cd1bd6edca55df43b3a34c2ede55fe0, type: 2}
   ikTarget: {fileID: 1935894754409553393}
   stepTarget: {fileID: 5173387501998168894}
   m_speedCurve:

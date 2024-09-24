@@ -83,6 +83,7 @@ MonoBehaviour:
   _playerTag: Plane
   _deactivationTimer: 0.5
   _fuelRecoverAmount: 20
+  m_soundManager: {fileID: 11400000, guid: 7cd1bd6edca55df43b3a34c2ede55fe0, type: 2}
 --- !u!111 &9217632433368541588
 Animation:
   m_ObjectHideFlags: 0

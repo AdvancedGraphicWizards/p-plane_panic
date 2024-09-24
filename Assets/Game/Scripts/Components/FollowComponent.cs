@@ -21,7 +21,7 @@ public class FollowComponent : MonoBehaviour
         }
     }
 
-    void Update()
+    private void Update()
     {
         TryFindTargetTransform();
 

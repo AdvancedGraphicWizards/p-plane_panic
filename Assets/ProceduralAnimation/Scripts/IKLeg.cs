@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Rellac.Audio;
 using UnityEngine;
 
 
@@ -11,6 +12,7 @@ public class IKLeg : MonoBehaviour
     [SerializeField] private Transform m_bodyTransform;
     [SerializeField] private Transform m_raySource;
     [SerializeField] private Transform m_offsetTransform;
+    [SerializeField] private SoundManager m_soundManager;
     public GameObject ikTarget; // foot object to be moved
     public GameObject stepTarget; // foot object to be moved
 
@@ -115,7 +117,9 @@ public class IKLeg : MonoBehaviour
 
             yield return new WaitForSeconds(m_AnimationFrameTime);
         }
-        
+
+        m_soundManager.PlayOneShotRandomPitch("footstep",0.1f);
+
         Animating = false;
     }
 
