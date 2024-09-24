@@ -28,17 +28,21 @@ public class ServerManager : Singleton<ServerManager>
     public static event Action<PlayerData> OnPlayerDisconnect;
     public static event Action<string> OnGameCode;
 
-    // Temporary, just to make sure we have game state info
-    [Tooltip("Holds the state of runtime variables")]
+    [Header("Game State Scriptable Objects")]
+    [Tooltip("Holds the state of runtime variables.")]
     [SerializeField] private GameState m_gameStateSO;
+    [Tooltip("Holds the amount of connected players.")]
     [SerializeField] private IntVariable m_connectedPlayersSO;
+    [Tooltip("Holds the Color Manager Scriptable Object.")]
+    [SerializeField] private ColorManager m_colorManager;
 
     // Setup
     private async void Start()
     {
         // VERY TEMPORARY, REPLACE LATER
         if (!m_gameStateSO) throw new NullReferenceException("Missing GameState, HelloWorld purposes");
-        if (!m_connectedPlayersSO) throw new NullReferenceException("Missing connected players, HelloWorld purposes?");
+        if (!m_connectedPlayersSO) throw new NullReferenceException("Missing connected players scriptable object.");
+        if (!m_colorManager) throw new NullReferenceException("Missing color manager scriptable object.");
 
         // Create a new relay allocation with a maximum number of participants.
         m_joinCode = await RelayManager.CreateRelay(maxPlayers);
@@ -72,7 +76,7 @@ public class ServerManager : Singleton<ServerManager>
             playerName = "Player " + clientID,
             playerObject = Instantiate(playerPrefab),
             networkObject = NetworkManager.Singleton.ConnectedClients[clientID].PlayerObject.gameObject,
-            playerColor = Color.black
+            playerColor = m_colorManager.GetColor()
         });
 
         m_connectedPlayersSO.Value = m_players.Count;

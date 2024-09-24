@@ -10,14 +10,7 @@ public class PlayerSpawnScript : MonoBehaviour
 {
 
     [Header("Player and Spawn Settings")]
-    [SerializeField] private GameObject _playerPrefab;
     [SerializeField] private Transform _targetParent;
-    [SerializeField] private Color[] _playerColors;
-    [SerializeField] private int _maxPlayerCount;
-
-    [SerializeField] private int _playerCount = 4;
-    [SerializeField] private int _currentPlayerColorIndex = 0;
-
     [SerializeField] private List<GameObject> _playerCharacters;
 
 
@@ -62,13 +55,11 @@ public class PlayerSpawnScript : MonoBehaviour
         }
     }
 
-    // currently hardcoded (and not working)
     private void SetPlayerColor(PlayerData playerData)
     {
-        int colorIndex = (int)((playerData.clientID - 1) % (ulong)_playerColors.Length);
         if (playerData.playerObject.TryGetComponent<Renderer>(out Renderer renderer))
         {
-            renderer.material.SetColor("_BaseColor", _playerColors[colorIndex]);
+            renderer.material.SetColor("_BaseColor", playerData.playerColor);
         }
     }
 }
