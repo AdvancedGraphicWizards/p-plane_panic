@@ -154,6 +154,22 @@ public class ServerManager : Singleton<ServerManager>
         }
     }
 
+    public void DisconnectAllPlayers()
+    {
+        // Create a copy of the connected client IDs to avoid modifying the collection during iteration
+        List<ulong> clientIDs = new List<ulong>(NetworkManager.Singleton.ConnectedClients.Keys);
+
+        foreach (ulong clientID in clientIDs)
+        {
+            // Ensure we are not disconnecting the server itself
+            if (clientID != NetworkManager.Singleton.LocalClientId)
+            {
+                DisconnectPlayer(clientID);
+            }
+            else Debug.Log("Avoiding disconnecting server.");
+        }
+    }
+
     // Called when a name is updated
     public void UpdateNames()
     {
