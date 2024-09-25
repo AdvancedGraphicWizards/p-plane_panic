@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxFuel: 0
   RingFuelContribution: 0
-  PlaneBaseSpeed: 0
+  PlaneBaseSpeed: 20
