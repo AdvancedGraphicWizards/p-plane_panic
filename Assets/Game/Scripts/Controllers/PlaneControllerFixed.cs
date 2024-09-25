@@ -15,6 +15,12 @@ public class PlaneControllerFixed : MonoBehaviour
     [SerializeField] private WeightManager _weightManager;
     [SerializeField] private PlaneCameraController _planeCameraController;
 
+
+    [Header("Plane Particle effects & Animation")]
+    [SerializeField] private Animation m_bladeRotateAnim;
+    [SerializeField] private ParticleSystem[] m_exhaustParticles;
+
+
     [Header("Plane Attributes")]
     [Tooltip("Controls if the plane moves forward in the lobby.")]
     [SerializeField] private bool planeMovesInLobby = false;
@@ -97,6 +103,12 @@ public class PlaneControllerFixed : MonoBehaviour
             // If we are out of fuel then we lose pitch control
             currRoll = Mathf.Lerp(currRoll, -_weightManager.TotalRollWeight * maxRoll, rollSpeed * Time.deltaTime);
             currPitch = Mathf.Lerp(currPitch, maxPitch, pitchSpeed * Time.deltaTime);
+
+            // If we are out of fuel disable blade rotation, exhuast particles and engineAudio
+            m_bladeRotateAnim.Stop();
+            foreach (ParticleSystem ps in m_exhaustParticles) {
+                ps.Stop();
+            }
         }
         else
         {
