@@ -55,6 +55,7 @@ public class PlaneControllerFixed : MonoBehaviour
     private float currRoll = 0f;
     public int _isTurbo = 0;
     private float currentEngineSoundPitch = 0f;
+    private bool m_recoverState = false;
 
     private void Start()
     {
@@ -105,9 +106,12 @@ public class PlaneControllerFixed : MonoBehaviour
             currPitch = Mathf.Lerp(currPitch, maxPitch, pitchSpeed * Time.deltaTime);
 
             // If we are out of fuel disable blade rotation, exhuast particles and engineAudio
-            m_bladeRotateAnim.Stop();
-            foreach (ParticleSystem ps in m_exhaustParticles) {
-                ps.Stop();
+            if (!m_recoverState) {
+                m_bladeRotateAnim.Stop();
+                foreach (ParticleSystem ps in m_exhaustParticles) {
+                    ps.Stop();
+                }
+                m_recoverState = true;
             }
         }
         else
@@ -115,6 +119,15 @@ public class PlaneControllerFixed : MonoBehaviour
             // Calculate the new roll and pitch values
             currRoll = Mathf.Lerp(currRoll, -_weightManager.TotalRollWeight * maxRoll, rollSpeed * Time.deltaTime);
             currPitch = Mathf.Lerp(currPitch, _weightManager.TotalPitchWeight * maxPitch, pitchSpeed * Time.deltaTime);
+
+            // If we are recovering switch on all of the special effects
+            if (m_recoverState) {
+                m_bladeRotateAnim.Play();
+                foreach (ParticleSystem ps in m_exhaustParticles) {
+                    ps.Play();
+                }
+                m_recoverState = false;
+            }
         }
 
         // Rotate the plane

@@ -31,7 +31,6 @@ public class FireSpawner : MonoBehaviour
     [SerializeField] private float _fireClearSpeed;
 
 
-    private GameObject[] _fireArray;
     private int _numActiveFires;
     private Vector3 _spawnLocation;
     private float _timeToFire;
@@ -42,8 +41,13 @@ public class FireSpawner : MonoBehaviour
     private void Awake()
     {
         if (_targetParent == null) _targetParent = gameObject.transform;
-        _fireArray = new GameObject[_maxFires];
         _timeToFire = _timeToFirstFire;
+    }
+
+
+    private void Start()
+    {
+        FireComponent.FireDamageEvent += amt=> DespawnFire();
     }
 
     private void Update()
@@ -69,9 +73,13 @@ public class FireSpawner : MonoBehaviour
             0,
             Random.Range(-m_fireSpawnBounds.y, m_fireSpawnBounds.y));
 
-        _fireArray[_numActiveFires] = Instantiate(_firePrefab, Vector3.zero, _targetParent.rotation);
-        _fireArray[_numActiveFires].transform.SetParent(_targetParent);
-        _fireArray[_numActiveFires].transform.localPosition = _spawnLocation;
+        GameObject fire = Instantiate(_firePrefab, Vector3.zero, _targetParent.rotation);
+        fire.transform.SetParent(_targetParent);
+        fire.transform.localPosition = _spawnLocation;
         _numActiveFires++;
+    }
+
+    private void DespawnFire() {
+        _numActiveFires--;
     }
 }

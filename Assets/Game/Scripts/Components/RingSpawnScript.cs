@@ -8,6 +8,7 @@ public class RingSpawnScript : MonoBehaviour
 
     [SerializeField] private GameObject _hoopPrefab;
     [SerializeField] private GameObject _superHoopPrefab;
+    [SerializeField] private Transform m_planeLocation;
 
     [SerializeField] private float _distanceBetweenRings = 100f;
     [SerializeField] private float _increaseDistanceFactor = 10f;
@@ -22,12 +23,31 @@ public class RingSpawnScript : MonoBehaviour
     private GameObject[] _hoopArray = new GameObject[50];
     private GameObject[] _superHoopArray = new GameObject[50];
     private float _zValue = 50f;
+    private int m_currentBackPosition = 0;
+    [SerializeField] private int m_backCullingDistance = 20;
+    [SerializeField] private int m_ringBatchingAmount = 50;
 
 
     private void Start()
     {
         InstantiateRings();
     }
+
+    /**
+    private void Awake()
+    {
+        
+    }
+
+    void FixedUpdate()
+    {
+        if (m_planeLocation.position.z - m_backCullingDistance > _hoopArray[m_currentBackPosition].transform.position.z) {
+            _hoopArray[m_currentBackPosition] = Instantiate(_hoopPrefab, new Vector3(_randomSeed[i]*_ringOffsetRange, _randomSeed[i+1]*(_ringOffsetRange/2f) + _baseHeight, _zValue), Quaternion.identity);
+            m_currentBackPosition++;
+            m_currentBackPosition = m_currentBackPosition % m_ringBatchingAmount;
+        }
+    }
+    **/
 
     // TODO: Add an object pooling system to place additional rings ahead of the player
     // Instantiate initial rings present
