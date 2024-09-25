@@ -1300,6 +1300,9 @@ MonoBehaviour:
   gameStateSO: {fileID: 11400000, guid: 85360dc2073a049ff8bf7a5f7c97d427, type: 2}
   _weightManager: {fileID: 885353518}
   _planeCameraController: {fileID: 0}
+  m_bladeRotateAnim: {fileID: 0}
+  m_exhaustParticles: []
+  planeMovesInLobby: 0
   maxForwardSpeed: 20
   maxHorizontalSpeed: 10
   maxVerticalSpeed: 10
@@ -1473,8 +1476,8 @@ Camera:
   m_GameObject: {fileID: 1299614872}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.72156864, g: 0.24705884, b: 0.27450982, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0

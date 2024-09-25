@@ -174,6 +174,7 @@ MonoBehaviour:
   m_connectedPlayersSO: {fileID: 11400000, guid: ae9d5a0c5b7af3444b19b63b9102829e,
     type: 2}
   m_colorManager: {fileID: 11400000, guid: b2bfa68ebd5fd7b49b0857012d5ae09a, type: 2}
+  m_sceneSwitcher: {fileID: 11400000, guid: 6d71b8a7f752549fbbfec6b8296af4a4, type: 2}
 --- !u!1 &1171995481
 GameObject:
   m_ObjectHideFlags: 0
