@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class FuelController : MonoBehaviour
 {
     [SerializeField] private GameState gameStateSO;
+     [SerializeField] private GameSettings gameSettingsSO;
     [Tooltip("The Slide Game Object FuelSliderIndicator")]
     [SerializeField] private Slider m_slider;
     [Tooltip("You can find it on the Game Object hierarchy FuelSliderIndicator -> FillArea -> Fill ")]
@@ -21,6 +22,7 @@ public class FuelController : MonoBehaviour
     [Tooltip("Scriptable Object of type UIntVariable, named Fuel")]
     [SerializeField] private UIntVariable m_currentFuel;
     [SerializeField] private float[] fuelColorBreakPoints = new float[] { 0.3f, 0.5f };
+   
 
     private void Awake()
     {
@@ -36,6 +38,8 @@ public class FuelController : MonoBehaviour
         if (!gameStateSO)
             throw new System.NullReferenceException("Missing GameState, HelloWorld purposes");
 
+        if(!gameSettingsSO)
+            throw new System.NullReferenceException("Missing GameSettings, HelloWorld purposes");
 
         m_currentFuel.Value = (uint)m_startingFuel;
         m_fuel = m_startingFuel;
@@ -62,13 +66,16 @@ public class FuelController : MonoBehaviour
     }
     public void UpdateColor()
     {
+        //if(gameSettingsSO.FuelBreakPointsColors.Length == 0) return;
+
         float normalizedValue = m_fuel / m_startingFuel;
+        Debug.Log(normalizedValue);
         if (normalizedValue < fuelColorBreakPoints[0])
-            m_fuelImage.color = Color.red;
+            m_fuelImage.color = gameSettingsSO.FuelBreakPointsColors[2];
         else if (normalizedValue < fuelColorBreakPoints[1])
-            m_fuelImage.color = Color.yellow;
+            m_fuelImage.color = gameSettingsSO.FuelBreakPointsColors[1];
         else
-            m_fuelImage.color = Color.green;
+            m_fuelImage.color = gameSettingsSO.FuelBreakPointsColors[0];
 
     }
 

@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfb40d8e330a44f619f75e0e0ecf4907, type: 3}
   m_Name: GameSettings
   m_EditorClassIdentifier: 
-  MaxFuel: 0
+  MaxFuel: 100
   RingFuelContribution: 0
   PlaneBaseSpeed: 20
+  FuelBreakPointsColors:
+  - {r: 0.101960786, g: 0.8980392, b: 0.7529412, a: 1}
+  - {r: 0.8980392, g: 0.6745098, b: 0.101960786, a: 1}
+  - {r: 0.8980392, g: 0.24313726, b: 0.101960786, a: 1}

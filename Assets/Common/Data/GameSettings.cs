@@ -10,5 +10,6 @@ class GameSettings : ScriptableObject
     public uint MaxFuel;
     public uint RingFuelContribution;
     public uint PlaneBaseSpeed;
+    public Color[] FuelBreakPointsColors;
 }
 
