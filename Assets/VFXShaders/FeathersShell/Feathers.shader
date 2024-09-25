@@ -119,16 +119,18 @@ Shader "VFX/Character/FeathersShell"
 
                 if (outsideThickness && _ShellIndex > 0) discard;
 
+                //For some reason the lights on the Object are flipped, so heres a quick fix
+                float3 modifiedLight = float3(_MainLightPosition.x * -1, _MainLightPosition.y, _MainLightPosition.z * -1);
                 //Physically based illumination
-                float ndotl = dot(vert_OUTPUT.normal, _MainLightPosition.xyz) * 0.5f + 0.5f;
+                float ndotl = dot(vert_OUTPUT.normal, modifiedLight) * 0.5f + 0.5f;
                 ndotl = ndotl * ndotl;
 
-                float ambientOcclusion = pow(abs(h), _Attenuation);
+                float ambientOcclusion = pow(h, _Attenuation);
                 ambientOcclusion += _OcclusionBias;
                 ambientOcclusion = saturate(ambientOcclusion);
 
 
-                 // Simple color based on UV and layer
+                // Simple color based on UV and layer
                 //float4 color = _BaseColor;
 
                 // Modify the alpha based on layer index to blend layers
