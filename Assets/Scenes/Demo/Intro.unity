@@ -96,7 +96,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 20201, guid: 0000000000000000f000000000000000, type: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 5e1bfe6e6c67428428b66eab5c9f1b44,
+    type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -1300,6 +1301,9 @@ MonoBehaviour:
   gameStateSO: {fileID: 11400000, guid: 85360dc2073a049ff8bf7a5f7c97d427, type: 2}
   _weightManager: {fileID: 885353518}
   _planeCameraController: {fileID: 0}
+  m_bladeRotateAnim: {fileID: 0}
+  m_exhaustParticles: []
+  planeMovesInLobby: 0
   maxForwardSpeed: 20
   maxHorizontalSpeed: 10
   maxVerticalSpeed: 10
@@ -1473,8 +1477,8 @@ Camera:
   m_GameObject: {fileID: 1299614872}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.72156864, g: 0.24705884, b: 0.27450982, a: 1}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -1834,7 +1838,12 @@ PrefabInstance:
     - target: {fileID: 3294398715498722273, guid: ebb475ffdc7934fd2a0c88b2210fd3c3,
         type: 3}
       propertyPath: m_text
-      value: DH2413 Advance Graphics & Interaction - 2024
+      value: DH2413 Advanced Graphics & Interaction - 2024
+      objectReference: {fileID: 0}
+    - target: {fileID: 3294398715498722273, guid: ebb475ffdc7934fd2a0c88b2210fd3c3,
+        type: 3}
+      propertyPath: m_margin.x
+      value: -26.443024
       objectReference: {fileID: 0}
     - target: {fileID: 3294398715498722273, guid: ebb475ffdc7934fd2a0c88b2210fd3c3,
         type: 3}
