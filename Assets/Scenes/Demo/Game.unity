@@ -14,10 +14,10 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_Fog: 0
-  m_FogColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  m_Fog: 1
+  m_FogColor: {r: 0.43147027, g: 0.4870062, b: 0.9056604, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.01
+  m_FogDensity: 0.0002
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 00430bb978db9ba4eb667e55af8335d3, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
-  m_Sun: {fileID: 0}
+  m_Sun: {fileID: 854377224}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1873,6 +1873,7 @@ MonoBehaviour:
     type: 3}
   _superHoopPrefab: {fileID: 2820548137086030269, guid: 50d4a3da9ca96fd4f99f8ba0694b29de,
     type: 3}
+  m_planeLocation: {fileID: 0}
   _distanceBetweenRings: 100
   _increaseDistanceFactor: 10
   _increaseOffsetFactor: 1
@@ -1880,6 +1881,8 @@ MonoBehaviour:
   _firstRingDistance: 200
   _baseHeight: 30
   _baseHeightIncreaseFactor: 10
+  m_backCullingDistance: 20
+  m_ringBatchingAmount: 50
 --- !u!4 &878650321
 Transform:
   m_ObjectHideFlags: 0
