@@ -99,6 +99,7 @@ MonoBehaviour:
   characterMesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
   shellFurShader: {fileID: 4800000, guid: f749168654fa64f078d34757711fbb85, type: 3}
   featherSettings: {fileID: 11400000, guid: adc17387ed682430e9edf74a2bf7b95e, type: 2}
+  featherColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &645905607212970512
 GameObject:
   m_ObjectHideFlags: 0
@@ -6376,8 +6377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dcae48b81e9295488de9e81b303c3cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_colorTargets:
-  - {fileID: 4225616431840572397}
+  feathersController: {fileID: 9015959667424022736}
 --- !u!114 &3209417517646439914
 MonoBehaviour:
   m_ObjectHideFlags: 0

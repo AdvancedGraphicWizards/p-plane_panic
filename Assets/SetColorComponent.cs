@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class SetColorComponent : MonoBehaviour
 {
-    [SerializeField] private Renderer[] m_colorTargets;
+    [SerializeField] private FeathersController feathersController;
 
-    public void SetColor(Color color) {
-        foreach (Renderer target in m_colorTargets) {
-            target.material.SetColor("_BaseColor", color);
-        }
+    public void SetColor(Color color)
+    {
+        feathersController.featherColor = color;
     }
 }
