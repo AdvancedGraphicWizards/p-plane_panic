@@ -16,7 +16,6 @@ public class ClientUI : Singleton<ClientUI>
     [Tooltip("UI Element that shows the player color, can be an image or a the background.")]
     [SerializeField] private Image m_playerColorObject;
     [SerializeField] private TMP_Text m_playerNameText;
-    [SerializeField] private TMP_Text m_playerNameBackdrop;
 
     [Header("Connection Variables")]
     public string playerName = "Player";
@@ -84,7 +83,7 @@ public class ClientUI : Singleton<ClientUI>
         Debug.Log($"Attempting to join game with code {code} as {name}");
 
         //phoneController.SetName(name);
-        m_playerNameText.text = m_playerNameBackdrop.text = playerName = name;
+        m_playerNameText.text = playerName = name;
         Connect(code);
     }
 
