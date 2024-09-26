@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.InteropServices;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
@@ -21,6 +22,10 @@ public class ClientUI : Singleton<ClientUI>
     public string playerName = "Player";
     [SerializeField] private Color m_playerColor = new Color(0.5235849f, 1.0f, 0.6483989f);
     [SerializeField] private bool m_isConnected = false;
+
+    [DllImport("__Internal")]
+    private static extern void RequestWakeLock();
+    private bool m_requestedWakeLock = false;
 
     private void Awake()
     {
@@ -115,6 +120,14 @@ public class ClientUI : Singleton<ClientUI>
 
     public void Connect(string joinCode)
     {
+        if (!m_requestedWakeLock)
+        {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        RequestWakeLock();
+#endif
+            m_requestedWakeLock = true;
+        }
+
         Debug.Log("Joining relay server with join code: " + joinCode);
         RelayManager.JoinRelay(joinCode);
     }
