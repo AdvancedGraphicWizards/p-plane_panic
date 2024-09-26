@@ -1873,6 +1873,7 @@ MonoBehaviour:
     type: 3}
   _superHoopPrefab: {fileID: 2820548137086030269, guid: 50d4a3da9ca96fd4f99f8ba0694b29de,
     type: 3}
+  m_planeLocation: {fileID: 0}
   _distanceBetweenRings: 100
   _increaseDistanceFactor: 10
   _increaseOffsetFactor: 1
@@ -1880,6 +1881,8 @@ MonoBehaviour:
   _firstRingDistance: 200
   _baseHeight: 30
   _baseHeightIncreaseFactor: 10
+  m_backCullingDistance: 20
+  m_ringBatchingAmount: 50
 --- !u!4 &878650321
 Transform:
   m_ObjectHideFlags: 0
@@ -2523,12 +2526,12 @@ PrefabInstance:
     - target: {fileID: 2099544198739683481, guid: 18de40225c9664fbf9e47ffa3263a0a9,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2099544198739683481, guid: 18de40225c9664fbf9e47ffa3263a0a9,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2250840537337722834, guid: 18de40225c9664fbf9e47ffa3263a0a9,
         type: 3}
@@ -2638,17 +2641,17 @@ PrefabInstance:
     - target: {fileID: 5038046395293333119, guid: 18de40225c9664fbf9e47ffa3263a0a9,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5038046395293333119, guid: 18de40225c9664fbf9e47ffa3263a0a9,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5038046395293333119, guid: 18de40225c9664fbf9e47ffa3263a0a9,
         type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5762393844600401132, guid: 18de40225c9664fbf9e47ffa3263a0a9,
         type: 3}
@@ -3875,7 +3878,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1287423830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4492,11 +4495,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6749439974631647189, guid: c039d6c1892c24ebfa36964d559b211c,
-        type: 3}
-      propertyPath: m_Texture
-      value: 
-      objectReference: {fileID: 2800000, guid: ba58ef0cd833eb949b95a21010b0367c, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
