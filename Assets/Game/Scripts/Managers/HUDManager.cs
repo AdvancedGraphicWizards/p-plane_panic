@@ -20,10 +20,4 @@ public class HUDManager : MonoBehaviour
         }
     }
 
-    private void Update()
-    {
-        
-
-    }
-
 }
