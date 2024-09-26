@@ -14774,7 +14774,7 @@ PrefabInstance:
     - target: {fileID: 3294398715498722273, guid: ebb475ffdc7934fd2a0c88b2210fd3c3,
         type: 3}
       propertyPath: m_text
-      value: An DH2413 Advanced Graphics & Interaction project - 2024
+      value: A DH2413 Advanced Graphics & Interaction project - 2024
       objectReference: {fileID: 0}
     - target: {fileID: 3294398715498722273, guid: ebb475ffdc7934fd2a0c88b2210fd3c3,
         type: 3}
