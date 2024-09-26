@@ -2,8 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Hacky Class used to follow the position and rotation of a target Transform every Update call
+/// </summary>
 public class FollowComponent : MonoBehaviour
 {
+    // Can either give name of target or direct reference
     [SerializeField] private Transform m_followTransform;
     [SerializeField] private string m_followTransformName;
 

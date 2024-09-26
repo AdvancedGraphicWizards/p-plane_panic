@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 
+/// <summary>
+/// Controls the Camera attached to the plane object
+/// </summary>
+
 public class PlaneCameraController : MonoBehaviour
 {
     private CinemachineBrain brain;
 
     [Header("References")]
     [SerializeField] private PlaneControllerFixed _airPlaneController;
-    // [SerializeField] private CinemachineFreeLook _freeLook;
     [SerializeField] private Camera _mainCamera;
 
     [Header("Camera values")]
@@ -24,6 +27,7 @@ public class PlaneCameraController : MonoBehaviour
 
     private void Update()
     {
+        // Change camera FOV while Turbo
         if (_airPlaneController._isTurbo > 0) {
             ChangeCameraFov(cameraTurboFov);
         } else {
@@ -34,7 +38,6 @@ public class PlaneCameraController : MonoBehaviour
     public void ChangeCameraFov(float _fov)
     {
         float _deltatime = Time.deltaTime * 100f;
-        // _freeLook.m_Lens.FieldOfView = Mathf.Lerp(_freeLook.m_Lens.FieldOfView, _fov, 0.01f * _deltatime);
         _mainCamera.fieldOfView = Mathf.Lerp(_mainCamera.fieldOfView, _fov, 0.01f * _deltatime);
     }
 }

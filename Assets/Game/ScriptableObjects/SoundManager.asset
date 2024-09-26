@@ -24,7 +24,7 @@ MonoBehaviour:
     clips:
     - {fileID: 8300000, guid: 38cf2b56927e09f4482a0a1067ae205a, type: 3}
   - id: fireCrackle
-    mixer: {fileID: 0}
+    mixer: {fileID: 24300002, guid: 02b298370a509e8429bde44510d8c12d, type: 2}
     clips:
     - {fileID: 8300000, guid: 41c333f504ee31146a7cc3d65bdb91e9, type: 3}
   - id: fireDamage

@@ -3,9 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Calculates the total weight from a number of WeightComponent GameObjects
+/// </summary>
+
 public class WeightManager : MonoBehaviour
 {
-    [Header("Read-Only")]
     [SerializeField] private List<WeightComponent> _weightedObjects;
     [SerializeField] private int _numWeightedObjects;
     [SerializeField] private Players m_playersSO;

@@ -3,6 +3,10 @@ using System;
 using System.Collections;
 using Unity.VisualScripting;
 
+/// <summary>
+/// The controller for the Plane object
+/// </summary>
+
 public class PlaneControllerFixed : MonoBehaviour
 {
     [Header("Scriptable Object References")]
@@ -75,16 +79,17 @@ public class PlaneControllerFixed : MonoBehaviour
         //TODO include the exception, once we agree on using the SO
         //throw new NullReferenceException("GameSettings reference is missing, this context needs it to define the speed of the plane");
         if (!gameStateSO)
-            throw new NullReferenceException("Missing GameState, HelloWorld purposes");
+            throw new NullReferenceException("Missing GameState");
 
-        gameStateSO.HasStarted = false; //TODO This should be done by a hight entity, a singleton probably that handles the GamePlay.
+        gameStateSO.HasStarted = false; 
     }
 
     private void FixedUpdate()
     {
-        if (!gameStateSO.OutOfFuel) AudioSystem();
+        if (!gameStateSO.OutOfFuel) AudioSystem(); // dont play engine sounds when out of fuel
         if (!gameStateSO.HasStarted && planeMovesInLobby)
         {
+            // Make sure plane cannot move in lobby
             currPitch = 0f;
             currRoll = 0f;
             MovePlane();

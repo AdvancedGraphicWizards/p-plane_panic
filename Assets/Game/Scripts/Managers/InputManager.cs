@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
-
 {
     [Header("Locally Scoped Members")]
     [SerializeField] private PhoneController m_phoneController;

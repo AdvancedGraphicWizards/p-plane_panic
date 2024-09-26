@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+
+/// <summary>
+/// Attach to component with weight, 
+/// calculates a roll and pitch weight values based on relative position and thresholds
+/// </summary>
+
 public class WeightComponent : MonoBehaviour
 {
     [Header("Weight Value Modifiers (multiplied to end weight)")]
@@ -29,8 +35,10 @@ public class WeightComponent : MonoBehaviour
         UpdateWeights(Vector2.zero);
     }
 
-    // Update Weights based on given relative position
-    // Input relPosition, vec2 <roll-axis, pitch-axis> position in range [-1,1]
+    /// <summary>
+    /// Update Weights based on given relative position
+    /// </summary>
+    /// <param name="relPosition"></param> vec2 <roll-axis, pitch-axis> position in range [-1,1]
     public void UpdateWeights(Vector2 relPosition) {
         if (Math.Abs(relPosition.x) < rollThreshold){
             RollWeight = 0;

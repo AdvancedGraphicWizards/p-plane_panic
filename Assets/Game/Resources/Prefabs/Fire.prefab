@@ -779,14 +779,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76ed5b92a1d57f74ca6b77f69c64e57b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playersToPutOut: 010000000100000002000000020000000200000003000000
+  _playersToPutOut: 01000000010000000200000002000000020000000300000003000000030000000400000004000000040000000400000005000000050000000500000006000000
+  _timeToDamage: 10
+  _timeToExtinguish: 1.5
+  _fireFuelDamage: -10
+  _playerTag: Player
   _requiredPlayersLabel: {fileID: 7364711409750435739}
   _timeToBurn: {fileID: 2903548730113395739}
   _fireRenderer: {fileID: 5742797756121234883}
-  _playerTag: Player
-  _fireFuelDamage: -10
-  m_connectedPlayers: {fileID: 11400000, guid: ae9d5a0c5b7af3444b19b63b9102829e, type: 2}
   m_SoundManager: {fileID: 11400000, guid: 7cd1bd6edca55df43b3a34c2ede55fe0, type: 2}
+  m_connectedPlayers: {fileID: 11400000, guid: ae9d5a0c5b7af3444b19b63b9102829e, type: 2}
 --- !u!135 &4782570120473795115
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -847,7 +849,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 41c333f504ee31146a7cc3d65bdb91e9, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.3
   m_Pitch: 1
   Loop: 0
   Mute: 0
