@@ -6,6 +6,11 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
+/// <summary>
+/// Handles Player character despawning and spawning behaviour
+/// </summary>
+
 public class PlayerSpawnScript : MonoBehaviour
 {
 
@@ -18,13 +23,6 @@ public class PlayerSpawnScript : MonoBehaviour
     {
         ServerManager.OnPlayerSpawn += playerData => SpawnPlayer(playerData);
         ServerManager.OnPlayerDisconnect += playerData => DespawnPlayer(playerData.playerObject);
-    }
-
-    private void Start()
-    {
-        //SpawnPlayers();
-
-        //SetPlayerColor();
     }
 
     private void SpawnPlayer(PlayerData playerData)
@@ -43,7 +41,6 @@ public class PlayerSpawnScript : MonoBehaviour
             Destroy(playerObject);
         }
     }
-
 
     private void ParentPlayer(GameObject playerObject, Transform targetParent)
     {

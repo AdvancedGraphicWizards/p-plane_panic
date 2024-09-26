@@ -3,12 +3,16 @@ using System.Collections.Generic;
 using Rellac.Audio;
 using UnityEngine;
 
-
-// Adapted from: https://github.com/Sopiro/Unity-Procedural-Animation/tree/master 
-// By Soprio 2021
+/// <summary>
+/// Component controlling a singular IK target (aka "foot")
+/// 
+/// Adapted from: https://github.com/Sopiro/Unity-Procedural-Animation/tree/master 
+/// By Soprio 2021
+/// </summary>
 
 public class IKLeg : MonoBehaviour
 {
+    [Header("Component References")]
     [SerializeField] private Transform m_bodyTransform;
     [SerializeField] private Transform m_raySource;
     [SerializeField] private Transform m_offsetTransform;
@@ -16,20 +20,22 @@ public class IKLeg : MonoBehaviour
     public GameObject ikTarget; // foot object to be moved
     public GameObject stepTarget; // foot object to be moved
 
+    [Header("Animation Curves")]
     [SerializeField] private AnimationCurve m_speedCurve; // should start at 0 and end at 1
     [SerializeField] private AnimationCurve m_heightCurve; // should start and end at 0
     [SerializeField] private AnimationCurve m_rotationCurve; // should start and end at 0
 
+    [Header("Step Variables")]
     [SerializeField] private float m_maxFootHeight = 0.2f; // Max height ikTarget (foot) can reach
     [SerializeField] private float m_animationTime = 0.1f; // total animation time
     [SerializeField] private float m_AnimationFrameTime = 1 / 60.0f; // Increments of time that the animation is played by (default 60fps)
-
-    [SerializeField] private float m_maxDistFromTarget = 0.55f;
-    [SerializeField] private float m_maxRaycastDist = 7.0f;
+    [SerializeField] private float m_maxDistFromTarget = 0.55f; // maximum distance until step will occur
+    [SerializeField] private float m_maxRaycastDist = 7.0f; // Maximum raycast distance for checking for ground
     [SerializeField] private float m_footOvershoot = 0.55f / 2.0f; // Overshoot passed target along foot forward direction
     [SerializeField] private float m_footOffset = 0f; // offset of ikTarget away from the hit position Parallel to the normal
     [SerializeField] private int m_LayerInclude = 3; // Layer target for raycast
 
+    // TODO: fix naming violation
     public Vector3 m_currentPos { get; private set; }
     public Vector3 m_footUpDir { get; private set; }
     public Vector3 m_footForwardDir { get; private set; }
@@ -44,7 +50,7 @@ public class IKLeg : MonoBehaviour
 
     private void Awake()
     {
-        // convert layer to bitmask (invert to ONLY include selected layer)
+        // convert layer to bitmask
         m_LayerInclude = 1 << m_LayerInclude;
 
         if (stepTarget == null)
@@ -76,14 +82,12 @@ public class IKLeg : MonoBehaviour
         // If the distance gets too far, animate and move the foot
         if (!Animating && (DistFromTarget > m_maxDistFromTarget && Movable))
         {
-            // Debug.Log($"{gameObject.name} step");
             StartCoroutine(AnimateLeg());
             Movable = false;
         }
     }
 
 
-    // note that raycasthitPos may be recalculated if the movement is too slow (making the leg move furhter than expected)
     private IEnumerator AnimateLeg()
     {
         Animating = true;

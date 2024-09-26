@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Handles the spawning of Fire Prefabs
+/// </summary>
+
 public class FireSpawner : MonoBehaviour
 {
     [Tooltip("Holds the state of runtime varibales")]
@@ -34,7 +38,6 @@ public class FireSpawner : MonoBehaviour
     private int _numActiveFires;
     private Vector3 _spawnLocation;
     private float _timeToFire;
-    
     public bool canSpawnFires = false;
 
 
@@ -81,5 +84,10 @@ public class FireSpawner : MonoBehaviour
 
     private void DespawnFire() {
         _numActiveFires--;
+    }
+    
+    void OnDestroy()
+    {
+        FireComponent.FireDamageEvent -= amt=> DespawnFire();
     }
 }

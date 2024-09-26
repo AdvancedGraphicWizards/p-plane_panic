@@ -3,13 +3,20 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+/// <summary>
+/// Handles Spawning of Rings/Hoops in the game scene
+/// Uses object pooling to spawn scripts in front of the players
+/// </summary>
+
 public class RingSpawnScript : MonoBehaviour
 {
 
+    [Header("Component References")]
     [SerializeField] private GameObject _hoopPrefab;
     [SerializeField] private GameObject _superHoopPrefab;
     [SerializeField] private Transform m_planeLocation;
 
+    [Header("Spawning Variables")]
     [SerializeField] private float _distanceBetweenRings = 100f;
     [SerializeField] private float _increaseDistanceFactor = 10f;
     [SerializeField] private float _increaseOffsetFactor = 1f;
@@ -18,14 +25,18 @@ public class RingSpawnScript : MonoBehaviour
     [SerializeField] private float _baseHeight = 10f;
     [SerializeField] private float _baseHeightIncreaseFactor = 10f;
 
+    [Header("Object Pooling Variables")]
+    [SerializeField] private int m_backCullingDistance = 20;
+    [SerializeField] private int m_ringBatchingAmount = 50;
+
+
     // Random list of integers [-1,1] used for spawning
     private float[] _randomSeed = new float[200];
     private GameObject[] _hoopArray = new GameObject[50];
     private GameObject[] _superHoopArray = new GameObject[50];
     private float _zValue = 50f;
     private int m_currentBackPosition = 0;
-    [SerializeField] private int m_backCullingDistance = 20;
-    [SerializeField] private int m_ringBatchingAmount = 50;
+
 
 
     private void Start()
@@ -33,6 +44,7 @@ public class RingSpawnScript : MonoBehaviour
         InstantiateRings();
     }
 
+    // TODO: Add an object pooling system to place additional rings ahead of the player
     /**
     private void Awake()
     {
@@ -48,8 +60,8 @@ public class RingSpawnScript : MonoBehaviour
         }
     }
     **/
+    
 
-    // TODO: Add an object pooling system to place additional rings ahead of the player
     // Instantiate initial rings present
     private void InstantiateRings(){
         _zValue = _firstRingDistance;
