@@ -25,13 +25,6 @@ public class PlayerController : MonoBehaviour
     [Range(0f, 20f)]
     [SerializeField] private float m_walkingSpeed = 1.0f;
 
-    [Header("Player Grounded")]
-    [SerializeField] private float m_groundedOffset = 0.4f;
-    [Tooltip("The radius of the grounded check. Should match the radius of the CharacterController")]
-    [SerializeField] private float m_groundedRadius = 0.5f;
-    [Tooltip("What layers the character uses as ground")]
-    [SerializeField] private LayerMask m_groundLayers;
-
     // Player movement data
     private Transform m_offsetTransform;
     private Vector3 relativePos;

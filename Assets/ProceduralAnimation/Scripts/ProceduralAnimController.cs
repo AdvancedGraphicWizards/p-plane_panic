@@ -28,7 +28,7 @@ public class ProceduralAnimController : MonoBehaviour
     [SerializeField] private float m_idleBouncePeriod = 1f;
     [SerializeField] private float m_idleTime = 1f;
     [SerializeField] private float m_lookTime = 1f;
-    [SerializeField] private float m_idleGlanceAngleRange = 45f;
+    // [SerializeField] private float m_idleGlanceAngleRange = 45f;
 
     [Header("Raycast Variables")]
     [SerializeField] private int m_LayerInclude = 3; // Layer target for raycast
@@ -38,7 +38,7 @@ public class ProceduralAnimController : MonoBehaviour
     private float m_stepWaitTimer = 0.5f;
     private float m_idleTimer = 1f;
     private float m_lookTimer = 1f;
-    private float m_idleGlanceAngle = 0f;
+    // private float m_idleGlanceAngle = 0f;
     private int stepOrder = 1;
 
     private Vector3 m_bodyPos;

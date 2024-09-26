@@ -23,6 +23,8 @@ public class FireSpawner : MonoBehaviour
 
     [SerializeField] private float _timeToFirstFire;
     [SerializeField] private float _timeBetweenFireSpawns;
+    [SerializeField] private float _timeBetweenSpawnDecrease = 1f;
+    [SerializeField] private float _minTimeBetweenFireSpawns = 5f;
     [Tooltip("Maximum Fires that can occur at once")]
     [SerializeField] private int _maxFires;
 
@@ -62,7 +64,16 @@ public class FireSpawner : MonoBehaviour
         if (_timeToFire <= 0) {
             SpawnFire();
 
+            // Reduce time between fire spawns
+            if (_timeBetweenFireSpawns >= _minTimeBetweenFireSpawns) {
+                _timeBetweenFireSpawns -= _timeBetweenSpawnDecrease;
+            }
+            else {
+                _timeBetweenFireSpawns = _minTimeBetweenFireSpawns;
+            }
+            
             _timeToFire = _timeBetweenFireSpawns;
+
         }
 
         _timeToFire -= Time.deltaTime;

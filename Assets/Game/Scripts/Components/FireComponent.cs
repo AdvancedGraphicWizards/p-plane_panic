@@ -22,7 +22,7 @@ public class FireComponent : MonoBehaviour
     [Tooltip("Time to burn and deal damage to the plane")]
     [SerializeField] private float _timeToDamage = 10f;
     [Tooltip("Time to extinguish fire with correct number of players")]
-    [SerializeField] private float _timeToExtinguish = 1f;
+    [SerializeField] private float _timeToExtinguish = 1.5f;
     [Tooltip("Damage dealt to fuel when burntimer runs out")]
     [SerializeField] private float _fireFuelDamage = -10;
 
@@ -92,7 +92,7 @@ public class FireComponent : MonoBehaviour
     private void FireExtinguish() {
         Debug.Log("FireExtinguish!");
         m_SoundManager.PlayOneShotRandomPitch("fireExtinguish",0.05f);
-        FireDamageEvent?.Invoke(-_fireFuelDamage); // gain fuel on success? (Should use its own event)
+        FireDamageEvent?.Invoke(-_fireFuelDamage/2); // gain fuel on success? (Should use its own event)
         Destroy(gameObject);
     }
 
