@@ -2562,6 +2562,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1096363641607154432, guid: dc102d888e8414b7a88b8e37bdf42f88,
         type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: c4b0f27faf5318b45bf9279a72a5ace7,
+        type: 2}
+    - target: {fileID: 1096363641607154432, guid: dc102d888e8414b7a88b8e37bdf42f88,
+        type: 3}
       propertyPath: m_fontStyle
       value: 19
       objectReference: {fileID: 0}
@@ -2582,6 +2588,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1096363641607154432, guid: dc102d888e8414b7a88b8e37bdf42f88,
         type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 6202095741065832247, guid: c4b0f27faf5318b45bf9279a72a5ace7,
+        type: 2}
+    - target: {fileID: 1096363641607154432, guid: dc102d888e8414b7a88b8e37bdf42f88,
+        type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4294967295
       objectReference: {fileID: 0}
@@ -2589,6 +2601,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_HorizontalAlignment
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1096363641607154432, guid: dc102d888e8414b7a88b8e37bdf42f88,
+        type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1858259251091903911, guid: dc102d888e8414b7a88b8e37bdf42f88,
         type: 3}
@@ -3675,6 +3692,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1096363641607154432, guid: dc102d888e8414b7a88b8e37bdf42f88,
         type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: c4b0f27faf5318b45bf9279a72a5ace7,
+        type: 2}
+    - target: {fileID: 1096363641607154432, guid: dc102d888e8414b7a88b8e37bdf42f88,
+        type: 3}
+      propertyPath: m_fontStyle
+      value: 19
+      objectReference: {fileID: 0}
+    - target: {fileID: 1096363641607154432, guid: dc102d888e8414b7a88b8e37bdf42f88,
+        type: 3}
       propertyPath: m_fontColor.b
       value: 1
       objectReference: {fileID: 0}
@@ -3690,6 +3718,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1096363641607154432, guid: dc102d888e8414b7a88b8e37bdf42f88,
         type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 6202095741065832247, guid: c4b0f27faf5318b45bf9279a72a5ace7,
+        type: 2}
+    - target: {fileID: 1096363641607154432, guid: dc102d888e8414b7a88b8e37bdf42f88,
+        type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4294967295
       objectReference: {fileID: 0}
@@ -3702,6 +3736,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_HorizontalAlignment
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1096363641607154432, guid: dc102d888e8414b7a88b8e37bdf42f88,
+        type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1858259251091903911, guid: dc102d888e8414b7a88b8e37bdf42f88,
         type: 3}
