@@ -2859,6 +2859,71 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5762393844600401132, guid: 18de40225c9664fbf9e47ffa3263a0a9,
         type: 3}
+      propertyPath: fuelStatesColor.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5762393844600401132, guid: 18de40225c9664fbf9e47ffa3263a0a9,
+        type: 3}
+      propertyPath: fuelStatesColor.Array.data[0].a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5762393844600401132, guid: 18de40225c9664fbf9e47ffa3263a0a9,
+        type: 3}
+      propertyPath: fuelStatesColor.Array.data[0].b
+      value: 0.7529412
+      objectReference: {fileID: 0}
+    - target: {fileID: 5762393844600401132, guid: 18de40225c9664fbf9e47ffa3263a0a9,
+        type: 3}
+      propertyPath: fuelStatesColor.Array.data[0].g
+      value: 0.8980392
+      objectReference: {fileID: 0}
+    - target: {fileID: 5762393844600401132, guid: 18de40225c9664fbf9e47ffa3263a0a9,
+        type: 3}
+      propertyPath: fuelStatesColor.Array.data[0].r
+      value: 0.101960786
+      objectReference: {fileID: 0}
+    - target: {fileID: 5762393844600401132, guid: 18de40225c9664fbf9e47ffa3263a0a9,
+        type: 3}
+      propertyPath: fuelStatesColor.Array.data[1].a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5762393844600401132, guid: 18de40225c9664fbf9e47ffa3263a0a9,
+        type: 3}
+      propertyPath: fuelStatesColor.Array.data[1].b
+      value: 0.101960786
+      objectReference: {fileID: 0}
+    - target: {fileID: 5762393844600401132, guid: 18de40225c9664fbf9e47ffa3263a0a9,
+        type: 3}
+      propertyPath: fuelStatesColor.Array.data[1].g
+      value: 0.6745098
+      objectReference: {fileID: 0}
+    - target: {fileID: 5762393844600401132, guid: 18de40225c9664fbf9e47ffa3263a0a9,
+        type: 3}
+      propertyPath: fuelStatesColor.Array.data[1].r
+      value: 0.8980392
+      objectReference: {fileID: 0}
+    - target: {fileID: 5762393844600401132, guid: 18de40225c9664fbf9e47ffa3263a0a9,
+        type: 3}
+      propertyPath: fuelStatesColor.Array.data[2].a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5762393844600401132, guid: 18de40225c9664fbf9e47ffa3263a0a9,
+        type: 3}
+      propertyPath: fuelStatesColor.Array.data[2].b
+      value: 0.101960786
+      objectReference: {fileID: 0}
+    - target: {fileID: 5762393844600401132, guid: 18de40225c9664fbf9e47ffa3263a0a9,
+        type: 3}
+      propertyPath: fuelStatesColor.Array.data[2].g
+      value: 0.24313726
+      objectReference: {fileID: 0}
+    - target: {fileID: 5762393844600401132, guid: 18de40225c9664fbf9e47ffa3263a0a9,
+        type: 3}
+      propertyPath: fuelStatesColor.Array.data[2].r
+      value: 0.8980392
+      objectReference: {fileID: 0}
+    - target: {fileID: 5762393844600401132, guid: 18de40225c9664fbf9e47ffa3263a0a9,
+        type: 3}
       propertyPath: Response.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -4223,6 +4288,7 @@ GameObject:
   - component: {fileID: 1287423832}
   - component: {fileID: 1287423831}
   - component: {fileID: 1287423830}
+  - component: {fileID: 1287423834}
   m_Layer: 5
   m_Name: HUD
   m_TagString: Untagged
@@ -4314,6 +4380,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1287423834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1287423829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6fc91fb550754b6f931a10e7da96154, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1365206188
 GameObject:
   m_ObjectHideFlags: 0
