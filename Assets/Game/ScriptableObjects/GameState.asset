@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: GameState
   m_EditorClassIdentifier: 
   HasStarted: 1
-  OutOfFuel: 1
+  OutOfFuel: 0
