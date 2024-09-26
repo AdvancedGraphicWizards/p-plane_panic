@@ -10342,7 +10342,7 @@ MonoBehaviour:
     type: 3}
   _targetParent: {fileID: 42121510}
   m_fireSpawnBounds: {x: 6, y: 1}
-  _timeToFirstFire: 40
+  _timeToFirstFire: 60
   _timeBetweenFireSpawns: 20
   _timeBetweenSpawnDecrease: 1
   _minTimeBetweenFireSpawns: 8
