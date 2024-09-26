@@ -99,6 +99,7 @@ MonoBehaviour:
   characterMesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
   shellFurShader: {fileID: 4800000, guid: f749168654fa64f078d34757711fbb85, type: 3}
   featherSettings: {fileID: 11400000, guid: adc17387ed682430e9edf74a2bf7b95e, type: 2}
+  featherColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &645905607212970512
 GameObject:
   m_ObjectHideFlags: 0
@@ -5579,7 +5580,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  - {fileID: 6202095741065832247, guid: c4b0f27faf5318b45bf9279a72a5ace7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5623,8 +5624,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: Name
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c4b0f27faf5318b45bf9279a72a5ace7, type: 2}
+  m_sharedMaterial: {fileID: 6202095741065832247, guid: c4b0f27faf5318b45bf9279a72a5ace7,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5654,7 +5656,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 33
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -6376,8 +6378,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0dcae48b81e9295488de9e81b303c3cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_colorTargets:
-  - {fileID: 4225616431840572397}
+  feathersController: {fileID: 9015959667424022736}
 --- !u!114 &3209417517646439914
 MonoBehaviour:
   m_ObjectHideFlags: 0

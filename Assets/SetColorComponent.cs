@@ -8,13 +8,10 @@ using UnityEngine;
 
 public class SetColorComponent : MonoBehaviour
 {
-    [SerializeField] private Renderer[] m_colorTargets;
+    [SerializeField] private FeathersController feathersController;
 
-    public void SetColor(Color color) {
-        foreach (Renderer target in m_colorTargets) {
-            if (target.material != null)
-                target.material.SetColor("_BaseColor", color);
-            else Debug.LogError("Targeted Renderer has no material");
-        }
+    public void SetColor(Color color)
+    {
+        feathersController.featherColor = color;
     }
 }

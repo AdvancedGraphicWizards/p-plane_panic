@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Timeline;
 
 /// <summary>
 /// Controls the movement of a  Player Character
@@ -38,13 +34,25 @@ public class PlayerController : MonoBehaviour
             m_weightComponent = GetComponent<WeightComponent>();
 
         m_characterController.detectCollisions = true;
+
+        // TEMPORARY: Find the platform object and set the offset to its position
+        if (m_offsetTransform == null)
+        {
+            if (GameObject.Find("Plane") != null)
+            {
+                m_offsetTransform = GameObject.Find("Plane").transform;
+                InitPlayerPosition();
+            }
+        }
     }
 
     private void FixedUpdate()
-    {   
+    {
         // TEMPORARY: Find the platform object and set the offset to its position
-        if (m_offsetTransform == null) {
-            if (GameObject.Find("Plane") != null) {
+        if (m_offsetTransform == null)
+        {
+            if (GameObject.Find("Plane") != null)
+            {
                 m_offsetTransform = GameObject.Find("Plane").transform;
             }
         }
@@ -68,6 +76,18 @@ public class PlayerController : MonoBehaviour
         relativePos += m_currentMovementVector;
         relativePos.x = Mathf.Clamp(relativePos.x, -_platformData.BoundsX, _platformData.BoundsX);
         relativePos.z = Mathf.Clamp(relativePos.z, -_platformData.BoundsY, _platformData.BoundsY);
+        transform.position = m_offsetTransform.position + relativePos.x * m_offsetTransform.right + relativePos.z * m_offsetTransform.forward + m_offsetTransform.up * 0.5f;
+    }
+
+    public void InitPlayerPosition()
+    {
+        float boundX = _platformData.BoundsX * 0.9f;
+        float boundY = _platformData.BoundsY * 0.9f;
+
+        relativePos.x = Random.Range(-boundX, boundX);
+        relativePos.z = Random.Range(-boundY, boundY);
+        relativePos.y = 0;
+
         transform.position = m_offsetTransform.position + relativePos.x * m_offsetTransform.right + relativePos.z * m_offsetTransform.forward + m_offsetTransform.up * 0.5f;
     }
 

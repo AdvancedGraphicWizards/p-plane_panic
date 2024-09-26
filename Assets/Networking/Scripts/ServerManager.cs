@@ -37,6 +37,8 @@ public class ServerManager : Singleton<ServerManager>
     [SerializeField] private IntVariable m_connectedPlayersSO;
     [Tooltip("Holds the Color Manager Scriptable Object.")]
     [SerializeField] private ColorManager m_colorManager;
+    [Tooltip("Holds the Scene Switcher Scriptable Object.")]
+    [SerializeField] private SceneSwitcher m_sceneSwitcher;
 
     // Setup
     private async void Start()
@@ -61,7 +63,7 @@ public class ServerManager : Singleton<ServerManager>
         NetworkManager.Singleton.OnServerStopped += OnServerStopped;
 
         // Switch to next scene.
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        m_sceneSwitcher.SwitchToIntro();
     }
 
     // Get the game code
@@ -149,6 +151,22 @@ public class ServerManager : Singleton<ServerManager>
         if (m_playersSO.players.ContainsKey(clientID))
         {
             OnPlayerDisconnect?.Invoke(m_playersSO.players[clientID]);
+        }
+    }
+
+    public void DisconnectAllPlayers()
+    {
+        // Create a copy of the connected client IDs to avoid modifying the collection during iteration
+        List<ulong> clientIDs = new List<ulong>(NetworkManager.Singleton.ConnectedClients.Keys);
+
+        foreach (ulong clientID in clientIDs)
+        {
+            // Ensure we are not disconnecting the server itself
+            if (clientID != NetworkManager.Singleton.LocalClientId)
+            {
+                DisconnectPlayer(clientID);
+            }
+            else Debug.Log("Avoiding disconnecting server.");
         }
     }
 

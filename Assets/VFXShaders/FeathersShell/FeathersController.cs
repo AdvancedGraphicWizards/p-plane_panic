@@ -7,6 +7,7 @@ public class FeathersController : MonoBehaviour
     public Mesh characterMesh;
     public Shader shellFurShader;
     public FeatherSettings featherSettings;
+    public Color featherColor;
     
     //private:
     private GameObject[] shells;
@@ -25,6 +26,7 @@ public class FeathersController : MonoBehaviour
         }
 
         characterMesh = GetComponent<MeshFilter>().mesh;
+        featherColor = featherSettings.shellColor;
     }
 
     private void OnEnable()
@@ -122,7 +124,7 @@ public class FeathersController : MonoBehaviour
         material.SetFloat("_OcclusionBias", featherSettings.occlusionBias);
         material.SetFloat("_NoiseMin", featherSettings.noiseMin);
         material.SetFloat("_NoiseMax", featherSettings.noiseMax);
-        material.SetVector("_ShellColor", featherSettings.shellColor);
+        material.SetVector("_ShellColor", featherColor);
 
         //TODO WIP wind
         material.SetVector("_WindDirection", windDirection);
