@@ -20,7 +20,8 @@ public class FuelController : MonoBehaviour
 
     [Tooltip("Scriptable Object of type UIntVariable, named Fuel")]
     [SerializeField] private UIntVariable m_currentFuel;
-    [SerializeField] private float[] fuelColorBreakPoints = new float[] { 0.3f, 0.5f };
+    [SerializeField] private float[] fuelBreakPoints = new float[] { 0.3f, 0.5f };
+    [SerializeField] private Color[] fuelStatesColor;
 
     private void Awake()
     {
@@ -69,13 +70,14 @@ public class FuelController : MonoBehaviour
     }
     public void UpdateColor()
     {
+        if(fuelStatesColor.Length == 0) return;
         float normalizedValue = m_fuel / m_startingFuel;
-        if (normalizedValue < fuelColorBreakPoints[0])
-            m_fuelImage.color = Color.red;
-        else if (normalizedValue < fuelColorBreakPoints[1])
-            m_fuelImage.color = Color.yellow;
+        if (normalizedValue < fuelBreakPoints[0])
+            m_fuelImage.color = fuelStatesColor[2];//Color.red;
+        else if (normalizedValue < fuelBreakPoints[1])
+            m_fuelImage.color = fuelStatesColor[1];//Color.yellow;
         else
-            m_fuelImage.color = Color.green;
+            m_fuelImage.color = fuelStatesColor[0];//Color.green;
 
     }
 
