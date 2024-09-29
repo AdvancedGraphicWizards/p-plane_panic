@@ -10,7 +10,6 @@ public class EventTestCaller : ScriptableObject {
     [SerializeField] private UnityEvent e;
 
     public void Call() {
-        Debug.Log("HELLO");
         e?.Invoke();
     }
 }

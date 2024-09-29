@@ -39,8 +39,8 @@ public class FuelParticleManager : MonoBehaviour
         for (int i = 0; i < pSystem.particleCount; i++) {
             ParticleSystem.Particle p = particles[i];
 
-            Vector3 particlePos = transform.position + p.position;
-            Vector3 particleTargetPos = particleTarget.position;
+            Vector3 particlePos = p.position;
+            Vector3 particleTargetPos = particleTarget.localPosition;
 
             float passedTime = p.startLifetime - p.remainingLifetime;
             if (passedTime > delay ) {

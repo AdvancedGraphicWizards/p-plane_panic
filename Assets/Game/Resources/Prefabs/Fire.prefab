@@ -789,6 +789,7 @@ MonoBehaviour:
   _fireRenderer: {fileID: 5742797756121234883}
   m_SoundManager: {fileID: 11400000, guid: 7cd1bd6edca55df43b3a34c2ede55fe0, type: 2}
   m_connectedPlayers: {fileID: 11400000, guid: ae9d5a0c5b7af3444b19b63b9102829e, type: 2}
+  OnFireBurn: {fileID: 11400000, guid: 745ed9e5d3e3841bf81ac330c686c759, type: 2}
 --- !u!135 &4782570120473795115
 SphereCollider:
   m_ObjectHideFlags: 0
