@@ -29,6 +29,7 @@ public class HoopScript : MonoBehaviour
     private Animation _ringCollectAnim;
 
     public static event Action<float> OnRingEnter;
+    [SerializeField] private FloatEvent OnEnterRing;
 
     void Awake()
     {
@@ -40,6 +41,7 @@ public class HoopScript : MonoBehaviour
         if (other.gameObject.CompareTag(_playerTag)){
             m_soundManager.PlayOneShotRandomPitch("ringPickup",0.1f);
             OnRingEnter?.Invoke(_fuelRecoverAmount);
+            OnEnterRing?.Raise(_fuelRecoverAmount);
             StartCoroutine(Deactivate());
         }
     }

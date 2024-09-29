@@ -80,10 +80,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 750f8a48bd3c7da419fa16bd5c321262, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerTag: Plane
-  _deactivationTimer: 0.5
   _fuelRecoverAmount: 40
+  _deactivationTimer: 0.5
+  _playerTag: Plane
   m_soundManager: {fileID: 11400000, guid: 7cd1bd6edca55df43b3a34c2ede55fe0, type: 2}
+  OnEnterRing: {fileID: 11400000, guid: 7bcb758ebf0ff46ec8196115e4a5ea50, type: 2}
 --- !u!111 &9217632433368541588
 Animation:
   m_ObjectHideFlags: 0
