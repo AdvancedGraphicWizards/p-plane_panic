@@ -44,6 +44,7 @@ GameObject:
   - component: {fileID: 2665864209145159676}
   - component: {fileID: 9217632433368541588}
   - component: {fileID: 665439346002654902}
+  - component: {fileID: 1784621468136530589}
   m_Layer: 0
   m_Name: Target
   m_TagString: Untagged
@@ -128,6 +129,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1784621468136530589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2820548137086030269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dee98417fd7f991419bf002596f07f1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_circleRadius: 1
+  m_objectQuantity: 10
+  m_rotationOffset: 0
+  m_circleOffset: {x: 0, y: 0, z: 0}
+  m_rotates: 0
+  m_rotationPeriod: 1
+  m_targetParent: {fileID: 4472158943785874160}
+  m_circleObjectPrefab: {fileID: 8166320131059289347, guid: 844e66ea8931b424d92282cb67f9bed1,
+    type: 3}
 --- !u!1 &4204332739827296372
 GameObject:
   m_ObjectHideFlags: 0
