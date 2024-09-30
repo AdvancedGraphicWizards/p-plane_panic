@@ -16,6 +16,9 @@ public class ClientUI : Singleton<ClientUI>
     [Tooltip("UI Element that shows the player color, can be an image or a the background.")]
     [SerializeField] private Image m_playerColorObject;
     [SerializeField] private TMP_Text m_playerNameText;
+    [SerializeField] private TMP_Text m_debugPingText;
+    [SerializeField] private TMP_Text m_debugInputText;
+    [SerializeField] private TMP_Text m_debugWakeLockText;
 
     [Header("Connection Variables")]
     public string playerName = "Player";
@@ -52,7 +55,14 @@ public class ClientUI : Singleton<ClientUI>
 
     private void Start()
     {
-        if (SystemInfo.supportsGyroscope) Input.gyro.enabled = true;
+        if (SystemInfo.supportsGyroscope)
+        {
+            Input.gyro.enabled = true;
+            m_debugInputText.text = $"Input: Gyro";
+        }
+
+        //UNUSED
+        m_debugWakeLockText.text = "";
     }
 
     public void JoinGame()
@@ -115,6 +125,11 @@ public class ClientUI : Singleton<ClientUI>
     {
         m_playerColor = newColor;
         m_playerColorObject.material.SetColor("_BaseColor", m_playerColor);
+    }
+
+    public void UpdatePing(float newPing)
+    {
+        m_debugPingText.text = $"Ping: {newPing} ms";
     }
 
     public void Connect(string joinCode)

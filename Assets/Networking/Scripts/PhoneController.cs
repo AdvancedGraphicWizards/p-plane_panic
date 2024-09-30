@@ -13,6 +13,10 @@ public class PhoneController : NetworkBehaviour
     [SerializeField] private string m_joinCode;
     [SerializeField] private string m_playerName = "Player";
 
+    // RTT intervals
+    private float rttUpdateInterval = 1.0f;
+    private float lastRttUpdateTime = 0.0f;
+
     // Network phone controller variables
     public NetworkVariable<Quaternion> m_rotation = new NetworkVariable<Quaternion>(
         Quaternion.identity,
@@ -92,6 +96,12 @@ public class PhoneController : NetworkBehaviour
             accelerometerInput = Vector3.Lerp(accelerometerInput, Input.acceleration, 0.1f);
             m_rotation.Value = Quaternion.Euler(new Vector3(accelerometerInput.y, 0, -accelerometerInput.x) * 90);
         }
+
+        if (Time.time - lastRttUpdateTime >= rttUpdateInterval)
+        {
+            UpdatePing();
+            lastRttUpdateTime = Time.time;
+        }
     }
 
     public Quaternion GetRotation()
@@ -112,6 +122,15 @@ public class PhoneController : NetworkBehaviour
     public void SetColor(Color color)
     {
         playerColor.Value = color;
+    }
+
+    // Ping is actually super complicated to get properly, we can get it once
+    // but client-side without any libraries this is as good as it gets.
+    // TODO: Take a look at adding PingTool from Unity.
+    private void UpdatePing()
+    {
+        ClientUI.Instance.UpdatePing(NetworkManager.Singleton.NetworkConfig.NetworkTransport.GetCurrentRtt(NetworkManager.ServerClientId));
+        Debug.Log($"Ping: {NetworkManager.Singleton.NetworkConfig.NetworkTransport.GetCurrentRtt(NetworkManager.ServerClientId)} ms");
     }
 
     // Callback for handling unexpected disconnections
