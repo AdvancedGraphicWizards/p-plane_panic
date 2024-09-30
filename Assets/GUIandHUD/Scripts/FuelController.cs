@@ -90,9 +90,9 @@ public class FuelController : MonoBehaviour
     [SerializeField] private FloatEvent OnAddFuel;
     void OnEnable()
     {
-        //HoopScript.OnRingEnter += fuel_amt => UpdateFuel(fuel_amt);
         OnAddFuel.Subscribe(UpdateFuel);
-        FireComponent.FireDamageEvent += fuel_amt => UpdateFuel(fuel_amt);
+        //HoopScript.OnRingEnter += fuel_amt => UpdateFuel(fuel_amt);
+        // FireComponent.FireDamageEvent += fuel_amt => UpdateFuel(fuel_amt);
     }
     void OnDisable() {
         OnAddFuel.Unsubscribe(UpdateFuel);
