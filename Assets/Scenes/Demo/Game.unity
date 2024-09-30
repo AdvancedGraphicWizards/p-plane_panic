@@ -2480,7 +2480,7 @@ PrefabInstance:
     - target: {fileID: 146393932968581931, guid: 186aeba532eda4bbc989490962251f1b,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 146393932968581931, guid: 186aeba532eda4bbc989490962251f1b,
         type: 3}
@@ -2495,6 +2495,11 @@ PrefabInstance:
     - target: {fileID: 146393932968581931, guid: 186aeba532eda4bbc989490962251f1b,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 146393932968581931, guid: 186aeba532eda4bbc989490962251f1b,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Mode
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 146393932968581931, guid: 186aeba532eda4bbc989490962251f1b,
@@ -2516,6 +2521,11 @@ PrefabInstance:
         type: 2}
     - target: {fileID: 146393932968581931, guid: 186aeba532eda4bbc989490962251f1b,
         type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Target
+      value: 
+      objectReference: {fileID: 5825743805048188665}
+    - target: {fileID: 146393932968581931, guid: 186aeba532eda4bbc989490962251f1b,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
@@ -2527,6 +2537,11 @@ PrefabInstance:
     - target: {fileID: 146393932968581931, guid: 186aeba532eda4bbc989490962251f1b,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 146393932968581931, guid: 186aeba532eda4bbc989490962251f1b,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 146393932968581931, guid: 186aeba532eda4bbc989490962251f1b,
@@ -2546,6 +2561,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 146393932968581931, guid: 186aeba532eda4bbc989490962251f1b,
         type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_MethodName
+      value: ActivateLossOfControl
+      objectReference: {fileID: 0}
+    - target: {fileID: 146393932968581931, guid: 186aeba532eda4bbc989490962251f1b,
+        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: GameState, Assembly-CSharp
       objectReference: {fileID: 0}
@@ -2558,6 +2578,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_TargetAssemblyTypeName
       value: VoidEvent, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 146393932968581931, guid: 186aeba532eda4bbc989490962251f1b,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_TargetAssemblyTypeName
+      value: PlaneControllerFixed, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 146393932968581931, guid: 186aeba532eda4bbc989490962251f1b,
         type: 3}
@@ -2577,6 +2602,11 @@ PrefabInstance:
     - target: {fileID: 146393932968581931, guid: 186aeba532eda4bbc989490962251f1b,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[2].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 146393932968581931, guid: 186aeba532eda4bbc989490962251f1b,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[3].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 1204061970479886884, guid: 186aeba532eda4bbc989490962251f1b,
@@ -9461,12 +9491,12 @@ MonoBehaviour:
   - {fileID: 1805911612}
   - {fileID: 2111776013}
   - {fileID: 1424227907}
-  planeMovesInLobby: 0
   maxForwardSpeed: 20
   maxHorizontalSpeed: 10
   maxVerticalSpeed: 5
   acceleration: 1
   deacceleration: 1
+  startLossOfControlTime: 1.33
   rollSpeed: 1
   maxRoll: 40
   pitchSpeed: 1

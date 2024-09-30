@@ -26,14 +26,13 @@ public class PlaneControllerFixed : MonoBehaviour
 
 
     [Header("Plane Attributes")]
-    [Tooltip("Controls if the plane moves forward in the lobby.")]
-    [SerializeField] private bool planeMovesInLobby = false;
     [Tooltip("The Forward Speed is controll on a higher level via GameSettings scriptable object")]
     [SerializeField] private float maxForwardSpeed = 20f;
     [SerializeField] private float maxHorizontalSpeed = 10f;
     [SerializeField] private float maxVerticalSpeed = 10f;
     [SerializeField] private float acceleration = 1f;
     [SerializeField] private float deacceleration = 1f;
+    [SerializeField] private float startLossOfControlTime = 1.33f;
 
     [Header("Plane tilt Settings")]
     [SerializeField] private float rollSpeed = 1f;
@@ -60,6 +59,7 @@ public class PlaneControllerFixed : MonoBehaviour
     public int _isTurbo = 0;
     private float currentEngineSoundPitch = 0f;
     private bool m_recoverState = false;
+    private bool m_startLossOfControl = false;
 
     private void Start()
     {
@@ -81,15 +81,16 @@ public class PlaneControllerFixed : MonoBehaviour
         if (!gameStateSO)
             throw new NullReferenceException("Missing GameState");
 
-        gameStateSO.HasStarted = false; 
+        gameStateSO.HasStarted = false;
     }
 
     private void FixedUpdate()
     {
+
         if (!gameStateSO.OutOfFuel) AudioSystem(); // dont play engine sounds when out of fuel
-        if (!gameStateSO.HasStarted && planeMovesInLobby)
+        if (gameStateSO.HasStarted && m_startLossOfControl)
         {
-            // Make sure plane cannot move in lobby
+            // Make sure plane cannot move for the first few seconds
             currPitch = 0f;
             currRoll = 0f;
             MovePlane();
@@ -111,9 +112,11 @@ public class PlaneControllerFixed : MonoBehaviour
             currPitch = Mathf.Lerp(currPitch, maxPitch, pitchSpeed * Time.deltaTime);
 
             // If we are out of fuel disable blade rotation, exhuast particles and engineAudio
-            if (!m_recoverState) {
+            if (!m_recoverState)
+            {
                 m_bladeRotateAnim.Stop();
-                foreach (ParticleSystem ps in m_exhaustParticles) {
+                foreach (ParticleSystem ps in m_exhaustParticles)
+                {
                     ps.Stop();
                 }
                 m_recoverState = true;
@@ -126,9 +129,11 @@ public class PlaneControllerFixed : MonoBehaviour
             currPitch = Mathf.Lerp(currPitch, _weightManager.TotalPitchWeight * maxPitch, pitchSpeed * Time.deltaTime);
 
             // If we are recovering switch on all of the special effects
-            if (m_recoverState) {
+            if (m_recoverState)
+            {
                 m_bladeRotateAnim.Play();
-                foreach (ParticleSystem ps in m_exhaustParticles) {
+                foreach (ParticleSystem ps in m_exhaustParticles)
+                {
                     ps.Play();
                 }
                 m_recoverState = false;
@@ -164,6 +169,18 @@ public class PlaneControllerFixed : MonoBehaviour
         maxVerticalSpeed -= _turboSpeed;
         currentEngineSoundPitch = defaultSoundPitch;
         _isTurbo--;
+    }
+
+    public void ActivateLossOfControl()
+    {
+        StartCoroutine(InitialLossOfControl());
+    }
+
+    private IEnumerator InitialLossOfControl()
+    {
+        m_startLossOfControl = true;
+        yield return new WaitForSeconds(startLossOfControlTime);
+        m_startLossOfControl = false;
     }
 
     // Update speed values according to current roll and pitch
