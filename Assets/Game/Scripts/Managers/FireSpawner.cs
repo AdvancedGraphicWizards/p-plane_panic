@@ -96,6 +96,7 @@ public class FireSpawner : MonoBehaviour
     private void DespawnFire() {
         _numActiveFires--;
     }
+
     
     void OnDestroy()
     {
