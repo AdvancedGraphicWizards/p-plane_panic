@@ -10174,6 +10174,7 @@ GameObject:
   - component: {fileID: 8120440645441756921}
   - component: {fileID: 8120440645441756922}
   - component: {fileID: 8120440645441756923}
+  - component: {fileID: 8120440645441756924}
   m_Layer: 0
   m_Name: Plane
   m_TagString: Plane
@@ -10379,6 +10380,20 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   terrainTag: Terrain
+--- !u!114 &8120440645441756924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8120440645441756918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63d5bafb6970d8747abaa1625e3cf8c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameStateSO: {fileID: 11400000, guid: 85360dc2073a049ff8bf7a5f7c97d427, type: 2}
+  m_flightDistance: {fileID: 11400000, guid: 1ce9882a30619415199defa030be7462, type: 2}
 --- !u!1 &8163371137845440395
 GameObject:
   m_ObjectHideFlags: 0
