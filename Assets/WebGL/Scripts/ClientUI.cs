@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Runtime.InteropServices;
 using TMPro;
 using Unity.Netcode;
@@ -24,6 +25,7 @@ public class ClientUI : Singleton<ClientUI>
     public string playerName = "Player";
     [SerializeField] private Color m_playerColor = new Color(0.5235849f, 1.0f, 0.6483989f);
     [SerializeField] private bool m_isConnected = false;
+    [SerializeField] private bool m_canConnect = true;
 
     [DllImport("__Internal")]
     private static extern void RequestWakeLock();
@@ -92,9 +94,31 @@ public class ClientUI : Singleton<ClientUI>
 
         Debug.Log($"Attempting to join game with code {code} as {name}");
 
-        //phoneController.SetName(name);
-        m_playerNameText.text = playerName = name;
-        Connect(code);
+        // Set canConnect to false and start the coroutine to reset it
+        if (m_canConnect)
+        {
+            m_canConnect = false;
+            m_playerNameText.text = playerName = name;
+            StartCoroutine(ResetCanConnect());
+            Connect(code);
+        }
+        else
+        {
+            Debug.Log("Already attempting to connect, please wait.");
+        }
+    }
+
+    private IEnumerator ResetCanConnect()
+    {
+        // Wait for 3 seconds or connection success
+        float elapsedTime = 0f;
+        while (elapsedTime < 3f && !m_isConnected)
+        {
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        m_canConnect = true;
     }
 
     public void IsConnected(bool connectionStatus)
@@ -109,7 +133,8 @@ public class ClientUI : Singleton<ClientUI>
 
             if (m_isConnected)
             {
-                // Do something
+                m_canConnect = true; // Ensure we can connect again if disconnected later
+                StopCoroutine(ResetCanConnect());
             }
 
             else
