@@ -8,7 +8,8 @@ public class PlayerNameComponent : MonoBehaviour
     [SerializeField] private TMP_Text m_playerNameText;
     [SerializeField] private string m_playerName = "Player";
     [Header("Locally Scoped Members")]
-    [SerializeField] private PlayerData m_playerData;
+    [SerializeField] private Players m_playersSO;
+    [SerializeField] private ulong m_playerID;
     [SerializeField] private PhoneController m_phoneController;
 
 
@@ -21,7 +22,8 @@ public class PlayerNameComponent : MonoBehaviour
     }
 
     private void SetPlayerName() {
-        m_playerNameText.text = m_playerName = m_playerData.playerName = m_phoneController.GetName();
+        m_playerNameText.text = m_playerName = m_phoneController.GetName();
+        m_playersSO.UpdatePlayerName(m_playerName, m_playerID);
     }
 
     private void OnDestroy()
@@ -29,9 +31,10 @@ public class PlayerNameComponent : MonoBehaviour
         ServerManager.OnPlayerName -= name => SetPlayerName();
     }
 
-    public void AssignPlayerData(PlayerData playerData)
+    public void AssignPlayerData(Players players_SO, ulong playerID)
     {
-        m_playerData = playerData;
+        m_playersSO = players_SO;
+        m_playerID = playerID;
     }
 
     public void AssignPhoneController(PhoneController phoneController)
