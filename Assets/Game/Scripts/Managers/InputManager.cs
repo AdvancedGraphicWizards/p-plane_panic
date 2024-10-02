@@ -4,6 +4,13 @@ using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
+    public enum ControlMode
+    {
+        Default,
+        Landscape,
+        Portrait
+    }
+
     [Header("Locally Scoped Members")]
     [SerializeField] private PhoneController m_phoneController;
 
@@ -11,6 +18,11 @@ public class InputManager : MonoBehaviour
     [Tooltip("Low pass factor, higher values make movement more responsive but add jitter from the gyroscope.")]
     [SerializeField] private float lowPassFactor = 0.1f;
     public Vector2 Direction = Vector2.zero;
+    public Vector3 euler = Vector3.zero;
+
+    [Header("Control Mode")]
+    [Tooltip("Select the control mode: Default (used in the FF demo), Landscape (two-handed) or Portrait (one-handed, held vertically).")]
+    [SerializeField] private ControlMode m_controlMode = ControlMode.Default;
 
     void FixedUpdate()
     {
@@ -26,15 +38,28 @@ public class InputManager : MonoBehaviour
 
     private Vector2 GetMovementFromRotation(Quaternion rotation)
     {
-        Vector3 euler = rotation.eulerAngles;
+        if (m_controlMode == ControlMode.Portrait)
+        {
+            // TODO: Fix this, doesn't register rotation properly
+            // because the Y-axis shifts when we rotate along the X-axis
+            // rotation = Quaternion.Euler(0, 0, 90) * rotation;
+        }
+
+        euler = rotation.eulerAngles;
         float tiltX = (euler.x > 180) ? euler.x - 360 : euler.x; // Tilt forward/backward
         float tiltZ = (euler.z > 180) ? euler.z - 360 : euler.z; // Tilt left/right
 
-        // Normalize the tilts to the range -1 to 1 for movement
+        // Normalise the tilts to the range -1 to 1 for movement
         tiltX = Mathf.Clamp(tiltX, -45, 45) / 45f;
         tiltZ = Mathf.Clamp(tiltZ, -45, 45) / 45f;
 
         Vector2 movement = new Vector2(tiltZ, -tiltX);
+
+        if (m_controlMode == ControlMode.Landscape)
+        {
+            movement = new Vector2(tiltX, tiltZ);
+        }
+
         return movement;
     }
 
