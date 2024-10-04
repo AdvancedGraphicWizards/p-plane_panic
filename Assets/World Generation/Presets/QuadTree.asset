@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a83046757a8c753408bb84b4a3ff167e, type: 3}
+  m_Name: QuadTree
+  m_EditorClassIdentifier: 
+  seedX: 35432
+  seedZ: 17368
+  octaves:
+  - scale: 0.4
+    amplitude: 1
+    enabled: 1
+  - scale: 0.04
+    amplitude: 4
+    enabled: 1
+  - scale: 0.004
+    amplitude: 30
+    enabled: 1
+  - scale: 0.002
+    amplitude: 90
+    enabled: 1
+  - scale: 0.0004
+    amplitude: 300
+    enabled: 1
+  vertexDistance: 16
+  vertexCount: 16
+  levelsOfDetail: 9
+  material: {fileID: 2100000, guid: 0641acfe95e583a4fa73ff047e07dd60, type: 2}
