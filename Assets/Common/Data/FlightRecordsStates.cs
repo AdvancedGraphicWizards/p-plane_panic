@@ -30,9 +30,10 @@ public class FlightRecordsStates : ScriptableObject
         }
     }
 
+    //TODO is 
     public bool AddNewRecord(float distance, string names)
     {
-        Debug.Log("Distance: " + distance + " | Team name: " + names);
+        Debug.Log("AddNewRecord() -> Distance: " + distance + " | Team name: " + names);
         //Early return
         if (distance < m_shortestDistance && m_flightRecords.Count == MAX_RECORDS)
             return false;

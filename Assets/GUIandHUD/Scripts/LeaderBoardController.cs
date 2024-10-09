@@ -12,6 +12,10 @@ public class LeaderBoardController : MonoBehaviour
     private void Awake()
     {
         m_flightRecordGUI = GetComponentsInChildren<FlightRecordGUIController>();
+        for (int i = 0; i < m_flightRecordGUI.Length; i++)
+        {
+            m_flightRecordGUI[i].gameObject.SetActive(false);
+        }
         UpdateFigthsRecordsGUI();
     }
 
@@ -24,9 +28,10 @@ public class LeaderBoardController : MonoBehaviour
         int index = 0;
         while (IFlighRecord.MoveNext() != false)
         {
-            //Debug.Log(IFlighRecord.Current.m_distance + " " + IFlighRecord.Current.m_names);
+            Debug.Log("Index: " + index + " : " + IFlighRecord.Current.m_names + " = " + IFlighRecord.Current.m_distance );
             m_flightRecordGUI[index].Names.text = IFlighRecord.Current.m_names;
             m_flightRecordGUI[index].Score.text = IFlighRecord.Current.m_distance.ToString();
+            m_flightRecordGUI[index].gameObject.SetActive(true);
             index++;
         }
     }
