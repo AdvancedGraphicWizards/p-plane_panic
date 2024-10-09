@@ -11,6 +11,7 @@ public class LeaderBoardController : MonoBehaviour
 
     private void Awake()
     {
+        m_flightRecordsStates.LoadRecords();
         m_flightRecordGUI = GetComponentsInChildren<FlightRecordGUIController>();
         for (int i = 0; i < m_flightRecordGUI.Length; i++)
         {
@@ -35,5 +36,4 @@ public class LeaderBoardController : MonoBehaviour
             index++;
         }
     }
-
 }

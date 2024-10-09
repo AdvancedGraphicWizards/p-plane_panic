@@ -87,13 +87,13 @@ public class LobbyController : MonoBehaviour
 
         UpdatePlayerCounter();
     }
-    //Leader board
+
+    //Leaderboard
     public void UpdateLeaderBoard()
     {
         Debug.Log("======= Updating leaderboard!");
         m_flightRecordsStates.AddNewRecord(m_flightDistance.Value, m_playersSO.playerTeamName);
     }
-    //
 
     private void DisplayGameCode(string gameCode)
     {
@@ -103,8 +103,6 @@ public class LobbyController : MonoBehaviour
     private void UpdatePlayerCounter()
     {
         m_playerCounter.text = m_connectedPlayersSO.Value + "/9";
-
-        Debug.Log("=====> TEAM NAME: " + m_playersSO.playerTeamName);
     }
 
     private void OnDestroy()

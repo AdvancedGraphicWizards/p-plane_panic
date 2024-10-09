@@ -1,28 +1,32 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using System.Linq;
 
 [CreateAssetMenu(fileName = "FlightRecordsStates", menuName = "ScriptableObject/Data/FlightRecordsStates")]
 public class FlightRecordsStates : ScriptableObject
 {
-    [SerializeField] private LinkedList<FlightRecord> m_flightRecords = new LinkedList<FlightRecord>();
-    public LinkedList<FlightRecord> FlightRecords { get => m_flightRecords;}
-    [SerializeField] private int m_records;
+    [SerializeField] private List<FlightRecord> m_flightRecords = new List<FlightRecord>();
+    public List<FlightRecord> FlightRecords { get => m_flightRecords; }
     private const int MAX_RECORDS = 3;
     [SerializeField] private float m_shortestDistance;
     [SerializeField] private float m_longestDistance;
+    private const string SaveKey = "FlightRecords_SaveKey";
 
-    public void Init() // Use this is you want to reset the leader board
+    // Reset the leaderboard
+    public void Init()
     {
-        m_records = 0;
+        Debug.Log("Resetting flight leaderboard!");
         m_shortestDistance = 0;
         m_longestDistance = 0;
         m_flightRecords.Clear();
+        SaveRecords();
     }
+
+    [System.Serializable]
     public struct FlightRecord
     {
         public float m_distance;
-        public string m_names; //Store the names in one string in the form: "name | name | ..."
+        public string m_names;
         public FlightRecord(float distance, string names)
         {
             m_distance = distance;
@@ -30,43 +34,65 @@ public class FlightRecordsStates : ScriptableObject
         }
     }
 
-    //TODO is 
+    [System.Serializable]
+    private class SerializableFlightRecords
+    {
+        public List<FlightRecord> records;
+
+        public SerializableFlightRecords(List<FlightRecord> records)
+        {
+            this.records = records;
+        }
+    }
+
     public bool AddNewRecord(float distance, string names)
     {
         Debug.Log("AddNewRecord() -> Distance: " + distance + " | Team name: " + names);
-        //Early return
-        if (distance < m_shortestDistance && m_flightRecords.Count == MAX_RECORDS)
-            return false;
 
-        // If the LinkedList is empty OR the new distance is bigger than the longest record, save it
-        if (m_flightRecords.Count == 0 || distance > m_longestDistance)
+        if (m_flightRecords.Count == MAX_RECORDS && distance <= m_flightRecords[m_flightRecords.Count - 1].m_distance)
         {
-            m_flightRecords.AddFirst(new FlightRecord(distance, names));
-            m_longestDistance = m_flightRecords.First.Value.m_distance;
-            m_shortestDistance = m_flightRecords.Last.Value.m_distance;
+            return false;
+        }
 
-            // If the list is now bigger than the max records, remove the last one
-            if (m_flightRecords.Count > MAX_RECORDS)
+        m_flightRecords.Add(new FlightRecord(distance, names));
+        m_flightRecords.Sort((a, b) => b.m_distance.CompareTo(a.m_distance));
+
+        if (m_flightRecords.Count > MAX_RECORDS)
+        {
+            m_flightRecords.RemoveAt(m_flightRecords.Count - 1);
+        }
+
+        m_longestDistance = m_flightRecords[0].m_distance;
+        m_shortestDistance = m_flightRecords[m_flightRecords.Count - 1].m_distance;
+
+        SaveRecords();
+        return true;
+    }
+
+    // Save the records to PlayerPrefs
+    public void SaveRecords()
+    {
+        Debug.Log("Saved flight records to PlayerPrefs!");
+        string json = JsonUtility.ToJson(new SerializableFlightRecords(m_flightRecords));
+        PlayerPrefs.SetString(SaveKey, json);
+        PlayerPrefs.Save();
+    }
+
+    // Load the leaderboard data from PlayerPrefs
+    public void LoadRecords()
+    {
+        if (PlayerPrefs.HasKey(SaveKey))
+        {
+            Debug.Log("Loaded flight records from PlayerPrefs!");
+            string json = PlayerPrefs.GetString(SaveKey);
+            SerializableFlightRecords loadedData = JsonUtility.FromJson<SerializableFlightRecords>(json);
+            m_flightRecords = loadedData.records.ToList();
+
+            if (m_flightRecords.Count > 0)
             {
-                m_flightRecords.RemoveLast();
-                m_shortestDistance = m_flightRecords.Last.Value.m_distance;
+                m_longestDistance = m_flightRecords[0].m_distance;
+                m_shortestDistance = m_flightRecords[m_flightRecords.Count - 1].m_distance;
             }
         }
-        else if (distance > m_shortestDistance)
-        {
-            // If the new distance is not bigger, but it is bigger than the shortest 
-            //and we have at least one record already, save it, and update
-            m_flightRecords.AddLast(new FlightRecord(distance, names));
-            m_shortestDistance = m_flightRecords.Last.Value.m_distance;
-        }
-        else if (distance < m_shortestDistance && m_flightRecords.Count < MAX_RECORDS)
-        {
-            //If we new distance is smaller than the shortest and we still have space, save it
-            m_flightRecords.AddLast(new FlightRecord(distance, names));
-            m_shortestDistance = m_flightRecords.Last.Value.m_distance;
-        }
-
-        m_records = m_flightRecords.Count;
-        return true;
     }
 }
