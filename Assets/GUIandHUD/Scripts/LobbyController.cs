@@ -13,6 +13,11 @@ public class LobbyController : MonoBehaviour
     [Tooltip("Holds the amount of connected players. We hold it like this because we call the disconnect event before we actually remove the player.")]
     [SerializeField] private IntVariable m_connectedPlayersSO;
     [SerializeField] private GameState m_gameStateSO;
+    //
+    [Tooltip("Reference to the SO that keeps track of the flight records and gets updates when crashing")]
+    [SerializeField] private FlightRecordsStates m_flightRecordsStates;
+    [SerializeField] private UIntVariable m_flightDistance;
+
 
     private void Awake()
     {
@@ -79,9 +84,16 @@ public class LobbyController : MonoBehaviour
             }
         }
         */
-        
+
         UpdatePlayerCounter();
     }
+    //Leader board
+    public void UpdateLeaderBoard()
+    {
+        Debug.Log("======= Updating leaderboard!");
+        m_flightRecordsStates.AddNewRecord(m_flightDistance.Value, m_playersSO.playerTeamName);
+    }
+    //
 
     private void DisplayGameCode(string gameCode)
     {
@@ -91,6 +103,8 @@ public class LobbyController : MonoBehaviour
     private void UpdatePlayerCounter()
     {
         m_playerCounter.text = m_connectedPlayersSO.Value + "/9";
+
+        Debug.Log("=====> TEAM NAME: " + m_playersSO.playerTeamName);
     }
 
     private void OnDestroy()

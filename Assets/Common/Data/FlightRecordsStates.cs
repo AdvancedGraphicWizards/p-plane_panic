@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "FlightRecordsStates", menuName = "ScriptableObject/Data/FlightRecordsStates")]
 public class FlightRecordsStates : ScriptableObject
 {
-    [SerializeField] private LinkedList<FlightRecord> m_flightRecords;
+    [SerializeField] private LinkedList<FlightRecord> m_flightRecords = new LinkedList<FlightRecord>();
     public LinkedList<FlightRecord> FlightRecords { get => m_flightRecords;}
     [SerializeField] private int m_records;
     private const int MAX_RECORDS = 3;
@@ -17,7 +17,7 @@ public class FlightRecordsStates : ScriptableObject
         m_records = 0;
         m_shortestDistance = 0;
         m_longestDistance = 0;
-        m_flightRecords = new LinkedList<FlightRecord>();
+        //m_flightRecords = new LinkedList<FlightRecord>();
     }
     public struct FlightRecord
     {
