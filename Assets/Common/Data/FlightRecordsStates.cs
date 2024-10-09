@@ -9,15 +9,15 @@ public class FlightRecordsStates : ScriptableObject
     public LinkedList<FlightRecord> FlightRecords { get => m_flightRecords;}
     [SerializeField] private int m_records;
     private const int MAX_RECORDS = 3;
-    [SerializeField] private float m_shortestDistance = 0;
-    [SerializeField] private float m_longestDistance = 0;
+    [SerializeField] private float m_shortestDistance;
+    [SerializeField] private float m_longestDistance;
 
-    public void Init()
+    public void Init() // Use this is you want to reset the leader board
     {
         m_records = 0;
         m_shortestDistance = 0;
         m_longestDistance = 0;
-        //m_flightRecords = new LinkedList<FlightRecord>();
+        m_flightRecords.Clear();
     }
     public struct FlightRecord
     {
@@ -32,6 +32,7 @@ public class FlightRecordsStates : ScriptableObject
 
     public bool AddNewRecord(float distance, string names)
     {
+        Debug.Log("Distance: " + distance + " | Team name: " + names);
         //Early return
         if (distance < m_shortestDistance && m_flightRecords.Count == MAX_RECORDS)
             return false;
@@ -41,6 +42,7 @@ public class FlightRecordsStates : ScriptableObject
         {
             m_flightRecords.AddFirst(new FlightRecord(distance, names));
             m_longestDistance = m_flightRecords.First.Value.m_distance;
+            m_shortestDistance = m_flightRecords.Last.Value.m_distance;
 
             // If the list is now bigger than the max records, remove the last one
             if (m_flightRecords.Count > MAX_RECORDS)
@@ -65,17 +67,5 @@ public class FlightRecordsStates : ScriptableObject
 
         m_records = m_flightRecords.Count;
         return true;
-    }
-
-    public FlightRecord GetFlightRecord(int index)
-    {
-
-        IEnumerator<FlightRecord> IFlightRecords = m_flightRecords.GetEnumerator();
-        while (IFlightRecords.MoveNext() != false)
-        {
-
-        }
-
-        return new FlightRecord(0, "");
     }
 }

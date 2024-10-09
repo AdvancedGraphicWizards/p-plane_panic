@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 /// <summary>
@@ -13,18 +12,6 @@ public class LeaderBoardController : MonoBehaviour
     private void Awake()
     {
         m_flightRecordGUI = GetComponentsInChildren<FlightRecordGUIController>();
-
-        //m_flightRecordsStates.Init();
-
-        // Debug.Log(m_flightRecordsStates.AddNewRecord(3333, "David | Juan | Pedro | Luis | Alejandro"));
-        // Debug.Log(m_flightRecordsStates.AddNewRecord(2222, "Jesus | Pedro | Camila | Alejandro"));
-        // Debug.Log(m_flightRecordsStates.AddNewRecord(2222, "Felipe | Jose"));
-        // Debug.Log(m_flightRecordsStates.AddNewRecord(4444, "Felipe | Jose"));
-        // Debug.Log(m_flightRecordsStates.AddNewRecord(1111, "Felipe | Jose"));
-        // Debug.Log(m_flightRecordsStates.AddNewRecord(1111, "Felipe | Jose"));
-        // Debug.Log(m_flightRecordsStates.AddNewRecord(5555, "Xulo | David"));
-        // Debug.Log(m_flightRecordsStates.AddNewRecord(6666, "Juan | Pedro"));
-
         UpdateFigthsRecordsGUI();
     }
 

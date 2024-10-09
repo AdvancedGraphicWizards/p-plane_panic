@@ -104,10 +104,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1469248697925642580}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
   m_AnchoredPosition: {x: -60, y: 247}
-  m_SizeDelta: {x: 308.51, y: 50}
+  m_SizeDelta: {x: -105.48999, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &875166075408692136
 CanvasRenderer:
@@ -165,8 +165,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 48
-  m_fontSizeBase: 48
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -493,7 +493,7 @@ PrefabInstance:
     - target: {fileID: 953788517410524060, guid: 92cc25d6043074696831b8b91c229f52,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -13.000015
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 953788517410524060, guid: 92cc25d6043074696831b8b91c229f52,
         type: 3}
