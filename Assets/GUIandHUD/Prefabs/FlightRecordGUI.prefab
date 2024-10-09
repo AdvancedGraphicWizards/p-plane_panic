@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 953788517410524060}
+  - component: {fileID: 760871671249558556}
   m_Layer: 5
   m_Name: FlightRecordGUI
   m_TagString: Untagged
@@ -37,6 +38,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 115}
   m_SizeDelta: {x: 0, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &760871671249558556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1081097204942459912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d7ffbf7172d84fa1a7579e3dc7ef1ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_names: {fileID: 7816113138478473257}
+  m_score: {fileID: 4010016683411097723}
 --- !u!1 &3623308165903876391
 GameObject:
   m_ObjectHideFlags: 0

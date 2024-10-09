@@ -216,6 +216,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1469248697925642580}
+  - component: {fileID: 5711516001635382572}
   m_Layer: 5
   m_Name: LeaderBoardGUI
   m_TagString: Untagged
@@ -247,6 +248,21 @@ RectTransform:
   m_AnchoredPosition: {x: 641, y: 58}
   m_SizeDelta: {x: 500, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &5711516001635382572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8383842481936609969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7da5c7056a57341da8e3b3578bc1ff22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_flightRecordGUI: []
+  m_flightRecordsStates: {fileID: 11400000, guid: b02ce2e13804340c3b25cc5580c56cbc,
+    type: 2}
 --- !u!1001 &6931934330455563621
 PrefabInstance:
   m_ObjectHideFlags: 0
