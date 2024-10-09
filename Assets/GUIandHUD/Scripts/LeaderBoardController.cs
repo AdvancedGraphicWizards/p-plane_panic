@@ -22,14 +22,14 @@ public class LeaderBoardController : MonoBehaviour
 
     public void UpdateFigthsRecordsGUI()
     {
-        Debug.Log("==== Updated GUI of the leader board");
+        //Debug.Log("==== Updated GUI of the leaderboard");
         if(m_flightRecordsStates.FlightRecords == null) return;
 
         IEnumerator<FlightRecordsStates.FlightRecord> IFlighRecord = m_flightRecordsStates.FlightRecords.GetEnumerator();
         int index = 0;
         while (IFlighRecord.MoveNext() != false)
         {
-            Debug.Log("Index: " + index + " : " + IFlighRecord.Current.m_names + " = " + IFlighRecord.Current.m_distance );
+            //Debug.Log("Index: " + index + " : " + IFlighRecord.Current.m_names + " = " + IFlighRecord.Current.m_distance );
             m_flightRecordGUI[index].Names.text = IFlighRecord.Current.m_names;
             m_flightRecordGUI[index].Score.text = IFlighRecord.Current.m_distance.ToString();
             m_flightRecordGUI[index].gameObject.SetActive(true);
