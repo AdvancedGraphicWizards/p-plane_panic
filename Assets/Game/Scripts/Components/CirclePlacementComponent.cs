@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 /// <summary>
@@ -13,31 +14,41 @@ public class CirclePlacementComponent : MonoBehaviour
     [SerializeField] private float m_circleRadius = 1f;
     [SerializeField] private int m_objectQuantity = 10;
     [SerializeField] private float m_rotationOffset = 0;
-    [SerializeField] private bool m_rotates = false;
+    [SerializeField] public bool Rotates = false;
+    [SerializeField] public bool UpdatesLocally = false;
     [SerializeField] private float m_rotationPeriod = 1f;
     [SerializeField] private Vector3 m_circleOffset = Vector3.zero;
 
     [Header("GameObject References")]
     [SerializeField] private Transform m_targetParent;
     [SerializeField] private GameObject m_circleObjectPrefab;
+    [SerializeField] private bool m_populateOnActivation = false;
 
-    private Transform[] m_objects;
-    private float m_angleOffset;
-    private float m_currentRotationOffset;
+    [SerializeField] private Transform[] m_objects;
+    [SerializeField] private float m_angleOffset;
+    [SerializeField] private float m_currentRotationOffset;
+    [SerializeField] public Vector3[] ObjLocalPos {get; private set;}
 
 
     void Start()
     {   
-        PopulateCircleArray();
+        if (m_populateOnActivation)
+            PopulateCircleArray();
     }
 
     void Update()
     {
-        if (!m_rotates) return;
+        if (!Rotates) return;
 
         // rotate components according to period time
         m_currentRotationOffset += (2 * Mathf.PI * (Time.deltaTime / m_rotationPeriod) ) % (2 * Mathf.PI);
-        UpdateCircleArrayPositions();
+
+        if (UpdatesLocally) {
+            ObjLocalPos = CalculateCircleArrayPositions();
+            for (int i = 0; i < m_objectQuantity; i++) {
+                m_objects[i].localPosition = ObjLocalPos[i];
+            }
+        }
     }
 
     // Populate circle array with objects evenly spaced around the circle
@@ -66,6 +77,8 @@ public class CirclePlacementComponent : MonoBehaviour
                 m_targetParent
                 ).transform;
 
+            EditorUtility.SetDirty(m_objects[i]);
+
             currAngle += m_angleOffset;
         }
     }
@@ -84,15 +97,15 @@ public class CirclePlacementComponent : MonoBehaviour
     }
 
     // Update circle array positions based on populated values
-    private void UpdateCircleArrayPositions() {
-
+    public Vector3[] CalculateCircleArrayPositions() {
         float currAngle = m_currentRotationOffset;
+        Vector3[] posArr = new Vector3[m_objectQuantity];
 
         for (int i = 0; i < m_objectQuantity; i++)
         {
-            m_objects[i].localPosition = new Vector3( Mathf.Cos(currAngle),  Mathf.Sin(currAngle), 0f) * m_circleRadius;
-
+            posArr[i] = new Vector3( Mathf.Cos(currAngle),  Mathf.Sin(currAngle), 0f) * m_circleRadius;
             currAngle += m_angleOffset;
         }
+        return posArr;
     }
 }

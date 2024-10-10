@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -12,6 +13,7 @@ public class FuelController : MonoBehaviour
     [SerializeField] private Slider m_slider;
     [Tooltip("You can find it on the Game Object hierarchy FuelSliderIndicator -> FillArea -> Fill ")]
     [SerializeField] private Image m_fuelImage;
+    [SerializeField] private RawImage m_fuelFrame;
     [Tooltip("Difine how much fuel does the plane consume. Better if it is a Scriptable Object")]
     [SerializeField] private float m_consumptionRate = 5.0f;
     [Tooltip("The starting fuel level. Better if it is a Scriptable Object")]
@@ -22,6 +24,8 @@ public class FuelController : MonoBehaviour
     [SerializeField] private UIntVariable m_currentFuel;
     [SerializeField] private float[] fuelBreakPoints = new float[] { 0.3f, 0.5f };
     [SerializeField] private Color[] fuelStatesColor;
+    [SerializeField] private Color flashPositiveColor = Color.white;
+    [SerializeField] private Color flashNegativeColor = Color.red;
 
     private void Awake()
     {
@@ -85,6 +89,20 @@ public class FuelController : MonoBehaviour
     {
         m_fuel += amt;
         m_fuel = Math.Min(m_fuel, m_startingFuel);
+
+        if (amt >= 0 ){
+            StartCoroutine(Flash(flashPositiveColor));
+        }
+        else {
+            StartCoroutine(Flash(flashNegativeColor));
+        }
+    }
+
+    IEnumerator Flash(Color color) {
+        m_fuelFrame.color = color;
+        yield return new WaitForSeconds(0.1f);
+        m_fuelFrame.color = Color.white;
+        yield return true;
     }
 
     [SerializeField] private FloatEvent OnAddFuel;
