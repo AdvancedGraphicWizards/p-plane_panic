@@ -118,7 +118,7 @@ Material:
     - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
     - _FlowMapSize: 10
-    - _FlowSize: 200
+    - _FlowSize: 10
     - _FlowSpeed: 0.01
     - _FlowStrength: 0.0075
     - _FoamDistance: 0.4
