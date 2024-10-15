@@ -19,6 +19,15 @@ Shader "Custom/WaterShader"
         _LightFoamColour("Light Foam Colour", Color) = (1, 1, 1, 1)
         _DarkFoamColour("Dark Foam Colour", Color) = (0.0314, 0.431, 0.690, 1)
 
+        [Header(Voronoi Parameters)]
+        _VoronoiScale("Voronoi Scale", Float) = 1.0
+        _VoronoiCurviness("Voronoi Curviness", Float) = 1.0
+        _VoronoiMD("Voronoi Minimum Distance", Float) = 10.0
+        _VoronoiSS("Voronoi Smoothing", Float) = 10.0
+        _VoronoiLineThickness("Voronoi Line Thickness", Range(0.0, 1.0)) = 0.1
+        [Toggle] _ProceduralVoronoi("Use Procedural Voronoi", Float) = 0
+        [Toggle] _PreviewVoronoi("Preview Voronoi", Float) = 0
+
         [Header(Noise Properties)]
         _SurfaceNoise("Surface Noise", 2D) = "white" {}
         _SurfaceNoiseColour("Surface Noise Colour", Color) = (1,1,1,1)
@@ -27,6 +36,7 @@ Shader "Custom/WaterShader"
         [Header(Wave Properties)]
         _WaveChoppiness("Choppiness", Float) = 0.01
     }
+
     SubShader
     {
         Tags { 
@@ -63,6 +73,14 @@ Shader "Custom/WaterShader"
             float4 _LightFoamColour;
             float4 _DarkFoamColour;
 
+            float _VoronoiScale;
+            float _VoronoiCurviness;
+            float _VoronoiMD;
+            float _VoronoiSS;
+            float _VoronoiLineThickness;
+            float _ProceduralVoronoi;
+            float _PreviewVoronoi;
+
             sampler2D _SurfaceNoise;
             float4 _SurfaceNoise_ST;
             float4 _SurfaceNoiseColour;
@@ -70,6 +88,75 @@ Shader "Custom/WaterShader"
 
             float _WaveChoppiness;
 
+            // Procedural Voronoi noise function for foam texture
+            // Hash functions for procedural noise
+            float hash(float n)
+            {
+                return frac(sin(n) * 43758.5453);
+            }
+
+            float hash(float2 p)
+            {
+                return frac(sin(dot(p, float2(12.9898,78.233))) * 43758.5453);
+            }
+
+            float2 hash2(float2 p)
+            {
+                p = float2(dot(p, float2(127.1, 311.7)), dot(p, float2(269.5, 183.3)));
+                return frac(sin(p) * 43758.5453);
+            }
+
+            float noise(float2 p)
+            {
+                float2 i = floor(p);
+                float2 f = frac(p);
+
+                float a = hash(i);
+                float b = hash(i + float2(1.0, 0.0));
+                float c = hash(i + float2(0.0, 1.0));
+                float d = hash(i + float2(1.0, 1.0));
+
+                float2 u = f * f * (3.0 - 2.0 * f);
+
+                return lerp(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
+            }
+
+            float Voronoi(float2 pos)
+            {
+                float2 p = pos + noise(pos * _VoronoiCurviness) * _VoronoiCurviness;
+
+                float2 g = floor(p);
+                float2 f = frac(p);
+
+                float md1 = _VoronoiMD;
+                float md2 = _VoronoiMD;
+
+                for (int y = -1; y <= 1; y++)
+                {
+                    for (int x = -1; x <= 1; x++)
+                    {
+                        float2 lattice = g + float2(x, y);
+                        float2 offset = hash2(lattice);
+                        float2 r = float2(x, y) + offset - f;
+                        float d = dot(r, r);
+
+                        if (d < md1)
+                        {
+                            md2 = md1;
+                            md1 = d;
+                        }
+                        else if (d < md2)
+                        {
+                            md2 = d;
+                        }
+                    }
+                }
+
+                float edge = md2 - md1;
+                return 1.0 - smoothstep(_VoronoiLineThickness - _VoronoiSS, _VoronoiLineThickness + _VoronoiSS, edge);
+            }
+
+            // Alpha blend for final colour output
             float4 alphaBlend(float4 top, float4 bottom)
             {
                 float3 color = (top.rgb * top.a) + (bottom.rgb * (1 - top.a));
@@ -88,6 +175,7 @@ Shader "Custom/WaterShader"
                 float4 positionHCS : SV_POSITION;
                 float2 uv : TEXCOORD0;
                 float4 screenPosition : TEXCOORD1;
+                float3 positionWS : TEXCOORD2;
             };
 
             Varyings vert(Attributes IN)
@@ -106,7 +194,7 @@ Shader "Custom/WaterShader"
 
                 // Compute sine wave for displacement and
                 // multiply by choppiness to control amplitude
-                float wave = sin(waveInput);
+                float wave = sin(waveInput) + 0.5 * sin(waveInput * 2.3 + 1.7);
                 float waveDisplacement = wave * _WaveChoppiness;
 
                 // Apply displacement to y component of positionOS
@@ -116,6 +204,7 @@ Shader "Custom/WaterShader"
                 OUT.positionHCS = TransformObjectToHClip(float4(positionOS, 1));
                 OUT.screenPosition = ComputeScreenPos(OUT.positionHCS);
                 OUT.uv = IN.uv;
+                OUT.positionWS = positionWS;
 
                 return OUT;
             }
@@ -143,12 +232,29 @@ Shader "Custom/WaterShader"
 
                 // Sample the UV and the noise 
                 float2 foamUV = (IN.uv + uvOffset) * _FlowSize;
+                float2 foamPos = (IN.positionWS.xz * 1/_VoronoiScale + uvOffset * 5) * _FlowSize;
                 float foamSample = tex2D(_FoamTexture, foamUV).r;
+
+                if (_ProceduralVoronoi > 0.5) 
+                {
+                    foamSample = Voronoi(foamPos);
+                }
+
+                if (_PreviewVoronoi > 0.5)
+                {
+                    return float4(foamSample, foamSample, foamSample, 1.0);
+                }
 
                 // Sample the darker foam value
                 // Lerp between water colour and dark foam colour
                 float2 foamUVOffset = foamUV + float2(0.1, 0.1);
                 float darkFoamSample = tex2D(_FoamTexture, foamUVOffset).r;
+
+                if (_ProceduralVoronoi > 0.5) 
+                {
+                    darkFoamSample = Voronoi(foamPos + float2(0.1, 0.1));
+                }
+
                 float4 darkFoamColour = lerp(waterColour, _DarkFoamColour, darkFoamSample);
 
                 // Lerp between the dark and light colour
