@@ -21,8 +21,6 @@ Shader "Custom/WaterShader"
 
         [Header(Voronoi Parameters)]
         _VoronoiScale("Voronoi Scale", Float) = 1.0
-        _VoronoiCurviness("Voronoi Curviness", Float) = 1.0
-        _VoronoiMD("Voronoi Minimum Distance", Float) = 10.0
         _VoronoiSS("Voronoi Smoothing", Float) = 10.0
         _VoronoiLineThickness("Voronoi Line Thickness", Range(0.0, 1.0)) = 0.1
         [Toggle] _ProceduralVoronoi("Use Procedural Voronoi", Float) = 0
@@ -74,8 +72,6 @@ Shader "Custom/WaterShader"
             float4 _DarkFoamColour;
 
             float _VoronoiScale;
-            float _VoronoiCurviness;
-            float _VoronoiMD;
             float _VoronoiSS;
             float _VoronoiLineThickness;
             float _ProceduralVoronoi;
@@ -90,70 +86,62 @@ Shader "Custom/WaterShader"
 
             // Procedural Voronoi noise function for foam texture
             // Hash functions for procedural noise
-            float hash(float n)
-            {
-                return frac(sin(n) * 43758.5453);
-            }
-
-            float hash(float2 p)
-            {
-                return frac(sin(dot(p, float2(12.9898,78.233))) * 43758.5453);
-            }
-
             float2 hash2(float2 p)
             {
                 p = float2(dot(p, float2(127.1, 311.7)), dot(p, float2(269.5, 183.3)));
                 return frac(sin(p) * 43758.5453);
             }
 
-            float noise(float2 p)
+            float Voronoi(float2 x)
             {
-                float2 i = floor(p);
-                float2 f = frac(p);
+                float2 p = x;
+                float2 ip = floor(p);
+                float2 fp = frac(p);
 
-                float a = hash(i);
-                float b = hash(i + float2(1.0, 0.0));
-                float c = hash(i + float2(0.0, 1.0));
-                float d = hash(i + float2(1.0, 1.0));
-
-                float2 u = f * f * (3.0 - 2.0 * f);
-
-                return lerp(a, b, u.x) + (c - a) * u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
-            }
-
-            float Voronoi(float2 pos)
-            {
-                float2 p = pos + noise(pos * _VoronoiCurviness) * _VoronoiCurviness;
-
-                float2 g = floor(p);
-                float2 f = frac(p);
-
-                float md1 = _VoronoiMD;
-                float md2 = _VoronoiMD;
-
-                for (int y = -1; y <= 1; y++)
+                // First pass: Regular voronoi
+                float2 mr = float2(0.0, 0.0);
+                float2 mg = float2(0.0, 0.0);
+                float md = 8.0;
+                for (int j = -1; j <= 1; j++)
                 {
-                    for (int x = -1; x <= 1; x++)
+                    for (int i = -1; i <= 1; i++)
                     {
-                        float2 lattice = g + float2(x, y);
-                        float2 offset = hash2(lattice);
-                        float2 r = float2(x, y) + offset - f;
+                        float2 g = float2(i, j);
+                        float2 o = hash2(ip + g);
+
+                        float2 r = g + o - fp;
                         float d = dot(r, r);
 
-                        if (d < md1)
+                        if (d < md)
                         {
-                            md2 = md1;
-                            md1 = d;
-                        }
-                        else if (d < md2)
-                        {
-                            md2 = d;
+                            md = d;
+                            mr = r;
+                            mg = g;
                         }
                     }
                 }
 
-                float edge = md2 - md1;
-                return 1.0 - smoothstep(_VoronoiLineThickness - _VoronoiSS, _VoronoiLineThickness + _VoronoiSS, edge);
+                // Second pass: Distance to borders
+                md = 8.0;
+                for (int j = -2; j <= 2; j++)
+                {
+                    for (int i = -2; i <= 2; i++)
+                    {
+                        float2 g = mg + float2(i, j);
+                        float2 o = hash2(ip + g);
+
+                        float2 r = g + o - fp;
+
+                        if (dot(mr - r, mr - r) > 0.00001)
+                        {
+                            float2 n = normalize(r - mr);
+                            float dist = dot(0.5 * (mr + r), n);
+                            md = min(md, dist);
+                        }
+                    }
+                }
+
+                return 1.0 - smoothstep(_VoronoiLineThickness - _VoronoiSS, _VoronoiLineThickness + _VoronoiSS, md);
             }
 
             // Alpha blend for final colour output
