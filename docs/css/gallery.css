@@ -1,0 +1,17 @@
+/* Gallery page styling */
+.gallery {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    padding-bottom: 3rem !important;
+}
+
+#gallery img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+#gallery .col-md-4 {
+    padding: 5px;
+}
