@@ -5297,9 +5297,8 @@ MonoBehaviour:
   m_legs:
   - {fileID: 2707457637993097456}
   - {fileID: 5572373149282920341}
+  m_cloudTrail: {fileID: 1372475078524247618}
   m_bodyHeightBase: 0.2
-  m_offsetTransform: {fileID: 0}
-  m_LayerInclude: 3
   m_minStepWait: 0.05
   m_posAdjustRatio: 1
   m_rotAdjustRatio: 1
@@ -5307,8 +5306,7 @@ MonoBehaviour:
   m_idleBouncePeriod: 1
   m_idleTime: 0.1
   m_lookTime: 5000
-  m_idleGlanceAngleRange: 10
-  m_cloudTrail: {fileID: 1372475078524247618}
+  m_LayerInclude: 3
 --- !u!1 &1935894754409553393
 GameObject:
   m_ObjectHideFlags: 0
@@ -6247,14 +6245,6 @@ MonoBehaviour:
   m_inputManager: {fileID: 454857393364728385}
   _playerModel: {fileID: 6002094001889578044}
   m_walkingSpeed: 10
-  m_maxJumpHeight: 1
-  m_gravity: -9.8
-  m_groundedGravity: -0.05
-  m_groundedOffset: 0.4
-  m_groundedRadius: 0.5
-  m_groundLayers:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!114 &3625361936827281446
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6350,6 +6340,8 @@ MonoBehaviour:
   m_phoneController: {fileID: 0}
   lowPassFactor: 0.1
   Direction: {x: 0, y: 0}
+  euler: {x: 0, y: 0, z: 0}
+  m_controlMode: 0
 --- !u!114 &8468020443362394756
 MonoBehaviour:
   m_ObjectHideFlags: 0

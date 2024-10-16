@@ -1,9 +1,8 @@
-using System.Collections.Generic;
 using Unity.Netcode;
 using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.Events;
+using System.Collections;
+using System.Collections.Generic;
 
 public struct PlayerData
 {
@@ -94,6 +93,7 @@ public class ServerManager : Singleton<ServerManager>
             networkObject = NetworkManager.Singleton.ConnectedClients[clientID].PlayerObject.gameObject,
             playerColor = m_colorManager.GetColor()
         });
+        m_playersSO.GenerateTeamName();
 
         // Make player-network object persistent between scenes
         m_playersSO.players[clientID].playerObject.transform.parent = m_playersSO.players[clientID].networkObject.transform;
@@ -108,7 +108,7 @@ public class ServerManager : Singleton<ServerManager>
         }
         if (m_playersSO.players[clientID].playerObject.TryGetComponent<PlayerNameComponent>(out PlayerNameComponent playerName))
         {
-            playerName.AssignPlayerData(m_playersSO.players[clientID]);
+            playerName.AssignPlayerData(m_playersSO, clientID);
             playerName.AssignPhoneController(phoneController);
         }
 
@@ -128,6 +128,7 @@ public class ServerManager : Singleton<ServerManager>
             m_connectedPlayersSO.Value--;
             OnPlayerDisconnect?.Invoke(m_playersSO.players[clientID]);
             m_playersSO.players.Remove(clientID);
+            m_playersSO.GenerateTeamName();
         }
     }
 
