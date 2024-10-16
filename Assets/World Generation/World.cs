@@ -86,13 +86,144 @@ public class World : MonoBehaviour {
     // Returns height for position x, z based on array of octaves and perlin noise
     public static float GetHeight(float x, float z) {
         float height = 0;
-        foreach (Octave octave in settings.octaves) {
-            if (octave.enabled) {
-                height += (Mathf.PerlinNoise(x * octave.scale + settings.seedX, z * octave.scale + settings.seedZ) - 0.5f) * 2f * octave.amplitude;
-            }
-        }
+        // foreach (Octave octave in settings.octaves) {
+        //     if (octave.enabled) {
+        //         height += (Mathf.PerlinNoise(x * octave.scale + settings.seedX, z * octave.scale + settings.seedZ) - 0.5f) * 2f * octave.amplitude;
+        //     }
+        // }
+        height = TerrainAtPosition(x, z).x;
+
         return height;
     }
+    /// !!! ----------------------------------- !!!
+    // MESSY TERRAIN TESTING
+    /// !!! ----------------------------------- !!!
+    /// 
+
+    private static Vector4 TerrainAtPosition(float x, float y) {
+        
+        Vector3 sample = FBMErosion(new Vector2(x/100f,y/100f), settings.octaves.Length) *100f;
+
+        float sinSDF = CanyonCarve(new Vector2(x, y), 100f, 40f, 90f, 0f, 2500f, 80f, 0f);
+        //sinSDF += CanyonCarve(new Vector2(x, y), 35f, 10f, 0.5f, 0f, 120f, 8f, 30f);
+
+
+        sample.x -= sinSDF;
+        float baseOffset = 70f;
+
+        return new Vector4(sample.x + baseOffset, 0,0,0) ;
+    }
+
+    // Carve canyon shape
+    private static float CanyonCarve(Vector2 point, float canyonWidth, float canyonBaseWidth, float canyonDepth, float axisOffset, float period, float amplitude, float periodOffset) {
+        
+        // Clamp canyons base width
+        canyonBaseWidth = Mathf.Min(canyonWidth, canyonBaseWidth);
+
+        // Calc x-axis distance from sine wave (not currently sdf)
+        float mod = Mathf.Sin(point.y*2*Mathf.PI/period + periodOffset)*amplitude;
+        float sinSDF = Mathf.Abs(point.x -axisOffset - mod);
+
+        sinSDF = (Mathf.Pow(Mathf.Min(canyonWidth, Mathf.Max(sinSDF -canyonBaseWidth, 0f) ), 2) / Mathf.Pow(canyonWidth, 2));
+        sinSDF = 1 - sinSDF;
+
+        return sinSDF * canyonDepth;
+    }
+
+    // Arbitrary rotation matrices
+    static Vector2 m1 = new Vector2(0.8f,-0.6f);  
+    static Vector2 m2 = new Vector2(0.6f,0.8f); 
+
+    /// <summary>
+    /// 2D brownian motion noise sampling
+    /// Adapted from Blog post by Inigo Quilez: https://iquilezles.org/articles/morenoise/
+    /// </summary>
+    /// <param name="p"> x,y coordinates to sample the noise</param>
+    /// <returns>Vector3 consisting of a value and x,y gradients</returns>
+    private static Vector3 FBMErosion(Vector2 p , int octaves)
+    {
+        float a = 0.0f;
+        float b = 1.0f;
+        Vector2  d = Vector2.zero;
+        for( int i=0; i< octaves; i++ )
+        {
+            Vector3 n = Noised(p);
+
+            // Separate noise 2D-gradients
+            d += new Vector2(n.y, n.z);
+
+            // Accumulate noise values, 
+            // dampens the contribution of noise based on the accumulated gradients (magnitude)^2
+            a +=b*n.x/(1.0f+Vector2.Dot(d,d));
+
+            // Half the amplitude of noise each octave
+            b *=0.5f;
+
+            // Apply magic vectors that rotate and scale the noise each octave to add variation each octave
+            p.x=(m1.x*p.x + m1.y*p.y)*2.0f;
+            p.y=(m2.x*p.x + m2.y*p.y)*2.0f;
+        }
+
+        // Normalize the noise
+        //a /= (1-Mathf.Pow(0.5f,octaves)) * 2f;
+
+        return new Vector3(a,d.x,d.y);
+    }
+
+    /// <summary>
+    /// 2D brownian motion noise sampling
+    /// Adapted from Blog post by Inigo Quilez: https://iquilezles.org/articles/morenoise/
+    /// </summary>
+    /// <param name="p"> x,y coordinates to sample the noise</param>
+    /// <returns>Vector3 consisting of a value and x,y gradients</returns>
+    private static Vector3 Noised( Vector2 p )
+    {
+        Vector2 i = new(Mathf.Floor(p.x), Mathf.Floor(p.y));
+        Vector2 f = new(p.x - i.x, p.y - i.y);               // get fractional part of x
+
+        // Calculate quintic interpolation and derivatives
+        static float QuinticInterpolation(float x) => x*x*x*(x*(x*6.0f - 15.0f)+10.0f);
+        static float QuinticInterpolationDerivative(float x) => 30.0f*x*x*(x*(x-2.0f)+1.0f);
+
+        Vector2 u = new(QuinticInterpolation(f.x), QuinticInterpolation(f.y));  
+        Vector2 du = new(QuinticInterpolationDerivative(f.x), QuinticInterpolationDerivative(f.y));  
+
+        Vector2 ga = Hash( i + new Vector2(0.0f,0.0f));
+        Vector2 gb = Hash( i + new Vector2(1.0f,0.0f) );
+        Vector2 gc = Hash( i + new Vector2(0.0f,1.0f) );
+        Vector2 gd = Hash( i + new Vector2(1.0f,1.0f) );
+
+        float va = Vector2.Dot( ga, f - new Vector2(0.0f,0.0f) );
+        float vb = Vector2.Dot( gb, f - new Vector2(1.0f,0.0f) );
+        float vc = Vector2.Dot( gc, f - new Vector2(0.0f,1.0f) );
+        float vd = Vector2.Dot( gd, f - new Vector2(1.0f,1.0f) );
+
+        float c = (va-vb-vc+vd);
+        Vector2 FBMDerivative = ga + u.x*(gb-ga) + u.y*(gc-ga) + u.x*u.y*(ga-gb-gc+gd) + du 
+                                * (new Vector2(u.y,u.x) * new Vector2(c,c) + new Vector2(vb,vc) - new Vector2(va,va)); // note y,x instead of x,y on "u"
+                        
+        return new Vector3( va + u.x*(vb-va) + u.y*(vc-va) + u.x*u.y*(va-vb-vc+vd),   // value
+                        FBMDerivative.x, FBMDerivative.y); // derivatives
+    }
+
+    //  Hash function Vector2 => Vector2
+    //  (Potentially Replace with a better hash)
+    private static Vector2 Hash( Vector2 x ) {
+        Vector2 k = new( 0.3183099f, 0.3678794f);
+        x = x*k + new Vector2(k.y, k.x); // note y,x instead of x,y
+        Vector2 l = 16.0f * Fract( x.x*x.y*(x.x+x.y)) * k;
+        return 2.0f * new Vector2(Fract( l.x), Fract( l.y)) - Vector2.one;
+    }
+
+    // Get fractional component of float p
+    private static float Fract(float p) {
+        return p - Mathf.Floor(p);
+    }
+
+    /// !!! ----------------------------------- !!!
+    /// 
+    /// !!! ----------------------------------- !!!
+
     
     // Reloads the world with new settings on settings change
     public void ReloadWorld() {

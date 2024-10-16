@@ -31,7 +31,7 @@ MonoBehaviour:
     amplitude: 1
     enabled: 1
   meshStructure: 0
-  vertexDistance: 16
-  vertexCount: 64
+  vertexDistance: 2
+  vertexCount: 128
   levelsOfDetail: 16
-  material: {fileID: 2100000, guid: 0641acfe95e583a4fa73ff047e07dd60, type: 2}
+  material: {fileID: 2100000, guid: 3cd020483474a234ba8f4adf545b1b76, type: 2}
