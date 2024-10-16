@@ -49,7 +49,7 @@ public class HoopScript : MonoBehaviour
     }
 
     IEnumerator Deactivate() {
-        m_particleComponent.RegisterParticlesInScreenSpace();
+        //m_particleComponent.RegisterParticlesInScreenSpace();
         _ringCollectAnim.Play();
         yield return new WaitForSeconds(_deactivationTimer);
         gameObject.SetActive(false);

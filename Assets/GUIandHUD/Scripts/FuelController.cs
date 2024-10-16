@@ -27,6 +27,8 @@ public class FuelController : MonoBehaviour
     [SerializeField] private Color flashPositiveColor = Color.white;
     [SerializeField] private Color flashNegativeColor = Color.red;
 
+    private bool m_animatingLowFuel = false;
+
     private void Awake()
     {
         if (!m_slider || !m_fuelImage)
@@ -76,13 +78,21 @@ public class FuelController : MonoBehaviour
     {
         if(fuelStatesColor.Length == 0) return;
         float normalizedValue = m_fuel / m_startingFuel;
-        if (normalizedValue < fuelBreakPoints[0])
+        if (normalizedValue < fuelBreakPoints[0]) {
             m_fuelImage.color = fuelStatesColor[2];//Color.red;
-        else if (normalizedValue < fuelBreakPoints[1])
-            m_fuelImage.color = fuelStatesColor[1];//Color.yellow;
-        else
-            m_fuelImage.color = fuelStatesColor[0];//Color.green;
+            if (!m_animatingLowFuel){
+                m_animatingLowFuel = true;
+                StartCoroutine(LowFuelAnimation());
+            }
+        }
+        else {
+            m_animatingLowFuel = false;
 
+            if (normalizedValue < fuelBreakPoints[1])
+                m_fuelImage.color = fuelStatesColor[1];//Color.yellow;
+            else
+                m_fuelImage.color = fuelStatesColor[0];//Color.green;
+        }
     }
 
     public void UpdateFuel(float amt)
@@ -96,6 +106,19 @@ public class FuelController : MonoBehaviour
         else {
             StartCoroutine(Flash(flashNegativeColor));
         }
+    }
+
+    IEnumerator LowFuelAnimation(){
+        float t = 0;
+        float lerpVal = 0;
+        while (m_animatingLowFuel) {
+            lerpVal = (-Mathf.Cos(t/(2*Mathf.PI)) + 1f)*0.5f;
+            m_fuelFrame.color = Color.Lerp(Color.white, Color.red, lerpVal);
+            yield return new WaitForSeconds(0.01f);
+            t+= 1f;
+        }
+
+        yield return true;
     }
 
     IEnumerator Flash(Color color) {

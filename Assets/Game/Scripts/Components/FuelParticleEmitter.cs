@@ -132,7 +132,7 @@ public class FuelParticleManager : MonoBehaviour
 
 
     void OnParticleTrigger() {
-        Debug.Log($"Add {fuelPerParticle} fuel");
+        //Debug.Log($"Add {fuelPerParticle} fuel");
         OnAddFuel?.Raise(fuelPerParticle);
     }
 }
