@@ -26,6 +26,11 @@ public class RingSpawnScript : MonoBehaviour
     [SerializeField] private float _baseHeight = 10f;
     [SerializeField] private float _baseHeightIncreaseFactor = 2f;
 
+    [SerializeField] private float _period =2500f;
+    [SerializeField] private float _amplitude = 80f;
+    [SerializeField] private float _periodOffset = 0;
+
+
     [Header("Object Pooling Variables")]
     [SerializeField] private int m_backCullingDistance = 20;
     [SerializeField] private int m_ringBatchingAmount = 50;
@@ -58,11 +63,14 @@ public class RingSpawnScript : MonoBehaviour
         // Regular hoops
         if (m_planeLocation.position.z - m_backCullingDistance > _hoopArray[m_currentBackPosition].transform.position.z) {
 
+            
+            
             //reactivate ring and change position
             // Note currently does not change to reflect if super-rings are used or not
             _hoopArray[m_currentBackPosition].SetActive(true);
-            _hoopArray[m_currentBackPosition].transform.position = new Vector3(_randomSeed[m_seedNum]*_ringOffsetRange, _randomSeed[m_seedNum + 1]*(_ringOffsetRange/2f) + _baseHeight, _zValue);
-            
+            _hoopArray[m_currentBackPosition].transform.position = new Vector3(_randomSeed[m_seedNum]*_ringOffsetRange + WaveOffset(_zValue), _randomSeed[m_seedNum + 1]*(_ringOffsetRange/2f) + _baseHeight, _zValue);
+
+
             _ringOffsetRange += _increaseOffsetFactor;
             _zValue += _distanceBetweenRings;
 
@@ -94,14 +102,14 @@ public class RingSpawnScript : MonoBehaviour
                 // every fifth ring is a super-hoop
                 _hoopArray[i] = Instantiate(
                     _superHoopPrefab, 
-                    new Vector3(_randomSeed[100-i]*_ringOffsetRange*1.3f, _randomSeed[100-i+1]*_ringOffsetRange*1.3f + _baseHeight, _zValue + _distanceBetweenRings/2), 
+                    new Vector3(_randomSeed[100-i]*_ringOffsetRange*1.3f + WaveOffset(_zValue), _randomSeed[100-i+1]*_ringOffsetRange*1.3f + _baseHeight, _zValue + _distanceBetweenRings/2), 
                     Quaternion.identity);
             }
             else {
                 // spawn a regular hoop
                 _hoopArray[i] = Instantiate(
                     _hoopPrefab, 
-                    new Vector3(_randomSeed[i]*_ringOffsetRange, _randomSeed[i+1]*(_ringOffsetRange/2f) + _baseHeight, _zValue), 
+                    new Vector3(_randomSeed[i]*_ringOffsetRange + WaveOffset(_zValue), _randomSeed[i+1]*(_ringOffsetRange/2f) + _baseHeight, _zValue), 
                     Quaternion.identity);
 
 
@@ -115,5 +123,9 @@ public class RingSpawnScript : MonoBehaviour
             _hoopArray[i].transform.SetParent(transform);
         }
         m_seedNum = 100;
+    }
+
+    private float WaveOffset(float x) {
+        return Mathf.Sin(x*2*Mathf.PI/_period + _periodOffset)*_amplitude;
     }
 }

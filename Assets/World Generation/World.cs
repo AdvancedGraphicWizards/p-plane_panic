@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class World : MonoBehaviour {
 
@@ -102,11 +103,15 @@ public class World : MonoBehaviour {
 
     private static Vector4 TerrainAtPosition(float x, float y) {
         
-        Vector3 sample = FBMErosion(new Vector2(x/100f,y/100f), settings.octaves.Length) *100f;
+        Vector3 sample = FBMErosion(new Vector2(x/300f,y/300f), settings.octaves.Length) *150f;
 
-        float sinSDF = CanyonCarve(new Vector2(x, y), 100f, 40f, 90f, 0f, 2500f, 80f, 0f);
-        //sinSDF += CanyonCarve(new Vector2(x, y), 35f, 10f, 0.5f, 0f, 120f, 8f, 30f);
+        //float spice = Noised(new Vector2(1,y)).x*50;
 
+        float sinSDF = CanyonCarve(new Vector2(x, y), 40f, 50f, 40f, 0f, 2500f, 80f, 0f);
+        sinSDF += CanyonCarve(new Vector2(x, y), 20f, 120f, 40f, 0f, 2500f, 80f, 0f);
+        sinSDF += CanyonCarve(new Vector2(x, y), 10f, 160f, 40f, 0f, 2500f, 80f, 0f);
+
+        sample.x *= Mathf.Min(1f, 60f/sinSDF);
 
         sample.x -= sinSDF;
         float baseOffset = 70f;
@@ -117,17 +122,23 @@ public class World : MonoBehaviour {
     // Carve canyon shape
     private static float CanyonCarve(Vector2 point, float canyonWidth, float canyonBaseWidth, float canyonDepth, float axisOffset, float period, float amplitude, float periodOffset) {
         
-        // Clamp canyons base width
-        canyonBaseWidth = Mathf.Min(canyonWidth, canyonBaseWidth);
+        float k = 2f;
 
         // Calc x-axis distance from sine wave (not currently sdf)
         float mod = Mathf.Sin(point.y*2*Mathf.PI/period + periodOffset)*amplitude;
         float sinSDF = Mathf.Abs(point.x -axisOffset - mod);
 
-        sinSDF = (Mathf.Pow(Mathf.Min(canyonWidth, Mathf.Max(sinSDF -canyonBaseWidth, 0f) ), 2) / Mathf.Pow(canyonWidth, 2));
+        sinSDF = Mathf.Pow(Smin(canyonWidth, Mathf.Max(sinSDF -canyonBaseWidth, 0f), k), 2) / Mathf.Pow(canyonWidth, 2);
         sinSDF = 1 - sinSDF;
 
         return sinSDF * canyonDepth;
+    }
+
+    static private float Smin( float a, float b, float k )
+    {
+        k *= 1.0f; // why
+        float r = Mathf.Pow(2,-a/k) + Mathf.Pow(2,-b/k);
+        return -k*Mathf.Log(r,2);
     }
 
     // Arbitrary rotation matrices

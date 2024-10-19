@@ -30,8 +30,38 @@ MonoBehaviour:
   - scale: 0.4
     amplitude: 1
     enabled: 1
+  - scale: 0.4
+    amplitude: 1
+    enabled: 1
+  - scale: 0.4
+    amplitude: 1
+    enabled: 1
+  - scale: 0.4
+    amplitude: 1
+    enabled: 1
+  - scale: 0.4
+    amplitude: 1
+    enabled: 1
+  - scale: 0.4
+    amplitude: 1
+    enabled: 1
+  - scale: 0.4
+    amplitude: 1
+    enabled: 1
+  - scale: 0.4
+    amplitude: 1
+    enabled: 1
+  - scale: 0.4
+    amplitude: 1
+    enabled: 1
+  - scale: 0.4
+    amplitude: 1
+    enabled: 1
+  - scale: 0.4
+    amplitude: 1
+    enabled: 1
   meshStructure: 0
   vertexDistance: 2
-  vertexCount: 128
-  levelsOfDetail: 16
+  vertexCount: 250
+  levelsOfDetail: 8
   material: {fileID: 2100000, guid: 3cd020483474a234ba8f4adf545b1b76, type: 2}
