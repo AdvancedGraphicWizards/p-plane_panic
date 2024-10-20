@@ -8,18 +8,17 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: TerrainMat
-  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 00fdc4cd498e2784b8f3a1c1bd34ceb1,
+    type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
-  - _SPECULARHIGHLIGHTS_OFF
+  m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap:
-    RenderType: Opaque
+  stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
@@ -155,10 +154,15 @@ Material:
     - _EnableHeightBlend: 0
     - _EnableInstancedPerPixelNormal: 1
     - _EnvironmentReflections: 1
+    - _FlatContrast: 10
+    - _FlatFade: 1
+    - _FlatOffset: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _Height: 100
     - _HeightTransition: 0
+    - _LineScale: 1
     - _Metallic: 0
     - _Metallic0: 0
     - _Metallic1: 0
@@ -167,9 +171,10 @@ Material:
     - _NumLayersCount: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.005
+    - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0.165
+    - _Smoothness: 100
     - _Smoothness0: 0.5
     - _Smoothness1: 0.5
     - _Smoothness2: 0.5
@@ -179,13 +184,20 @@ Material:
     - _SrcBlend: 1
     - _SrcBlendAlpha: 1
     - _Surface: 0
+    - _WavyLineConst: 0.2
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.1614758, g: 0.5245282, b: 0.15735841, a: 1}
     - _Color: {r: 0.16147578, g: 0.5245282, b: 0.15735838, a: 1}
+    - _Color_1: {r: 0.6075471, g: 0.4937504, b: 0.1547525, a: 0}
+    - _Color_2: {r: 0.78867924, g: 0.43913063, b: 0.16517623, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FlatColor: {r: 0.1289922, g: 0.6226415, b: 0.10220716, a: 0}
+    - _FlatColorDark: {r: 0.113029525, g: 0.4716981, b: 0.25538206, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
+    - _UpVector: {r: 0, g: 1, b: 0, a: 0}
+    - _bandColor: {r: 0.4490565, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &1857537954484475646
 MonoBehaviour:

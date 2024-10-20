@@ -58,7 +58,7 @@ public class PoissonPlacement : MonoBehaviour
         // Raycast to find point on mesh geometry
         RaycastHit hit;
         foreach (Vector2 point in maskedPoints) {
-            Vector3 pPos = new Vector3(point.x, maxTerrainHeight, point.y);
+            Vector3 pPos = new Vector3(point.x -regionSize.x/2f, maxTerrainHeight, point.y);
             if (Physics.Raycast(pPos, Vector3.down, out hit, Mathf.Infinity, layerMask)) {
                 // check if too steep here
                 if (hit.transform.CompareTag(ignoreTag)) {
@@ -79,7 +79,7 @@ public class PoissonPlacement : MonoBehaviour
 
 	void OnDrawGizmos() {
         Gizmos.color = Color.white;
-		Gizmos.DrawWireCube(new Vector3(regionSize.x/2,maxTerrainHeight,regionSize.z/2),regionSize);
+		Gizmos.DrawWireCube(new Vector3(0,maxTerrainHeight,regionSize.z/2),regionSize);
 		if (meshPoints != null) {
             Gizmos.color = Color.blue;
 			foreach (Vector2 point in maskedPoints) {

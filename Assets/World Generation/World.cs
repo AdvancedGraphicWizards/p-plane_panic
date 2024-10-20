@@ -124,9 +124,9 @@ public class World : MonoBehaviour {
 
         //float spice = Noised(new Vector2(1,y)).x*50;
 
-        float sinSDF = CanyonCarve(new Vector2(x, y), 40f, 50f, 40f, 0f, 2500f, 100f, 0f);
-        sinSDF += CanyonCarve(new Vector2(x, y), 20f, 120f, 40f, 0f, 2500f, 100f, 0f);
-        sinSDF += CanyonCarve(new Vector2(x, y), 10f, 160f, 40f, 0f, 2500f, 100f, 0f);
+        float sinSDF = CanyonCarve(new Vector2(x, y), 40f, 10f, 40f, 0f, 2500f, 100f, 0f);
+        sinSDF += CanyonCarve(new Vector2(x, y), 20f, 80f, 40f, 0f, 2500f, 100f, 0f);
+        sinSDF += CanyonCarve(new Vector2(x, y), 10f, 130f, 40f, 0f, 2500f, 100f, 0f);
 
         sample.x *= Mathf.Min(1f, 60f/sinSDF);
 
