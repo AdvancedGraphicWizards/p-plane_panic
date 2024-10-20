@@ -3556,15 +3556,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff5e84797585f4a4eb58eceb45562827, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 50
+  radius: 10
   regionSize: {x: 1000, y: 1, z: 1000}
-  rejectionSamples: 3
-  displayRadius: 4
+  rejectionSamples: 5
+  displayRadius: 10
   noiseMaskScale: 100
-  noiseThreshold: 0.8
+  noiseThreshold: 0.6
   maxTerrainHeight: 500
   maxTerrainDepth: 100
   layerMask: -257
+  maxSteepness: 0.8
 --- !u!4 &1330014761
 Transform:
   m_ObjectHideFlags: 0
@@ -3574,7 +3575,7 @@ Transform:
   m_GameObject: {fileID: 1330014759}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 310.04315, y: -225.08888, z: 462.63757}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

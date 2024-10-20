@@ -16,6 +16,7 @@ public class PoissonPlacement : MonoBehaviour
 	public float maxTerrainHeight = 100f;
 	public float maxTerrainDepth = 1000f;
 	public int layerMask = ~(1 << 8);
+	public float maxSteepness = 0.5f; // 0 is default
 
 	private float randOffset =0f;
 
@@ -55,8 +56,9 @@ public class PoissonPlacement : MonoBehaviour
             Vector3 pPos = new Vector3(point.x, maxTerrainHeight, point.y);
             if (Physics.Raycast(pPos, Vector3.down, out hit, Mathf.Infinity, layerMask)) {
                 // check if too steep here
-
-                meshPoints.Add(hit.point);
+                if (Vector3.Dot(hit.normal, Vector3.up) > maxSteepness) {
+                    meshPoints.Add(hit.point);
+                }
             }
         }
         // instead of raycasting could use terrain at point...
