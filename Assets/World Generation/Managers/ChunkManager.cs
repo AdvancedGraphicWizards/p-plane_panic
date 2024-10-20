@@ -42,7 +42,7 @@ public static class ChunkManager {
 
         // Get chunk if possible, else create new chunk
         if (!recycleQueue.TryDequeue(out GameObject chunk)) {
-            chunk = new GameObject("Chunk", typeof(MeshFilter), typeof(MeshRenderer), typeof(TriangleMeshManipulationJob));
+            chunk = new GameObject("Chunk", typeof(MeshFilter), typeof(MeshRenderer), typeof(TriangleMeshManipulationJob), typeof(MeshCollider));
             chunk.GetComponent<MeshRenderer>().material = World.settings.material;
 
             // Generate mesh based on LOD
@@ -53,6 +53,7 @@ public static class ChunkManager {
             );
             chunk.GetComponent<MeshFilter>().mesh = mesh;
             chunk.GetComponent<TriangleMeshManipulationJob>().Initialize(mesh);
+            chunk.GetComponent<MeshCollider>().sharedMesh = mesh;
 
             // Set parent to World GameObject if it exists (TEMP)
             if (GameObject.Find("World") != null) {
@@ -85,8 +86,10 @@ public static class ChunkManager {
 
         // Get chunk if possible, else create new chunk
         if (!recycleQueue.TryDequeue(out chunk)) {
-            chunk = new GameObject("Chunk", typeof(MeshFilter), typeof(MeshRenderer));
-            chunk.GetComponent<MeshFilter>().mesh = MeshGenerator.GenerateMesh(World.settings.vertexDistance * Mathf.Pow(2, node.LODExp), World.settings.vertexCount);
+            chunk = new GameObject("Chunk", typeof(MeshFilter), typeof(MeshRenderer),typeof(MeshCollider));
+            Mesh genereatedMesh = MeshGenerator.GenerateMesh(World.settings.vertexDistance * Mathf.Pow(2, node.LODExp), World.settings.vertexCount);
+            chunk.GetComponent<MeshFilter>().mesh = genereatedMesh;
+            chunk.GetComponent<MeshCollider>().sharedMesh = genereatedMesh;
 
             // Set parent to World GameObject if it exists (TEMP)
             if (GameObject.Find("World") != null) {
