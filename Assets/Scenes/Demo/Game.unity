@@ -168,7 +168,7 @@ GameObject:
   - component: {fileID: 55092434}
   m_Layer: 0
   m_Name: WaterPlane
-  m_TagString: Untagged
+  m_TagString: Water
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3556,16 +3556,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff5e84797585f4a4eb58eceb45562827, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 10
-  regionSize: {x: 1000, y: 1, z: 1000}
-  rejectionSamples: 5
+  radius: 5
+  regionSize: {x: 500, y: 1, z: 10000}
+  rejectionSamples: 10
   displayRadius: 10
   noiseMaskScale: 100
-  noiseThreshold: 0.6
+  noiseThreshold: 0.9
   maxTerrainHeight: 500
   maxTerrainDepth: 100
   layerMask: -257
   maxSteepness: 0.8
+  objArray:
+  - {fileID: 6661677915272811350, guid: 81ac1aace8e27534c94dd81faf7b5f70, type: 3}
+  - {fileID: 7810612202964884031, guid: d3ab7815b4949e84796fe7d38649951e, type: 3}
+  - {fileID: 7437722123948554194, guid: 2e6aef073e1b69a408302d3fbd5c42b3, type: 3}
 --- !u!4 &1330014761
 Transform:
   m_ObjectHideFlags: 0

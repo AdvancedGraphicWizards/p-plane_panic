@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections;
 using Unity.VisualScripting;
+using UnityEditor.Rendering;
 using UnityEditor.ShaderGraph;
 using UnityEngine;
 
@@ -17,8 +18,12 @@ public class PoissonPlacement : MonoBehaviour
 	public float maxTerrainDepth = 1000f;
 	public int layerMask = ~(1 << 8);
 	public float maxSteepness = 0.5f; // 0 is default
+    public GameObject[] objArray;
+    public string ignoreTag = "Water";
 
 	private float randOffset =0f;
+
+    
 
 	List<Vector2> points;
 	List<Vector2> maskedPoints;
@@ -56,9 +61,16 @@ public class PoissonPlacement : MonoBehaviour
             Vector3 pPos = new Vector3(point.x, maxTerrainHeight, point.y);
             if (Physics.Raycast(pPos, Vector3.down, out hit, Mathf.Infinity, layerMask)) {
                 // check if too steep here
-                if (Vector3.Dot(hit.normal, Vector3.up) > maxSteepness) {
-                    meshPoints.Add(hit.point);
+                if (hit.transform.CompareTag(ignoreTag)) {
+                    Debug.Log("hitwater");
+                    continue;
                 }
+                if (Vector3.Dot(hit.normal, Vector3.up) <= maxSteepness) continue;
+
+                meshPoints.Add(hit.point);
+                GameObject obj = objArray[(int)(point.x + point.y)*5236 % objArray.Length];
+
+                Instantiate(obj,hit.point,Quaternion.Euler(0,(point.x + point.y)*5236 % 360,0),transform); // test for performance
             }
         }
         // instead of raycasting could use terrain at point...
@@ -67,7 +79,7 @@ public class PoissonPlacement : MonoBehaviour
 
 	void OnDrawGizmos() {
         Gizmos.color = Color.white;
-		Gizmos.DrawWireCube(new Vector3(regionSize.z/2,maxTerrainHeight,regionSize.z/2),regionSize);
+		Gizmos.DrawWireCube(new Vector3(regionSize.x/2,maxTerrainHeight,regionSize.z/2),regionSize);
 		if (meshPoints != null) {
             Gizmos.color = Color.blue;
 			foreach (Vector2 point in maskedPoints) {

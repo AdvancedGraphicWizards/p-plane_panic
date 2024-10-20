@@ -7,6 +7,7 @@ TagManager:
   - Plane
   - Wing
   - Terrain
+  - Water
   layers:
   - Default
   - TransparentFX
