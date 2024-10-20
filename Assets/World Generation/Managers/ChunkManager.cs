@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 // Static class to create and disable chunk-GameObjects based on QuadTreeNodes
@@ -109,7 +110,6 @@ public static class ChunkManager {
             vertices[i].y = World.GetHeight(vertices[i].x + node.position.x, vertices[i].z + node.position.z);
         }
         mesh.vertices = vertices;
-        mesh.RecalculateNormals();
 
         // Add to chunks dictionary
         chunks.Add(node.ID, chunk);

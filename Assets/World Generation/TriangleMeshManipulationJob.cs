@@ -36,10 +36,10 @@ public struct TriangleMeshManipulationIJob : IJobParallelFor {
             vertexDistance * z - vertexDistance * (vertexCount - 1) * 0.5f
         );
         vertex.y = World.GetHeight(vertex.x + position.x, vertex.z + position.z);
+        normals[index] = World.GetNormal(vertex.x + position.x, vertex.y, vertex.z + position.z);
 
         // Set vertices, normals and uvs
         vertices[index] = vertex;
-        normals[index] = Vector3.up;
         uvs[index] = new Vector2(x / (float)vertexCount, z / (float)vertexCount);
     }
 }
@@ -81,10 +81,10 @@ public class TriangleMeshManipulationJob : MonoBehaviour {
         // Set mesh data
         Mesh mesh = GetComponent<MeshFilter>().mesh;
         mesh.SetVertices(vertices);
+        //mesh.RecalculateTangents();
         mesh.SetNormals(normals);
         mesh.SetUVs(0, uvs);
         mesh.RecalculateBounds();
-        mesh.RecalculateNormals();
 
         // Update collider
         GetComponent<MeshCollider>().sharedMesh = mesh;

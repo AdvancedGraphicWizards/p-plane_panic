@@ -27,7 +27,7 @@ public class RingSpawnScript : MonoBehaviour
     [SerializeField] private float _baseHeightIncreaseFactor = 2f;
 
     [SerializeField] private float _period =2500f;
-    [SerializeField] private float _amplitude = 80f;
+    [SerializeField] private float _amplitude = 100f;
     [SerializeField] private float _periodOffset = 0;
 
 
@@ -126,6 +126,6 @@ public class RingSpawnScript : MonoBehaviour
     }
 
     private float WaveOffset(float x) {
-        return Mathf.Sin(x*2*Mathf.PI/_period + _periodOffset)*_amplitude;
+        return Mathf.Sin(x*2*Mathf.PI/_period + _periodOffset)*Mathf.Min(_amplitude, Mathf.Abs(x/50f));
     }
 }

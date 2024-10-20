@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.ShaderGraph;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -96,6 +97,22 @@ public class World : MonoBehaviour {
 
         return height;
     }
+
+    // Returns normal for position x, z based on array of octaves and perlin noise
+    public static Vector3 GetNormal(float x, float y, float z) {
+        Vector3 v1 = new Vector3(x,y,z);
+        Vector3 v2 = new Vector3(x,GetHeight(x , z + settings.vertexDistance),z + settings.vertexDistance);
+        Vector3 v3 = new Vector3(x + settings.vertexDistance,GetHeight(x + settings.vertexDistance , z),z);
+        //Vector3 v4 = new Vector3(x,GetHeight(x , z - settings.vertexDistance),z - settings.vertexDistance);
+        //Vector3 v5 = new Vector3(x - settings.vertexDistance,GetHeight(x - settings.vertexDistance , z),z);
+        v2 -= v1;
+        v3 -= v1;
+        //v4 -= v1;
+        //v4 -= v1;
+        //Vector3 vn = Vector3.Normalize(Vector3.Cross(v2, v3)) + Vector3.Normalize(Vector3.Cross(v5, v4));
+        return Vector3.Normalize(Vector3.Cross(v2, v3));
+    }
+
     /// !!! ----------------------------------- !!!
     // MESSY TERRAIN TESTING
     /// !!! ----------------------------------- !!!
@@ -107,9 +124,9 @@ public class World : MonoBehaviour {
 
         //float spice = Noised(new Vector2(1,y)).x*50;
 
-        float sinSDF = CanyonCarve(new Vector2(x, y), 40f, 50f, 40f, 0f, 2500f, 80f, 0f);
-        sinSDF += CanyonCarve(new Vector2(x, y), 20f, 120f, 40f, 0f, 2500f, 80f, 0f);
-        sinSDF += CanyonCarve(new Vector2(x, y), 10f, 160f, 40f, 0f, 2500f, 80f, 0f);
+        float sinSDF = CanyonCarve(new Vector2(x, y), 40f, 50f, 40f, 0f, 2500f, 100f, 0f);
+        sinSDF += CanyonCarve(new Vector2(x, y), 20f, 120f, 40f, 0f, 2500f, 100f, 0f);
+        sinSDF += CanyonCarve(new Vector2(x, y), 10f, 160f, 40f, 0f, 2500f, 100f, 0f);
 
         sample.x *= Mathf.Min(1f, 60f/sinSDF);
 
@@ -125,7 +142,7 @@ public class World : MonoBehaviour {
         float k = 2f;
 
         // Calc x-axis distance from sine wave (not currently sdf)
-        float mod = Mathf.Sin(point.y*2*Mathf.PI/period + periodOffset)*amplitude;
+        float mod = Mathf.Sin(point.y*2*Mathf.PI/period + periodOffset)*Mathf.Min(amplitude, Mathf.Abs(point.y/50f));
         float sinSDF = Mathf.Abs(point.x -axisOffset - mod);
 
         sinSDF = Mathf.Pow(Smin(canyonWidth, Mathf.Max(sinSDF -canyonBaseWidth, 0f), k), 2) / Mathf.Pow(canyonWidth, 2);
