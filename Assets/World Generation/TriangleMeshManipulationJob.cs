@@ -85,6 +85,9 @@ public class TriangleMeshManipulationJob : MonoBehaviour {
         mesh.SetUVs(0, uvs);
         mesh.RecalculateBounds();
         mesh.RecalculateNormals();
+
+        // Update collider
+        GetComponent<MeshCollider>().sharedMesh = mesh;
     }
 
     void OnDestroy() {

@@ -53,7 +53,6 @@ public static class ChunkManager {
             );
             chunk.GetComponent<MeshFilter>().mesh = mesh;
             chunk.GetComponent<TriangleMeshManipulationJob>().Initialize(mesh);
-            chunk.GetComponent<MeshCollider>().sharedMesh = mesh;
 
             // Set parent to World GameObject if it exists (TEMP)
             if (GameObject.Find("World") != null) {

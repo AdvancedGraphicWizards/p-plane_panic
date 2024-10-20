@@ -14,7 +14,7 @@ public class PoissonPlacement : MonoBehaviour
 	public float noiseMaskScale =1f;
 	public float noiseThreshold =0.5f;
 	public float maxTerrainHeight = 100f;
-	public float maxTerrainDepth = 100f;
+	public float maxTerrainDepth = 1000f;
 	public int layerMask = ~(1 << 8);
 
 	private float randOffset =0f;
@@ -26,10 +26,16 @@ public class PoissonPlacement : MonoBehaviour
     void Start()
     {
         randOffset = Random.Range(0,99999);
+
+        StartCoroutine(WaitALil());
+    }
+    IEnumerator WaitALil() {
+        yield return new WaitForSeconds(1f);
+        GeneratePoints();
     }
 
-	void OnValidate() {
 
+    void GeneratePoints() {
         // Generate uniform random points
 		points = PoissonDiscSampling.GeneratePoints(radius, new Vector2(regionSize.x, regionSize.z));
 
@@ -46,14 +52,15 @@ public class PoissonPlacement : MonoBehaviour
         // Raycast to find point on mesh geometry
         RaycastHit hit;
         foreach (Vector2 point in maskedPoints) {
-            Vector3 pPos = new Vector3(point.x, 0, point.y);
-            if (Physics.Raycast(pPos, Vector3.down, out hit, 100f, layerMask)) {
-                Debug.DrawRay(pPos, Vector3.down * hit.distance, Color.yellow);
+            Vector3 pPos = new Vector3(point.x, maxTerrainHeight, point.y);
+            if (Physics.Raycast(pPos, Vector3.down, out hit, Mathf.Infinity, layerMask)) {
+                // check if too steep here
+
                 meshPoints.Add(hit.point);
             }
         }
         // instead of raycasting could use terrain at point...
-	}
+    }
 
 
 	void OnDrawGizmos() {
