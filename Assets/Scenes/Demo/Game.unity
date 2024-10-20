@@ -3561,7 +3561,7 @@ MonoBehaviour:
   rejectionSamples: 10
   displayRadius: 10
   noiseMaskScale: 100
-  noiseThreshold: 0.95
+  noiseThreshold: 0.9
   maxTerrainHeight: 500
   maxTerrainDepth: 100
   layerMask: -257

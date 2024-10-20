@@ -63,5 +63,5 @@ MonoBehaviour:
   meshStructure: 0
   vertexDistance: 4
   vertexCount: 64
-  levelsOfDetail: 16
+  levelsOfDetail: 10
   material: {fileID: 2100000, guid: 9bb88a37e672e434bbcac695fcb10f48, type: 2}
