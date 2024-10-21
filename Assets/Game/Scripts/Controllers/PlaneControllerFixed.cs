@@ -23,6 +23,8 @@ public class PlaneControllerFixed : MonoBehaviour
     [Header("Plane Particle effects & Animation")]
     [SerializeField] private Animation m_bladeRotateAnim;
     [SerializeField] private ParticleSystem[] m_exhaustParticles;
+    [SerializeField] private Material m_SpeedLines;
+
 
 
     [Header("Plane Attributes")]
@@ -163,7 +165,9 @@ public class PlaneControllerFixed : MonoBehaviour
         forwardSpeed += _turboSpeed * 2;
         maxHorizontalSpeed += _turboSpeed;
         maxVerticalSpeed += _turboSpeed;
+        m_SpeedLines.SetFloat("_SpeedLinesEnabled", 1f); // should change intesity based on current speed, easy fix
         yield return new WaitForSeconds(_turboTime);
+        m_SpeedLines.SetFloat("_SpeedLinesEnabled", 0f);
         forwardSpeed -= _turboSpeed * 2;
         maxHorizontalSpeed -= _turboSpeed;
         maxVerticalSpeed -= _turboSpeed;
