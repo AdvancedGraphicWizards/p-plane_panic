@@ -102,6 +102,11 @@ public class PlaneControllerFixed : MonoBehaviour
             RotatePlane();
             MovePlane();
         }
+
+        // Disable turbo visuals if not boosting
+        if (_isTurbo == 0) {
+            m_SpeedLines.SetFloat("_SpeedLinesEnabled", 0f);
+        }
     }
 
     // Rotate the plane transform about the z and x axes according to weight values
@@ -167,7 +172,6 @@ public class PlaneControllerFixed : MonoBehaviour
         maxVerticalSpeed += _turboSpeed;
         m_SpeedLines.SetFloat("_SpeedLinesEnabled", 1f); // should change intesity based on current speed, easy fix
         yield return new WaitForSeconds(_turboTime);
-        m_SpeedLines.SetFloat("_SpeedLinesEnabled", 0f);
         forwardSpeed -= _turboSpeed * 2;
         maxHorizontalSpeed -= _turboSpeed;
         maxVerticalSpeed -= _turboSpeed;
