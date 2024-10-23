@@ -243,10 +243,10 @@ MonoBehaviour:
     m_RotationOrder: 4
   m_maxFootHeight: 0.3
   m_animationTime: 0.1
-  m_AnimationFrameTime: 0.016666668
-  m_maxDistFromTarget: 0.4
+  m_AnimationFrameTime: 0.01
+  m_maxDistFromTarget: 0.35
   m_maxRaycastDist: 7
-  m_footOvershoot: 0.1
+  m_footOvershoot: 0.15
   m_footOffset: 0.05
   m_LayerInclude: 3
 --- !u!1 &907726969762196104
@@ -5228,7 +5228,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8384174384908567265
 Transform:
   m_ObjectHideFlags: 0
@@ -5299,7 +5299,7 @@ MonoBehaviour:
   - {fileID: 5572373149282920341}
   m_cloudTrail: {fileID: 1372475078524247618}
   m_bodyHeightBase: 0.2
-  m_minStepWait: 0.05
+  m_minStepWait: -0.1
   m_posAdjustRatio: 1
   m_rotAdjustRatio: 1
   m_idleBounceRange: 0.1
@@ -5450,10 +5450,10 @@ MonoBehaviour:
     m_RotationOrder: 4
   m_maxFootHeight: 0.3
   m_animationTime: 0.1
-  m_AnimationFrameTime: 0.016666668
-  m_maxDistFromTarget: 0.4
+  m_AnimationFrameTime: 0.01
+  m_maxDistFromTarget: 0.35
   m_maxRaycastDist: 7
-  m_footOvershoot: 0.1
+  m_footOvershoot: 0.15
   m_footOffset: 0.05
   m_LayerInclude: 3
 --- !u!1 &1968371879394013684
@@ -5961,7 +5961,7 @@ Transform:
   m_GameObject: {fileID: 4871611812388793930}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.118, y: 0.43, z: 0.283}
+  m_LocalPosition: {x: -0.118, y: 0.43, z: 0.364}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5978,6 +5978,7 @@ GameObject:
   - component: {fileID: 3629778784520681746}
   - component: {fileID: 338861358498863849}
   - component: {fileID: 8933883639394268050}
+  - component: {fileID: 2237922481763952682}
   m_Layer: 0
   m_Name: Goggles
   m_TagString: Untagged
@@ -6051,6 +6052,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &2237922481763952682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4886382810863632053}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6da670bedf264c542a822fa96f722a66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  squashDirection: {x: 0, y: 0.5, z: 0.5}
+  squashFactor: 0.5
 --- !u!1 &5173387501998168894
 GameObject:
   m_ObjectHideFlags: 0
@@ -6385,6 +6400,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_playerNameText: {fileID: 2521939813055486709}
   m_playerName: Player
+  m_playersSO: {fileID: 0}
+  m_playerID: 0
   m_phoneController: {fileID: 0}
 --- !u!1 &7670537409000766538
 GameObject:
@@ -6780,7 +6797,7 @@ Transform:
   m_GameObject: {fileID: 8944181925476817506}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.112, y: 0.43000013, z: 0.283}
+  m_LocalPosition: {x: 0.112, y: 0.43000013, z: 0.364}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
