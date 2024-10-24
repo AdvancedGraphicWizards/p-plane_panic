@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Rellac.Audio;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 /// <summary>
 /// Component controlling a singular IK target (aka "foot")
@@ -103,9 +104,11 @@ public class IKLeg : MonoBehaviour
         m_footUpDir = Vector3.Cross(m_footForwardDir.normalized, right);
         m_rotatedForwardDir = m_footForwardDir;
 
-        while (timer < m_animationTime + m_AnimationFrameTime)
+        float m_scaledAnimationTime = m_animationTime / Mathf.Max(DistFromTarget/m_maxDistFromTarget, 1f);
+
+        while (timer < m_scaledAnimationTime + m_AnimationFrameTime)
         {
-            animTime = m_speedCurve.Evaluate(timer / m_animationTime);
+            animTime = m_speedCurve.Evaluate(timer / m_scaledAnimationTime);
 
             // If the target is keep moving, apply acceleration to correct the end point
             float footAcceleration = Mathf.Max((m_raycastHitPos - startingFootPos).magnitude / m_footForwardDir.magnitude, 1.0f);

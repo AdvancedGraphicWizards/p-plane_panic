@@ -69,8 +69,10 @@ public class PlayerController : MonoBehaviour
         m_currentMovementVector.z = m_inputManager.Direction.y * m_walkingSpeed * Time.deltaTime;
 
         // Look towards the direction of movement
-        if (m_currentMovementVector != Vector3.zero)
+        if (m_currentMovementVector != Vector3.zero){
             _playerModel.transform.forward = new Vector3(m_currentMovementVector.x, m_currentMovementVector.y, m_currentMovementVector.z);
+            _playerModel.transform.forward = Quaternion.AngleAxis(Vector3.Magnitude(m_currentMovementVector)*90f, _playerModel.transform.right) * _playerModel.transform.forward;
+        }            
 
         // Update position and move the player
         relativePos += m_currentMovementVector;
