@@ -12,16 +12,13 @@ public static class HeightmapComponent
         Vector2 p = new Vector2(x, y);
 
         // Get base Terrain, FBM with erosion
-        //Vector3 baseTerrain = FBMErosion(p/300f, 10) *150f;
-        //float baseTerrainHeight = baseTerrain.x;
-        float baseTerrainHeight = 50f;
+        Vector3 baseTerrain = FBMErosion(p/300f, 10) *150f;
+        float baseTerrainHeight = baseTerrain.x;
 
         // Get canyon depth
-        // float sinSDF = CanyonCarve(p, 40f, 10f, 40f, 0f, 2500f, 100f, 0f);
-        // sinSDF += CanyonCarve(p, 20f, 80f, 40f, 0f, 2500f, 100f, 0f);
-        // sinSDF += CanyonCarve(p, 10f, 130f, 40f, 0f, 2500f, 100f, 0f);
-
-        float sinSDF = CanyonCarveStepped(p, 100f, 50f, 100f, 0f, 2500f, 100f, 0f);
+        float sinSDF = CanyonCarve(p, 40f, 10f, 40f, 0f, 2500f, 100f, 0f);
+        sinSDF += CanyonCarve(p, 20f, 80f, 40f, 0f, 2500f, 100f, 0f);
+        sinSDF += CanyonCarve(p, 10f, 130f, 40f, 0f, 2500f, 100f, 0f);
 
         // Dimminish baseTerrain Impact within canyon
         baseTerrainHeight *= Mathf.Min(1f, 60f/sinSDF);
