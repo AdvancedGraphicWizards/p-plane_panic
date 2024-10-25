@@ -23,8 +23,10 @@ Shader "Custom/WaterShader"
         _VoronoiScale("Voronoi Scale", Float) = 1.0
         _VoronoiSS("Voronoi Smoothing", Float) = 10.0
         _VoronoiLineThickness("Voronoi Line Thickness", Range(0.0, 1.0)) = 0.1
+        _VoronoiAAFactor("Voronoi AA Factor", Range(0.0, 1.0)) = 0.5
         [Toggle] _ProceduralVoronoi("Use Procedural Voronoi", Float) = 0
         [Toggle] _PreviewVoronoi("Preview Voronoi", Float) = 0
+        [Toggle] _VoronoiEnableAA("Enable Procedural AA", Float) = 1
 
         [Header(Noise Properties)]
         _SurfaceNoise("Surface Noise", 2D) = "white" {}
@@ -33,6 +35,11 @@ Shader "Custom/WaterShader"
 
         [Header(Wave Properties)]
         _WaveChoppiness("Choppiness", Float) = 0.01
+
+        [Header(Fade Controls)]
+        _FadeDistance("Fade Distance", Float) = 50.0
+        _AngleFadeFactor("Angle Fade Factor", Float) = 1.0
+        [Toggle] _EnableFade("Enable Fading", Float) = 1
     }
 
     SubShader
@@ -74,8 +81,10 @@ Shader "Custom/WaterShader"
             float _VoronoiScale;
             float _VoronoiSS;
             float _VoronoiLineThickness;
+            float _VoronoiAAFactor;
             float _ProceduralVoronoi;
             float _PreviewVoronoi;
+            float _VoronoiEnableAA;
 
             sampler2D _SurfaceNoise;
             float4 _SurfaceNoise_ST;
@@ -83,6 +92,10 @@ Shader "Custom/WaterShader"
             float _SurfaceNoiseCutoff;
 
             float _WaveChoppiness;
+
+            float _FadeDistance;
+            float _AngleFadeFactor;
+            float _EnableFade;
 
             // Procedural Voronoi noise function for foam texture
             // Hash functions for procedural noise
@@ -140,8 +153,19 @@ Shader "Custom/WaterShader"
                         }
                     }
                 }
+                
+                // Anti-aliasing: Adjust smoothing based on pixel size
+                float antialias = 0.0;
+                if (_VoronoiEnableAA > 0.5)
+                {
+                    antialias = fwidth(md) * _VoronoiAAFactor;
+                }
+                else
+                {
+                    antialias = _VoronoiSS;
+                }
 
-                return 1.0 - smoothstep(_VoronoiLineThickness - _VoronoiSS, _VoronoiLineThickness + _VoronoiSS, md);
+                return 1.0 - smoothstep(_VoronoiLineThickness - antialias, _VoronoiLineThickness + antialias, md);
             }
 
             // Alpha blend for final colour output
@@ -257,6 +281,26 @@ Shader "Custom/WaterShader"
                 float surfaceNoise = smoothstep(surfaceNoiseCutoff - SMOOTHSTEP_AA, surfaceNoiseCutoff + SMOOTHSTEP_AA, surfaceNoiseSample);
                 float4 surfaceNoiseColour = _SurfaceNoiseColour;
                 surfaceNoiseColour.a *= surfaceNoise;
+
+                // Apply fading of surface foam
+                if (_EnableFade > 0.5)
+                {
+                    float voronoiFade = 1.0;
+                    float3 cameraPosWS = _WorldSpaceCameraPos;
+
+                    // Calculate fading based on distance and angle
+                    float distance = length(cameraPosWS - IN.positionWS);
+                    float distanceFade = saturate(distance / _FadeDistance);
+                    float3 viewDir = normalize(cameraPosWS - IN.positionWS);
+                    float angleFade = saturate(dot(float3(0, 1, 0), viewDir) * _AngleFadeFactor);
+                    voronoiFade = min(distanceFade, angleFade);
+
+                    // Apply fade to the foam samples and recompute colours
+                    foamSample *= voronoiFade;
+                    darkFoamSample *= voronoiFade;
+                    darkFoamColour = lerp(waterColour, _DarkFoamColour, darkFoamSample);
+                    finalWaterColour = lerp(darkFoamColour, _LightFoamColour, foamSample);
+                }
 
                 float4 outputColor = alphaBlend(surfaceNoiseColour, finalWaterColour);
                 return outputColor;
