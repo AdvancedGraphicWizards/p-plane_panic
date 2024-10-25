@@ -1,143 +1,131 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using UnityEditor.ShaderGraph;
 using UnityEngine;
-using UnityEngine.Rendering;
 
-[ExecuteInEditMode]
-public class heightmapComponent : MonoBehaviour
+public static class HeightmapComponent
 {
+    /// <summary>
+    /// Get Terrain function Height at given (x,y) position
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <returns> terrain height</returns>
+    public static float HeightAtPosition(float x, float y) {
+        Vector2 p = new Vector2(x, y);
 
-    [SerializeField] private int m_textureWidth = 1024;
-    [SerializeField] private int m_textureHeight = 1024;
+        // Get base Terrain, FBM with erosion
+        //Vector3 baseTerrain = FBMErosion(p/300f, 10) *150f;
+        //float baseTerrainHeight = baseTerrain.x;
+        float baseTerrainHeight = 50f;
 
-    [SerializeField] private float m_textureScale = 2f;
-    [SerializeField] private Vector2 m_textureOffset = Vector2.zero;
+        // Get canyon depth
+        // float sinSDF = CanyonCarve(p, 40f, 10f, 40f, 0f, 2500f, 100f, 0f);
+        // sinSDF += CanyonCarve(p, 20f, 80f, 40f, 0f, 2500f, 100f, 0f);
+        // sinSDF += CanyonCarve(p, 10f, 130f, 40f, 0f, 2500f, 100f, 0f);
 
-    public Texture2D m_noiseTexture;
+        float sinSDF = CanyonCarveStepped(p, 100f, 50f, 100f, 0f, 2500f, 100f, 0f);
 
+        // Dimminish baseTerrain Impact within canyon
+        baseTerrainHeight *= Mathf.Min(1f, 60f/sinSDF);
 
-    private void Start() {
-        // Set random offset
-        m_textureOffset = GenerateRandomVector2();
-        // generate the texture
-        m_noiseTexture = GenerateTerrainTexture();
+        // Subtract Canyon from terrain height
+        baseTerrainHeight -= sinSDF;
 
-        // Just for testing/visualization
-        Renderer renderer = GetComponent<Renderer>();
-        renderer.sharedMaterial.mainTexture = m_noiseTexture;
+        // Y-offset
+        float baseOffset = 70f;
+
+        return baseTerrainHeight + baseOffset;
     }
 
 
-    Vector2 GenerateRandomVector2() {
-        return new Vector2(Random.Range(0,999999), Random.Range(0,999999));
+
+    /// Get normal at given x,y,z position with a certain consistent vertex distance
+    public static Vector3 GetNormalAtPosition(float x, float y, float z, float vertexDistance) {
+        Vector3 v1 = new Vector3(x,y,z);
+        Vector3 v2 = new Vector3(x,HeightAtPosition(x , z + vertexDistance),z + vertexDistance);
+        Vector3 v3 = new Vector3(x + vertexDistance,HeightAtPosition(x + vertexDistance , z),z);
+        v2 -= v1;
+        v3 -= v1;
+        return Vector3.Normalize(Vector3.Cross(v2, v3));
     }
 
-    // Generate visualization of terrain function
-    Texture2D GenerateTerrainTexture() {
-        Texture2D texture = new Texture2D(m_textureWidth, m_textureHeight);
 
-        // call terrain function for each pixel in texture
-        for (int x = 0; x < m_textureWidth; x++)
+
+    // Carve canyon shape, stepped method
+    private static float CanyonCarve(Vector2 point, float canyonWidth, float canyonBaseWidth, float canyonDepth, float axisOffset, float period, float amplitude, float periodOffset) {
+        
+        float k = 2f;
+
+        // Calc x-axis distance from sine wave (not currently sdf)
+        float mod = Mathf.Sin(point.y*2*Mathf.PI/period + periodOffset);
+
+        // Apply Amplitude and Damping factor
+        mod *= Mathf.Min(amplitude, Mathf.Abs(point.y/50f));
+
+        // Get distance from sine wave
+        float xDistFromSine = Mathf.Abs(point.x -axisOffset - mod);
+
+        float canyonFunc = Mathf.Pow(Smin(canyonWidth, Mathf.Max(xDistFromSine -canyonBaseWidth, 0f), k), 2) / Mathf.Pow(canyonWidth, 2);
+        canyonFunc = 1 - canyonFunc;
+
+        return canyonFunc * canyonDepth;
+    }
+
+    // Carve canyon shape, stepped method
+    private static float CanyonCarveStepped(Vector2 point, float canyonWidth, float canyonBaseWidth, float canyonDepth, float axisOffset, float period, float amplitude, float periodOffset) {
+        
+        float k = 2f;
+
+
+        // Calc x-axis distance from sine wave (not currently sdf)
+        float mod = Mathf.Sin(point.y*2*Mathf.PI/period + periodOffset);
+
+        // Apply Amplitude and Damping factor
+        mod *= Mathf.Min(amplitude, Mathf.Abs(point.y/50f));
+
+        // Get distance from sine wave
+        float xDistFromSine = Mathf.Abs(point.x -axisOffset - mod);
+
+        float canyonFunc = Mathf.Min(Mathf.Max((xDistFromSine -canyonBaseWidth/2f), 0f),canyonWidth/2f) / canyonWidth;
+
+        // Steps
+        int steps = 5;
+        float stepWidth = 0.2f;
+        float stepHeight = (1-stepWidth)/steps;
+
+        for (int i = 1; i <= steps; i++)
         {
-            for (int y = 0; y < m_textureHeight; y++)
-            {
-                // Sample terrain at point to generate texture
-
-                float terrainVal = TerrainAtPosition(x,y,1).x;
-
-                // For visualization set colour to be height value
-                Color color = new(terrainVal, terrainVal, terrainVal);
-                texture.SetPixel(x,y,color);
+            float currStepHeight = i*stepHeight;
+            if (currStepHeight < canyonFunc &&  canyonFunc < currStepHeight + stepWidth){
+                canyonFunc = currStepHeight; // replace with smin/smax/smoothstep
             }
         }
 
-        // Update texture with changes
-        texture.Apply();
 
-        return texture;
+        canyonFunc = 1 - canyonFunc;
+
+        return canyonFunc * canyonDepth;
     }
+
+
+    // Exponential Soft-min function
+    // Returns Minimum of a, b with a smoothing factor of k.
+    static private float Smin( float a, float b, float k )
+    {
+        k *= 1.0f;
+        float r = Mathf.Pow(2,-a/k) + Mathf.Pow(2,-b/k);
+        return -k*Mathf.Log(r,2);
+    }
+
+    // Arbitrary rotation matrices
+    static Vector2 m1 = new Vector2(0.8f,-0.6f);  
+    static Vector2 m2 = new Vector2(0.6f,0.8f); 
 
     /// <summary>
-    /// Magnitude of a line segment
+    /// 2D brownian motion noise sampling
+    /// Adapted from Blog post by Inigo Quilez: https://iquilezles.org/articles/morenoise/
     /// </summary>
-    /// <param name="p"></param> line starting point
-    /// <param name="a"></param> point to be measured
-    /// <param name="b"></param> line ending point
-    /// <returns></returns>
-    private float SDFSegment(Vector2 p, Vector2 a, Vector2 b )
-    {
-        Vector3 pa = p-a, ba = b-a;
-        float h = Mathf.Clamp01(Vector2.Dot(pa,ba)/Vector2.Dot(ba,ba));
-        return ( pa - ba*h ).magnitude;
-    }
-
-
-    /// <summary>
-    /// Get terrain height and normal at given point according to Noise Function
-    /// </summary>
-    /// <param name="x"></param> x coordinate
-    /// <param name="y"></param> y coordinate
-    /// <returns> Return height value (float) and normal vector (Vector3) </returns>
-    public Vector4 TerrainAtPosition(int x, int y, float height) {
-        // As perlin repeats on whole numbers convert to decimal
-        float xCrd = (float)x / m_textureWidth * m_textureScale;
-        float yCrd = (float)y / m_textureWidth * m_textureScale;
-        
-        // Calculate color based on perlin noise function (NEEDS TO BE NORMALIZED!!!)
-        Vector3 sample = FBMErosion(new Vector2(xCrd,yCrd), 15);
-
-        // Normal Calculation using derivatives (! Currently Completely wrong !)
-        Vector3 xTangent = new(1, sample.z* height*sample.x, 0);
-        Vector3 yTangent = new(0, sample.y* height*sample.x, 1);
-        Vector3 pointNormal = Vector3.Normalize(Vector3.Cross(xTangent, yTangent));
-
-        float sinSDF = CanyonCarve(new Vector2(x, y), 20f, 10f, 1f, m_textureWidth/2, 100f, 10f, 0f);
-        sinSDF += CanyonCarve(new Vector2(x, y), 20f, 10f, 0.5f, m_textureWidth/2, 120f, 8f, 30f);
-
-
-        sample.x -= sinSDF;
-
-        return new Vector4(sample.x, pointNormal.x, pointNormal.y, pointNormal.z);
-    }
-
-    private float CanyonCarve(Vector2 point, float canyonWidth, float canyonBaseWidth, float canyonDepth, float axisOffset, float period, float amplitude, float periodOffset) {
-        
-        // Clamp canyons base width
-        canyonBaseWidth = Mathf.Min(canyonWidth, canyonBaseWidth);
-
-        // Calc x-axis distance from sine wave (not currently sdf)
-        float mod = Mathf.Sin(point.y*2*Mathf.PI/period + periodOffset)*amplitude;
-        float sinSDF = Mathf.Abs(point.x -axisOffset - mod);
-
-        sinSDF = (Mathf.Pow(Mathf.Min(canyonWidth, Mathf.Max(sinSDF -canyonBaseWidth, 0f) ), 2) / Mathf.Pow(canyonWidth, 2));
-        sinSDF = 1 - sinSDF;
-
-        return sinSDF * canyonDepth;
-    }
-
-
-    float Sigmoid_SoftMin( float a, float b, float k )
-    {
-        k *= Mathf.Log(2f);
-        float x = b-a;
-        return a + x/(1f-Mathf.Pow(2f, x/k));
-    }
-
-    // cubic
-    float SoftMin( float a, float b, float k )
-    {
-        k *= 6.0f;
-        float h = Mathf.Max( k-Mathf.Abs(a-b), 0.0f)/k;
-        return Mathf.Min(a,b) - h*h*h*k*(1.0f/6.0f);
-    }
-    
-    Vector2 m1 = new Vector2(0.8f,-0.6f);  
-    Vector2 m2 = new Vector2(0.6f,0.8f);  
-
-    // FBM with erosion
-    Vector3 FBMErosion(Vector2 p , int octaves)
+    /// <param name="p"> x,y coordinates to sample the noise</param>
+    /// <returns>Vector3 consisting of a value and x,y gradients</returns>
+    private static Vector3 FBMErosion(Vector2 p , int octaves)
     {
         float a = 0.0f;
         float b = 1.0f;
@@ -161,12 +149,11 @@ public class heightmapComponent : MonoBehaviour
             p.y=(m2.x*p.x + m2.y*p.y)*2.0f;
         }
 
-        // Normalize the noise
+        // Normalize the noise (not currently functional)
         //a /= (1-Mathf.Pow(0.5f,octaves)) * 2f;
 
         return new Vector3(a,d.x,d.y);
     }
-
 
     /// <summary>
     /// 2D brownian motion noise sampling
@@ -174,7 +161,7 @@ public class heightmapComponent : MonoBehaviour
     /// </summary>
     /// <param name="p"> x,y coordinates to sample the noise</param>
     /// <returns>Vector3 consisting of a value and x,y gradients</returns>
-    Vector3 Noised( Vector2 p )
+    private static Vector3 Noised( Vector2 p )
     {
         Vector2 i = new(Mathf.Floor(p.x), Mathf.Floor(p.y));
         Vector2 f = new(p.x - i.x, p.y - i.y);               // get fractional part of x
@@ -204,10 +191,9 @@ public class heightmapComponent : MonoBehaviour
                         FBMDerivative.x, FBMDerivative.y); // derivatives
     }
 
-
     //  Hash function Vector2 => Vector2
     //  (Potentially Replace with a better hash)
-    Vector2 Hash( Vector2 x ) {
+    private static Vector2 Hash( Vector2 x ) {
         Vector2 k = new( 0.3183099f, 0.3678794f);
         x = x*k + new Vector2(k.y, k.x); // note y,x instead of x,y
         Vector2 l = 16.0f * Fract( x.x*x.y*(x.x+x.y)) * k;
@@ -215,7 +201,7 @@ public class heightmapComponent : MonoBehaviour
     }
 
     // Get fractional component of float p
-    private float Fract(float p) {
+    private static float Fract(float p) {
         return p - Mathf.Floor(p);
     }
 

@@ -3557,13 +3557,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 4
-  regionSize: {x: 1000, y: 1, z: 10000}
+  regionSize: {x: 1000, y: 1, z: 1000}
   rejectionSamples: 10
   displayRadius: 10
   noiseMaskScale: 100
   noiseThreshold: 0.9
   maxTerrainHeight: 500
-  maxTerrainDepth: 100
+  maxTerrainDepth: 500
   layerMask: -257
   maxSteepness: 0.8
   objArray:
@@ -3571,6 +3571,7 @@ MonoBehaviour:
   - {fileID: 7810612202964884031, guid: d3ab7815b4949e84796fe7d38649951e, type: 3}
   - {fileID: 7437722123948554194, guid: 2e6aef073e1b69a408302d3fbd5c42b3, type: 3}
   ignoreTag: Water
+  loadRadius: {x: 3, y: 3}
 --- !u!4 &1330014761
 Transform:
   m_ObjectHideFlags: 0

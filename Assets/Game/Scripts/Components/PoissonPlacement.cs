@@ -1,3 +1,4 @@
+
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections;
@@ -15,15 +16,21 @@ public class PoissonPlacement : MonoBehaviour
 	public float noiseMaskScale =1f;
 	public float noiseThreshold =0.5f;
 	public float maxTerrainHeight = 100f;
-	public float maxTerrainDepth = 1000f;
+	public float maxTerrainDepth = 100f;
 	public int layerMask = ~(1 << 8);
 	public float maxSteepness = 0.5f; // 0 is default
     public GameObject[] objArray;
     public string ignoreTag = "Water";
 
 	private float randOffset =0f;
+    private ObjectPool objPool;
+    private Vector2 offset;
 
-    
+    private Transform loadTarget;
+    private Vector2 startPoint;
+    public Vector2 loadRadius;
+
+
 
 	List<Vector2> points;
 	List<Vector2> maskedPoints;
@@ -31,22 +38,45 @@ public class PoissonPlacement : MonoBehaviour
 
     void Start()
     {
+        // Get world origin
+        if (loadTarget == null )
+            startPoint = Vector2.zero;
+        else 
+            startPoint = loadTarget.position;
+    
+        // Set object pool and rand offset for noise
+        objPool = new ObjectPool(1000, objArray, transform);
         randOffset = Random.Range(0,99999);
+
+        offset = startPoint;
+
+        // Double check radius is odd
+        if (loadRadius.x % 2 == 0) loadRadius.x++;
+        if (loadRadius.y % 2 == 0) loadRadius.y++;
 
         StartCoroutine(WaitALil());
     }
+
     IEnumerator WaitALil() {
-        yield return new WaitForSeconds(1f);
-        GeneratePoints();
+        for (int i = 0; i < loadRadius.x; i++)
+        {
+            for (int j = 0; j < loadRadius.y; j++)
+            {
+                yield return new WaitForSeconds(0.2f);
+                offset = startPoint + new Vector2(regionSize.x*(i-(loadRadius.x-1)/2), regionSize.z*(j-(loadRadius.y-1)/2));
+                GeneratePoints(offset.x, offset.y);
+            }
+        }
     }
 
-
-    void GeneratePoints() {
+    public (Vector3[], Quaternion[]) GeneratePoints(float offsetX, float offsetZ) {
         // Generate uniform random points
-		points = PoissonDiscSampling.GeneratePoints(radius, new Vector2(regionSize.x, regionSize.z));
+		points = PoissonDiscSampling.GeneratePoints(radius, new Vector2(regionSize.x, regionSize.z), new Vector2(offsetX,offsetZ),3);
 
         maskedPoints = new List<Vector2>();
         meshPoints = new List<Vector3>();
+        meshPoints = new List<Vector3>();
+        List<Quaternion> meshOrientations = new List<Quaternion>();
 
         //Mask Points According to noise
         foreach (Vector2 point in points) {
@@ -58,6 +88,7 @@ public class PoissonPlacement : MonoBehaviour
         // Raycast to find point on mesh geometry
         RaycastHit hit;
         foreach (Vector2 point in maskedPoints) {
+
             Vector3 pPos = new Vector3(point.x -regionSize.x/2f, maxTerrainHeight, point.y);
             if (Physics.Raycast(pPos, Vector3.down, out hit, Mathf.Infinity, layerMask)) {
                 // check if too steep here
@@ -68,22 +99,25 @@ public class PoissonPlacement : MonoBehaviour
                 if (Vector3.Dot(hit.normal, Vector3.up) <= maxSteepness) continue;
 
                 meshPoints.Add(hit.point);
-                GameObject obj = objArray[(int)(point.x + point.y)*5236 % objArray.Length];
+                meshOrientations.Add(Quaternion.Euler(0,(point.x + point.y)*5236 % 360,0));
 
-                Instantiate(obj,hit.point,Quaternion.Euler(0,(point.x + point.y)*5236 % 360,0),transform); // test for performance
+                // objPool.SpawnObject(hit.point, 
+                //                     Quaternion.Euler(0,(point.x + point.y)*5236 % 360,0), 
+                //                     (int)(Mathf.Abs(((point.x + point.y)*5236) % objArray.Length)));
             }
         }
-        // instead of raycasting could use terrain at point...
+
+        return (meshPoints.ToArray(), meshOrientations.ToArray());
     }
 
 
 	void OnDrawGizmos() {
         Gizmos.color = Color.white;
-		Gizmos.DrawWireCube(new Vector3(0,maxTerrainHeight,regionSize.z/2),regionSize);
+		Gizmos.DrawWireCube(new Vector3(0 + offset.x,maxTerrainHeight,regionSize.z/2 + offset.x),regionSize);
 		if (meshPoints != null) {
             Gizmos.color = Color.blue;
 			foreach (Vector2 point in maskedPoints) {
-				Gizmos.DrawSphere(new Vector3(point.x, maxTerrainHeight, point.y), displayRadius);
+				Gizmos.DrawSphere(new Vector3(point.x -regionSize.x/2, maxTerrainHeight, point.y), displayRadius);
 			}
             Gizmos.color = Color.red;
             foreach (Vector3 point in meshPoints) {

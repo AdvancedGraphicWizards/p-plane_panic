@@ -7,9 +7,7 @@ using UnityEngine;
 public static class PoissonDiscSampling
 {
 
-
-
-	public static List<Vector2> GeneratePoints(float radius, Vector2 sampleRegionSize, int numSamplesBeforeRejection = 5) {
+	public static List<Vector2> GeneratePoints(float radius, Vector2 sampleRegionSize, Vector2 offset, int numSamplesBeforeRejection = 5) {
 		float cellSize = radius/Mathf.Sqrt(2);
 
 		int[,] grid = new int[Mathf.CeilToInt(sampleRegionSize.x/cellSize), Mathf.CeilToInt(sampleRegionSize.y/cellSize)];
@@ -41,7 +39,12 @@ public static class PoissonDiscSampling
 			}
 
 		}
-
+		
+		// Add offset
+		for (int i = 0; i < points.Count; i++)
+		{
+			points[i] += offset;
+		}
 		return points;
 	}
 
