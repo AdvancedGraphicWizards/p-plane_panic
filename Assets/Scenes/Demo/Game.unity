@@ -3537,6 +3537,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1330014761}
   - component: {fileID: 1330014760}
+  - component: {fileID: 1330014762}
+  - component: {fileID: 1330014763}
   m_Layer: 0
   m_Name: ObjectPlacementHandler
   m_TagString: Untagged
@@ -3556,10 +3558,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff5e84797585f4a4eb58eceb45562827, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 4
-  regionSize: {x: 1000, y: 1, z: 1000}
+  radius: 1
   rejectionSamples: 10
-  displayRadius: 10
+  displayRadius: 1
   noiseMaskScale: 100
   noiseThreshold: 0.9
   maxTerrainHeight: 500
@@ -3567,11 +3568,11 @@ MonoBehaviour:
   layerMask: -257
   maxSteepness: 0.8
   objArray:
-  - {fileID: 6661677915272811350, guid: 81ac1aace8e27534c94dd81faf7b5f70, type: 3}
+  - {fileID: 209205448113748412, guid: 1aab5729fe8f2a743b65df6c080a0dd9, type: 3}
   - {fileID: 7810612202964884031, guid: d3ab7815b4949e84796fe7d38649951e, type: 3}
   - {fileID: 7437722123948554194, guid: 2e6aef073e1b69a408302d3fbd5c42b3, type: 3}
   ignoreTag: Water
-  loadRadius: {x: 3, y: 3}
+  randOffset: 0
 --- !u!4 &1330014761
 Transform:
   m_ObjectHideFlags: 0
@@ -3587,6 +3588,44 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1330014762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1330014759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7adac89b494d76a4fb3df2a4cc23ba54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poissonPlacement: {fileID: 1330014760}
+--- !u!114 &1330014763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1330014759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 775f2295fe6c13e48a0cde52485aeee0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPos: {fileID: 3961382649873011698}
+  prevPlayerPos: {x: 0, y: 0, z: 0}
+  playerViewAngle: 60
+  playerLoadRadius: 3
+  objArray:
+  - {fileID: 8662610069560990937, guid: a22573f01390798418576822718bd260, type: 3}
+  - {fileID: 8662610069560990937, guid: a22573f01390798418576822718bd260, type: 3}
+  - {fileID: 8662610069560990937, guid: a22573f01390798418576822718bd260, type: 3}
+  - {fileID: 8662610069560990937, guid: a22573f01390798418576822718bd260, type: 3}
+  matArray:
+  - {fileID: -6478536213147159724, guid: 3227f3bcac391fe48b227613e837643c, type: 3}
+  - {fileID: -6478536213147159724, guid: 3227f3bcac391fe48b227613e837643c, type: 3}
+  - {fileID: -6478536213147159724, guid: 3227f3bcac391fe48b227613e837643c, type: 3}
 --- !u!1 &1365206188
 GameObject:
   m_ObjectHideFlags: 0

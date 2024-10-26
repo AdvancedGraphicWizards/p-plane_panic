@@ -10,7 +10,6 @@ using UnityEngine;
 public class PoissonPlacement : MonoBehaviour
 {
 	public float radius = 1;
-	public Vector3 regionSize = Vector3.one;
 	public int rejectionSamples = 30;
 	public float displayRadius =1;
 	public float noiseMaskScale =1f;
@@ -21,62 +20,17 @@ public class PoissonPlacement : MonoBehaviour
 	public float maxSteepness = 0.5f; // 0 is default
     public GameObject[] objArray;
     public string ignoreTag = "Water";
+    public float randOffset = 0f;
 
-	private float randOffset =0f;
-    private ObjectPool objPool;
-    private Vector2 offset;
-
-    private Transform loadTarget;
-    private Vector2 startPoint;
-    public Vector2 loadRadius;
-
-
-
-	List<Vector2> points;
-	List<Vector2> maskedPoints;
-	List<Vector3> meshPoints;
-
-    void Start()
-    {
-        // Get world origin
-        if (loadTarget == null )
-            startPoint = Vector2.zero;
-        else 
-            startPoint = loadTarget.position;
-    
-        // Set object pool and rand offset for noise
-        objPool = new ObjectPool(1000, objArray, transform);
-        randOffset = Random.Range(0,99999);
-
-        offset = startPoint;
-
-        // Double check radius is odd
-        if (loadRadius.x % 2 == 0) loadRadius.x++;
-        if (loadRadius.y % 2 == 0) loadRadius.y++;
-
-        StartCoroutine(WaitALil());
-    }
-
-    IEnumerator WaitALil() {
-        for (int i = 0; i < loadRadius.x; i++)
-        {
-            for (int j = 0; j < loadRadius.y; j++)
-            {
-                yield return new WaitForSeconds(0.2f);
-                offset = startPoint + new Vector2(regionSize.x*(i-(loadRadius.x-1)/2), regionSize.z*(j-(loadRadius.y-1)/2));
-                GeneratePoints(offset.x, offset.y);
-            }
-        }
-    }
-
-    public (Vector3[], Quaternion[]) GeneratePoints(float offsetX, float offsetZ) {
+    // Generate points in a chunk according to poisson disc sampling and white noise mask
+    // Rotation are assigned at random
+    public Matrix4x4[] GeneratePoints(float offsetX, float offsetZ, float chunkSizeX, float chunkSizeZ) {
         // Generate uniform random points
-		points = PoissonDiscSampling.GeneratePoints(radius, new Vector2(regionSize.x, regionSize.z), new Vector2(offsetX,offsetZ),3);
+		List<Vector2> points = PoissonDiscSampling.GeneratePoints(radius, new Vector2(chunkSizeX, chunkSizeZ), new Vector2(offsetX - chunkSizeX/2f,offsetZ - chunkSizeZ/2f),3);
 
-        maskedPoints = new List<Vector2>();
-        meshPoints = new List<Vector3>();
-        meshPoints = new List<Vector3>();
-        List<Quaternion> meshOrientations = new List<Quaternion>();
+        List<Vector2> maskedPoints = new List<Vector2>();
+        List<Vector3> meshPoints = new List<Vector3>();
+        List<Vector3> meshOrientations = new List<Vector3>();
 
         //Mask Points According to noise
         foreach (Vector2 point in points) {
@@ -86,49 +40,39 @@ public class PoissonPlacement : MonoBehaviour
         }
 
         // Raycast to find point on mesh geometry
-        RaycastHit hit;
+        //RaycastHit hit;
         foreach (Vector2 point in maskedPoints) {
 
-            Vector3 pPos = new Vector3(point.x -regionSize.x/2f, maxTerrainHeight, point.y);
-            if (Physics.Raycast(pPos, Vector3.down, out hit, Mathf.Infinity, layerMask)) {
-                // check if too steep here
-                if (hit.transform.CompareTag(ignoreTag)) {
-                    Debug.Log("hitwater");
-                    continue;
-                }
-                if (Vector3.Dot(hit.normal, Vector3.up) <= maxSteepness) continue;
+            meshPoints.Add(new Vector3(point.x, 0, point.y));
+            meshOrientations.Add(new Vector3(0,(point.x + point.y)*5236 % 360,0));
 
-                meshPoints.Add(hit.point);
-                meshOrientations.Add(Quaternion.Euler(0,(point.x + point.y)*5236 % 360,0));
+            // Vector3 pPos = new Vector3(point.x -regionSize.x/2f, maxTerrainHeight, point.y);
+            // if (Physics.Raycast(pPos, Vector3.down, out hit, Mathf.Infinity, layerMask)) {
+            //     // check if too steep here
+            //     if (hit.transform.CompareTag(ignoreTag)) {
+            //         Debug.Log("hitwater");
+            //         continue;
+            //     }
+            //     if (Vector3.Dot(hit.normal, Vector3.up) <= maxSteepness) continue;
 
-                // objPool.SpawnObject(hit.point, 
-                //                     Quaternion.Euler(0,(point.x + point.y)*5236 % 360,0), 
-                //                     (int)(Mathf.Abs(((point.x + point.y)*5236) % objArray.Length)));
-            }
+            //     meshPoints.Add(hit.point);
+            //     meshOrientations.Add(Quaternion.Euler(0,(point.x + point.y)*5236 % 360,0));
+            // }
+        }
+        Matrix4x4[] propMatrices = new Matrix4x4[meshPoints.Count];
+        for (int i = 0; i < meshPoints.Count; i++) {
+            propMatrices[i] = Matrix4x4.TRS(meshPoints[i], Quaternion.Euler(meshOrientations[i]), Vector3.one);
         }
 
-        return (meshPoints.ToArray(), meshOrientations.ToArray());
+        return propMatrices;
     }
 
 
-	void OnDrawGizmos() {
-        Gizmos.color = Color.white;
-		Gizmos.DrawWireCube(new Vector3(0 + offset.x,maxTerrainHeight,regionSize.z/2 + offset.x),regionSize);
-		if (meshPoints != null) {
-            Gizmos.color = Color.blue;
-			foreach (Vector2 point in maskedPoints) {
-				Gizmos.DrawSphere(new Vector3(point.x -regionSize.x/2, maxTerrainHeight, point.y), displayRadius);
-			}
-            Gizmos.color = Color.red;
-            foreach (Vector3 point in meshPoints) {
-				Gizmos.DrawSphere(point, displayRadius);
-            }
-		}
-	}
-
-
+    // Mask points based on white noise
     bool WhiteNoiseMask(float x, float y){
         float p = Mathf.PerlinNoise(x*noiseMaskScale +randOffset,y*noiseMaskScale +randOffset);
         return (p >= noiseThreshold);
     }
+
+
 }
