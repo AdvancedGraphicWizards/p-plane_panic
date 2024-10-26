@@ -14,12 +14,8 @@ public class PoissonPlacement : MonoBehaviour
 	public float displayRadius =1;
 	public float noiseMaskScale =1f;
 	public float noiseThreshold =0.5f;
-	public float maxTerrainHeight = 100f;
-	public float maxTerrainDepth = 100f;
-	public int layerMask = ~(1 << 8);
+	public float waterLevel = 0f;
 	public float maxSteepness = 0.5f; // 0 is default
-    public GameObject[] objArray;
-    public string ignoreTag = "Water";
     public float randOffset = 0f;
 
     // Generate points in a chunk according to poisson disc sampling and white noise mask
@@ -39,25 +35,23 @@ public class PoissonPlacement : MonoBehaviour
             }
         }
 
-        // Raycast to find point on mesh geometry
-        //RaycastHit hit;
+        // Find valid point on mesh geometry
         foreach (Vector2 point in maskedPoints) {
 
-            meshPoints.Add(new Vector3(point.x, 0, point.y));
+            Vector3 pointOnTerrain = new Vector3(point.x, HeightmapComponent.HeightAtPosition(point.x, point.y), point.y);
+            
+            // check if point is above water
+            if (pointOnTerrain.y < waterLevel) continue;
+
+            // Get normal to Verify steepness
+            Vector3 normalAtPoint = HeightmapComponent.GetNormalAtPosition(pointOnTerrain.x, pointOnTerrain.y, pointOnTerrain.z, 1f);
+
+            if (Vector3.Dot(normalAtPoint, Vector3.up) <= maxSteepness) continue;
+
+
+            meshPoints.Add(new Vector3(point.x, HeightmapComponent.HeightAtPosition(point.x, point.y), point.y));
             meshOrientations.Add(new Vector3(0,(point.x + point.y)*5236 % 360,0));
-
-            // Vector3 pPos = new Vector3(point.x -regionSize.x/2f, maxTerrainHeight, point.y);
-            // if (Physics.Raycast(pPos, Vector3.down, out hit, Mathf.Infinity, layerMask)) {
-            //     // check if too steep here
-            //     if (hit.transform.CompareTag(ignoreTag)) {
-            //         Debug.Log("hitwater");
-            //         continue;
-            //     }
-            //     if (Vector3.Dot(hit.normal, Vector3.up) <= maxSteepness) continue;
-
-            //     meshPoints.Add(hit.point);
-            //     meshOrientations.Add(Quaternion.Euler(0,(point.x + point.y)*5236 % 360,0));
-            // }
+        
         }
         Matrix4x4[] propMatrices = new Matrix4x4[meshPoints.Count];
         for (int i = 0; i < meshPoints.Count; i++) {

@@ -3558,20 +3558,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff5e84797585f4a4eb58eceb45562827, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 1
-  rejectionSamples: 10
+  radius: 2
+  rejectionSamples: 3
   displayRadius: 1
   noiseMaskScale: 100
-  noiseThreshold: 0.9
-  maxTerrainHeight: 500
-  maxTerrainDepth: 500
-  layerMask: -257
+  noiseThreshold: 0.92
+  waterLevel: 0
   maxSteepness: 0.8
-  objArray:
-  - {fileID: 209205448113748412, guid: 1aab5729fe8f2a743b65df6c080a0dd9, type: 3}
-  - {fileID: 7810612202964884031, guid: d3ab7815b4949e84796fe7d38649951e, type: 3}
-  - {fileID: 7437722123948554194, guid: 2e6aef073e1b69a408302d3fbd5c42b3, type: 3}
-  ignoreTag: Water
   randOffset: 0
 --- !u!4 &1330014761
 Transform:
@@ -3618,14 +3611,15 @@ MonoBehaviour:
   playerViewAngle: 60
   playerLoadRadius: 3
   objArray:
-  - {fileID: 8662610069560990937, guid: a22573f01390798418576822718bd260, type: 3}
-  - {fileID: 8662610069560990937, guid: a22573f01390798418576822718bd260, type: 3}
-  - {fileID: 8662610069560990937, guid: a22573f01390798418576822718bd260, type: 3}
-  - {fileID: 8662610069560990937, guid: a22573f01390798418576822718bd260, type: 3}
+  - {fileID: -2432090755550338912, guid: ab7a12103c22302448f7ae067201e301, type: 3}
+  - {fileID: -2432090755550338912, guid: 7782639eb530739478f570fcd92c1d2d, type: 3}
+  - {fileID: -2432090755550338912, guid: c8cf94ed575000b41b506fd5375392d3, type: 3}
+  - {fileID: -2432090755550338912, guid: ab7a12103c22302448f7ae067201e301, type: 3}
   matArray:
-  - {fileID: -6478536213147159724, guid: 3227f3bcac391fe48b227613e837643c, type: 3}
-  - {fileID: -6478536213147159724, guid: 3227f3bcac391fe48b227613e837643c, type: 3}
-  - {fileID: -6478536213147159724, guid: 3227f3bcac391fe48b227613e837643c, type: 3}
+  - {fileID: 2100000, guid: b37df20668e6be94a96fcc9e9fcd6c53, type: 2}
+  - {fileID: 2100000, guid: b37df20668e6be94a96fcc9e9fcd6c53, type: 2}
+  - {fileID: 2100000, guid: b37df20668e6be94a96fcc9e9fcd6c53, type: 2}
+  - {fileID: 2100000, guid: b37df20668e6be94a96fcc9e9fcd6c53, type: 2}
 --- !u!1 &1365206188
 GameObject:
   m_ObjectHideFlags: 0
@@ -7267,7 +7261,7 @@ MonoBehaviour:
     type: 3}
   _targetParent: {fileID: 42121510}
   m_fireSpawnBounds: {x: 6, y: 1}
-  _timeToFirstFire: 60
+  _timeToFirstFire: 45
   _timeBetweenFireSpawns: 20
   _timeBetweenSpawnDecrease: 1
   _minTimeBetweenFireSpawns: 8

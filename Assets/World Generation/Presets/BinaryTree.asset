@@ -64,4 +64,4 @@ MonoBehaviour:
   vertexDistance: 4
   vertexCount: 64
   levelsOfDetail: 10
-  material: {fileID: 2100000, guid: 9bb88a37e672e434bbcac695fcb10f48, type: 2}
+  material: {fileID: 2100000, guid: 195fd457377381e458e638974d4fdbba, type: 2}

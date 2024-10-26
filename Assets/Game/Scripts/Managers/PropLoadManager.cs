@@ -26,7 +26,6 @@ public class PropLoadManager : MonoBehaviour
     IEnumerator GenerateGrid() {
         yield return new WaitForSeconds(1f);
         loadGridManager.GenerateGrid(new Vector2(playerPos.position.x, playerPos.position.z), playerLoadRadius);
-        prevPlayerPos = playerPos.position;
     }
 
     void Update()
@@ -50,6 +49,12 @@ public class PropLoadManager : MonoBehaviour
     // Draw all points within the player's view angle
     private void DrawPointsInViewAngle(Vector3 playerPos, Vector3 playerViewDirection, Matrix4x4[] points, int[] objType)
     {
+        List<Matrix4x4>[] pointsInView = new List<Matrix4x4>[objArray.Length];
+        for (int i = 0; i < objArray.Length; i++)
+        {
+            pointsInView[i] = new List<Matrix4x4>();
+        }
+
         for (int i = 0; i < points.Length; i++)
         {
             Vector3 dir = points[i].GetPosition() - playerPos;
@@ -60,9 +65,15 @@ public class PropLoadManager : MonoBehaviour
                 Debug.DrawLine(playerPos, points[i].GetPosition(), Color.red);
 
                 // GPU instance meshes in view angle
-                Graphics.DrawMesh(objArray[objType[i]], points[i], matArray[objType[i]], 0);
+                pointsInView[objType[i]].Add(points[i]);
             }
         }
+
+        // Loop over possible mesh-mat pairs and draw them
+        for (int i = 0; i < objArray.Length; i++){
+            Graphics.DrawMeshInstanced(objArray[i], 0, matArray[i], pointsInView[i].ToArray());
+        }
+        
     }
 
 }
