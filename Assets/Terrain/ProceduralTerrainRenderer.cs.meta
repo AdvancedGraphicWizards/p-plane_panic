@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 37242abc7f2293f4db74b3b19be023d5
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - sourceMesh: {instanceID: 0}
+  - terrainComputeShader: {fileID: 7200000, guid: a677aa7e3b0931641aebe36d6fe72961,
+      type: 3}
+  - material: {fileID: 2100000, guid: 141a5bff846182a438f8a57f02d733e1, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
