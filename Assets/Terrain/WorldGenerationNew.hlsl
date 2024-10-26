@@ -119,9 +119,9 @@ float SampleHeight(float x, float z) {
     // Carve a canyon
 	
 	// Get canyon depth
-	float sinSDF = CanyonCarve(float2(x, z), 40, 10, 40, 0, 2500, 100, 0);
-	sinSDF += CanyonCarve(float2(x, z), 20, 80, 40, 0, 2500, 100, 0);
-	sinSDF += CanyonCarve(float2(x, z), 10, 130, 40, 0, 2500, 100, 0);
+	float sinSDF = CanyonCarve(float2(x, z), 80, 30, 50, 0, 500, 100, 0);
+	sinSDF += CanyonCarve(float2(x, z), 50, 80, 35, 0, 1500, 100, 30);
+	sinSDF += CanyonCarve(float2(x, z), 30, 130, 10, 0, 2500, 100, 65);
 
     // Decrease the height of the terrain in the canyon
     height *= min(1, 60 / sinSDF);
