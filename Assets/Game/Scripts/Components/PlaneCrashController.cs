@@ -1,8 +1,5 @@
-using System;
-using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.UI;
 
 public class PlaneCrashController : MonoBehaviour
 {
@@ -12,7 +9,7 @@ public class PlaneCrashController : MonoBehaviour
 
     private void Update()
     {
-        if (transform.position.y < -10) CallResponse();
+        if (transform.position.y < -3) CallResponse();
     }
 
     private void OnTriggerEnter(Collider other)

@@ -38,6 +38,35 @@ public class RingSpawnScript : MonoBehaviour
     private int m_currentBackPosition = 0;
     private int m_seedNum = 0;
 
+    // Hold the closest ring
+    public Transform ClosestRing
+    {
+        get
+        {
+            Transform closestRing = null;
+            float minDistance = float.MaxValue;
+
+            foreach (GameObject ring in _hoopArray)
+            {
+                if (ring != null && ring.activeInHierarchy)
+                {
+                    float zDistance = ring.transform.position.z - m_planeLocation.position.z;
+
+                    // Check if the ring is ahead of the plane and closer than the current closest ring
+                    if (zDistance > 0 && zDistance < minDistance)
+                    {
+                        closestRing = ring.transform;
+                        minDistance = zDistance;
+
+                        // Close enough
+                        if (zDistance < 60f) return closestRing;
+                    }
+                }
+            }
+
+            return closestRing;
+        }
+    }
 
 
     private void Start()

@@ -30,8 +30,8 @@ public class Players : ScriptableObject
     {
         playerTeamHash = GenerateTeamHash();
 
-        string[] adjectives = { "Fluffy", "Brave", "Cheerful", "Sneaky", "Jolly", "Clever", "Mighty", "Swift", "Legendary", "Epic", "Fearless", "Noble" };
-        string[] nouns = { "Penguins", "Owls", "Crows", "Parrots", "Kakapos", "Phoenixes", "Eagles", "Kiwis" };
+        string[] adjectives = { "Fluffy", "Brave", "Cheerful", "Sneaky", "Jolly", "Clever", "Mighty", "Swift", "Legendary", "Epic", "Fearless", "Noble", "Chirpy", "Sunny", "Peppy", "Bubbly", "Playful", "Sparkly", "Perky", "Valiant", "Majestic", "Invincible", "Glorious", "Vigilant", "Courageous", "Magnificent", "Resolute" };
+        string[] nouns = { "Penguins", "Owls", "Crows", "Parrots", "Kakapos", "Phoenixes", "Eagles", "Kiwis", "Robins", "Sparrows", "Canaries", "Ducks", "Swans", "Finches", "Peacocks", "Toucans", "Hummingbirds", "Puffins", "Ravens" };
 
         string adjective = adjectives[Math.Abs(playerTeamHash) % adjectives.Length];
         string noun = nouns[Math.Abs(playerTeamHash / adjectives.Length) % nouns.Length];
