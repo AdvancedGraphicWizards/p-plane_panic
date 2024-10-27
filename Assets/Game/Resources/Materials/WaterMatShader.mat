@@ -12,7 +12,11 @@ Material:
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _ENABLEAA_ON
+  - _ENABLEFADE_ON
+  - _PROCEDURALVORONOI_ON
+  - _VORONOIENABLEAA_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -103,6 +107,7 @@ Material:
     m_Floats:
     - _AlphaClip: 0
     - _AlphaToMask: 0
+    - _AngleFadeFactor: 1
     - _Blend: 0
     - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
@@ -116,7 +121,10 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
+    - _EnableAA: 1
+    - _EnableFade: 1
     - _EnvironmentReflections: 1
+    - _FadeDistance: 50
     - _FlowMapSize: 10
     - _FlowSize: 10
     - _FlowSpeed: 0.01
@@ -134,7 +142,7 @@ Material:
     - _Opacity: 1
     - _Parallax: 0.005
     - _PreviewVoronoi: 0
-    - _ProceduralVoronoi: 0
+    - _ProceduralVoronoi: 1
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
@@ -146,6 +154,8 @@ Material:
     - _SrcBlendAlpha: 1
     - _Surface: 0
     - _SurfaceNoiseCutoff: 0.483
+    - _VoronoiAAFactor: 1
+    - _VoronoiEnableAA: 1
     - _VoronoiLineThickness: 0.031
     - _VoronoiSS: 0.01
     - _VoronoiScale: 100
