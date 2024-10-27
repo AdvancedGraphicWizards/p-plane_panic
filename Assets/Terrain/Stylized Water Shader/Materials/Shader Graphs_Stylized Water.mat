@@ -8,28 +8,42 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Shader Graphs_Stylized Water
-  m_Shader: {fileID: -6465566751694194690, guid: d9be20e5d4ac04a7f8c7bfd1c4330a4f,
-    type: 3}
+  m_Shader: {fileID: 4800000, guid: 2b312bc6ac933164aa708850982acf8e, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
-  m_InvalidKeywords: []
+  m_InvalidKeywords:
+  - _ENABLEFADE_ON
+  - _PROCEDURALVORONOI_ON
+  - _VORONOIENABLEAA_ON
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
+  m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _FlowMap:
+        m_Texture: {fileID: 2800000, guid: f6e56e12e1c2c2145a4e651b19dc8491, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _FoamTexture:
+        m_Texture: {fileID: 2800000, guid: 801d39a027a51bb44b206a56b566ee69, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Intersection_Foam_Texture:
         m_Texture: {fileID: 2800000, guid: 716010ae70e1b4e84ba6baf439991fae, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Normals_Texture:
         m_Texture: {fileID: 2800000, guid: ead3be67941d84de8806e2bdbc4a2d24, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SurfaceNoise:
+        m_Texture: {fileID: 2800000, guid: 30937d489e494bc49bd6a92644aa78ed, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Surface_Foam_Texture:
@@ -51,7 +65,17 @@ Material:
     m_Ints: []
     m_Floats:
     - WORLD_SPACE_UV: 0
+    - _AngleFadeFactor: 1
+    - _DepthMaxDistance: 29.8
     - _Depth_Fade_Distance: 2.4
+    - _EnableFade: 1
+    - _FadeDistance: 50
+    - _FlowMapScale: 1000
+    - _FlowSize: 100
+    - _FlowSpeed: 0.01
+    - _FlowStrength: 0.0075
+    - _FoamDistance: 4.3
+    - _FoamScale: 100
     - _Foam_Blend: 1
     - _Horizon_Distance: 40
     - _Intersection_Foam_Blend: 0
@@ -67,6 +91,8 @@ Material:
     - _Normals_Scale: 0.012
     - _Normals_Speed: 0.073
     - _Normals_Strength: 1
+    - _PreviewVoronoi: 0
+    - _ProceduralVoronoi: 1
     - _QueueControl: 1
     - _QueueOffset: 0
     - _Refraction_Scale: 0.01
@@ -74,6 +100,7 @@ Material:
     - _Refraction_Strength: 0.0089
     - _Shore_Depth: 0
     - _Smoothness: 0.47
+    - _SurfaceNoiseCutoff: 0.483
     - _Surface_Foam_Blend: 1
     - _Surface_Foam_Color_Blend: 1
     - _Surface_Foam_Cutoff: 0.131
@@ -81,19 +108,30 @@ Material:
     - _Surface_Foam_Distortion: 0.94
     - _Surface_Foam_Speed: 0
     - _Surface_Foam_Tiling: 84.8
+    - _VoronoiAAFactor: 0.5
+    - _VoronoiEnableAA: 1
+    - _VoronoiLineThickness: 0.031
+    - _VoronoiSS: 0.01
+    - _VoronoiScale: 20
+    - _WaveChoppiness: 1.02
     - _Wave_Length: 2.8
     - _Wave_Speed: 0.57
     - _Wave_Steepness: 0.088
     m_Colors:
+    - _DarkFoamColour: {r: 0.0314, g: 0.43099996, b: 0.69, a: 1}
     - _Deep_Color: {r: 0.014239941, g: 0.32064226, b: 0.6037736, a: 0.36862746}
+    - _DepthGradientDeep: {r: 0.19609997, g: 0.5725, b: 1, a: 1}
+    - _DepthGradientShallow: {r: 0.32499996, g: 0.807, b: 0.971, a: 0.725}
     - _Diffuse_Color: {r: 1, g: 0, b: 0, a: 1}
     - _Foam_Color: {r: 0, g: 1, b: 0.46160954, a: 0.4392157}
     - _Horizon_Color: {r: 0.6839622, g: 0.833514, b: 1, a: 1}
     - _Intersection_Foam_Color: {r: 1, g: 1, b: 1, a: 1}
+    - _LightFoamColour: {r: 1, g: 1, b: 1, a: 1}
     - _Refraction_Movement: {r: 0, g: 0, b: 0, a: 0}
     - _Shallow_Color: {r: 0.54187435, g: 0.9339623, b: 0.9339623, a: 0.43137255}
     - _Shore_Color: {r: 0, g: 0, b: 0, a: 0}
     - _Specular_Color: {r: 1, g: 1, b: 1, a: 0.1764706}
+    - _SurfaceNoiseColour: {r: 1, g: 1, b: 1, a: 1}
     - _Surface_Foam_Color: {r: 1, g: 1, b: 1, a: 0}
     - _Wave_Directions: {r: 0, g: 0.5, b: 1, a: 0.2}
   m_BuildTextureStacks: []

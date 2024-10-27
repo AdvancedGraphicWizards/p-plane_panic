@@ -9,7 +9,7 @@ public class PlaneCrashController : MonoBehaviour
 
     private void Update()
     {
-        if (transform.position.y < -10) CallResponse();
+        if (transform.position.y < -3) CallResponse();
     }
 
     private void OnTriggerEnter(Collider other)
