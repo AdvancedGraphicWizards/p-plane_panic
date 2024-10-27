@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4b19c983744d468ab670a102a9110fa, type: 3}
+  m_Name: CloudParams
+  m_EditorClassIdentifier: 
+  material: {fileID: 2100000, guid: b20c098b3ba764167b2e14f87a3aa6e0, type: 2}
+  raymarchHitDist: 0.001
+  raymarchMaxSteps: 1000
+  cloudMaxSteps: 100
+  cloudStepSize: 1
+  cloudRandomOffsetMultiplier: 1
+  lightMaxSteps: 5
+  lightStepSize: 0.5
+  cloudNoiseTexture: {fileID: 11700000, guid: b8a80563b56354c96996e5064a572658, type: 2}
+  cloudNoiseSampleMultiplier: 0.01
+  cloudAbsorption: 0.04
+  cloudScrollSpeed: {x: 1.22, y: 0, z: 0}

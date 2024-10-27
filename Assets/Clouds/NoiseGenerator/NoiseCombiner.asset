@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9a8fc61c30744dac9db0d45ffedc087, type: 3}
+  m_Name: NoiseCombiner
+  m_EditorClassIdentifier: 
+  textureR: {fileID: 11400000, guid: 3d661088502ba4a62a260554059b9195, type: 2}
+  textureG: {fileID: 11400000, guid: 59eea9cc2ad554ef3b486c1e1cb38449, type: 2}
+  textureB: {fileID: 11400000, guid: 07290488395ba4ab7b635ca936e94aa2, type: 2}
+  textureA: {fileID: 11400000, guid: 5fadca21361f749feb3bf3009d7c84ff, type: 2}

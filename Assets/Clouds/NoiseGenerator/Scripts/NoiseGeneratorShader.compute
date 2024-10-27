@@ -1,0 +1,48 @@
+#pragma kernel CSMain
+
+StructuredBuffer<float3> Points;
+RWStructuredBuffer<float> Result;
+uint Size;
+uint Cells;
+
+uint Index(uint x, uint y, uint z) {
+    return x % Cells + y * Cells + z * Cells * Cells;
+}
+
+[numthreads(1,1,1)]
+void CSMain (uint3 id : SV_DispatchThreadID)
+{
+    uint cellSize = Size / Cells;
+    uint x = id.x; uint y = id.y; uint z = id.z;
+    uint cx = x / cellSize; uint cy = y / cellSize; uint cz = z / cellSize;
+
+    float3 pixelPos = float3((float)x, (float)y, (float)z);
+    float minDist = (float)Size;
+
+    for (int i = -1; i <= 1; i++) {
+        for (int j = -1; j <= 1; j++) {
+            for (int k = -1; k <= 1; k++) {
+                int xid = (cx + i + Cells) % Cells;
+                int yid = (cy + j + Cells) % Cells;
+                int zid = (cz + k + Cells) % Cells;
+
+                // Tiling offset
+                float3 offset = float3(0.0, 0.0, 0.0);
+                if (cx + i == -1) { offset.x -= Size; }
+                if (cx + i == Cells) { offset.x += Size; }
+                if (cy + j == -1) { offset.y -= Size; }
+                if (cy + j == Cells) { offset.y += Size; }
+                if (cz + k == -1) { offset.z -= Size; }
+                if (cz + k == Cells) { offset.z += Size; }
+
+                float3 p = Points[Index(xid, yid, zid)] + offset;
+                float dist = length(pixelPos - p);
+                minDist = min(minDist, dist);
+            }
+        }
+    }
+
+    float invertedDist = 1.0 - (minDist / cellSize);
+    uint pixelIndex = id.x + id.y * Size + id.z * Size * Size;
+    Result[pixelIndex] = invertedDist;
+}
