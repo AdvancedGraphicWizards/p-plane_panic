@@ -37,15 +37,12 @@ public class CloudParams: ScriptableObject {
     [SerializeField] private float cloudStepSize = 0.5f;
     [SerializeField] private float cloudRandomOffsetMultiplier = 2.0f;
 
-    [Header("Light marching")]
-    [SerializeField] private int lightMaxSteps = 100;
-    [SerializeField] private float lightStepSize = 1.0f;
-
     [Header("Cloud looks")]
     [SerializeField] private Texture3D cloudNoiseTexture;
     [SerializeField] private float cloudNoiseSampleMultiplier = 1.0f;
     [SerializeField] private float cloudAbsorption = 1.0f;
     [SerializeField] private Vector3 cloudScrollSpeed = new(0,0,0);
+    [SerializeField] private float cloudEdgeBlend = 0.1f;
     private ComputeBuffer shapeBuffer;
 
     public void UploadShape(List<Shape> shapes) {
@@ -58,12 +55,6 @@ public class CloudParams: ScriptableObject {
         material.SetInt("_ShapeBufferLen", shapeBuffer.count);
     }
 
-    public void UploadLight(Light light) {
-        Vector3 dir = light.transform.rotation * Vector3.forward;
-        material.SetVector("_LightDirection", dir);
-        material.SetVector("_LightPosition", light.transform.position);
-    }
-
     public void UploadInternal() {
         // Ray marching
         material.SetInt("_RaymarchMaxSteps", raymarchMaxSteps);
@@ -74,15 +65,13 @@ public class CloudParams: ScriptableObject {
         material.SetInt("_CloudMaxSteps", cloudMaxSteps);
         material.SetFloat("_CloudRandomOffsetMultiplier", cloudRandomOffsetMultiplier);
 
-        // Light marching
-        if (lightStepSize > 0.00001) material.SetFloat("_LightStepSize", lightStepSize);
-        material.SetInt("_LightMaxSteps", lightMaxSteps);
-
         // Cloud looks
         material.SetTexture("_CloudNoiseTexture", cloudNoiseTexture);
         material.SetFloat("_CloudNoiseSampleMultiplier", cloudNoiseSampleMultiplier);
         material.SetFloat("_CloudAbsorption", cloudAbsorption);
         material.SetVector("_CloudScrollSpeed", cloudScrollSpeed);
+        material.SetFloat("_CloudEdgeBlend", cloudEdgeBlend);
+
     }
 
     void OnEnable() {

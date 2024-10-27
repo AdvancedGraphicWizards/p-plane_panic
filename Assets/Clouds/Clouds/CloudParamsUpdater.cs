@@ -5,7 +5,6 @@ using UnityEngine;
 public class CloudParamsUpdater : MonoBehaviour
 {
     [SerializeField] private CloudParams options;
-    [SerializeField] private Light directionalLight;
 
     private List<Shape> shapes = new();
 

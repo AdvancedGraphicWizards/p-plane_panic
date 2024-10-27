@@ -89,6 +89,7 @@ Shader "Custom/CloudShader"
             float _CloudNoiseSampleMultiplier;
             float _CloudAbsorption;
             float3 _CloudScrollSpeed;
+            float _CloudEdgeBlend;
 
             // Constants
             #define TRANSMITTANCE_CUTOFF 0.01
@@ -124,44 +125,20 @@ Shader "Custom/CloudShader"
                 return frac(sin(n) * 43758.5453); 
             }
 
+            float smoothstep(float edge0, float edge1, float x) {
+                float t = saturate((x - edge0) / (edge1 - edge0));
+                return t * t * (3.0 - 2.0 * t);
+            }
+
             float sampleNoise(float3 pos) {
                 float3 uv = pos * _CloudNoiseSampleMultiplier + _Time * _CloudScrollSpeed;
                 float4 samp = tex3D(_CloudNoiseTexture, uv);
                 float4 m = float4(6.0, 1.0, 1.0, 1.0); // how much noise to sample from each texture
-                return ((samp.r) * m.r + samp.g * m.g + samp.b * m.b + samp.a * m.a) / (m.r + m.g + m.b + m.a);
-            }
-
-            float light(float3 rayOrig, float3 rayDir) {
-                float offset = hash(rayOrig + 0.1 * rayDir) * _CloudStepSize * _CloudRandomOffsetMultiplier;
-
-                float transmittance = 1.0;
-                float distance = 0.0;
-                distance += offset;
-
-                [loop]
-                for (int i = 0; i < _LightMaxSteps; i++) {
-                    // depth check not possible
-
-                    // exit bounds check
-                    float3 pos = rayOrig + rayDir * distance;
-                    float dist = sdf(pos);
-                    if (dist > _RaymarchHitDist + EPS) {  
-                        break;
-                    }
-
-                    // light ccontribution
-                    float density = sampleNoise(pos);
-                    float attenuation = calculateAttenuation(density, distance);
-                    transmittance *= attenuation;
-
-                    distance += _LightStepSize;
-
-                    if (transmittance <= TRANSMITTANCE_CUTOFF) {
-                        break;
-                    }
-                }
-
-                return transmittance;
+                // float heightMult = smoothstep(1.0, 0.0, pos.y / 100);
+                float dist = -sdf(pos);
+                float heightMult = smoothstep(0.0, 1.0, dist / _CloudEdgeBlend);
+                // float heightMult = exp(-pos.y / 70);
+                return ((samp.r) * m.r + samp.g * m.g + samp.b * m.b + samp.a * m.a) / (m.r + m.g + m.b + m.a) * heightMult;
             }
 
             struct CloudData {          // size align
@@ -242,7 +219,7 @@ Shader "Custom/CloudShader"
                 for (int i = 0; i < _RaymarchMaxSteps; i++) {
                     // depth buffer check
                     bool hitObject = cloudData.dist > depthDistance;
-                    bool farAway = cloudData.dist > 1000.0; // TODO cant use as variable
+                    bool farAway = cloudData.dist > 3000.0; // TODO cant use as variable
                     if (hitObject || farAway) {
                         break;
                     }
@@ -263,7 +240,9 @@ Shader "Custom/CloudShader"
                 if (cloudData.transmittance <= 0.0) {
                     cloudData.transmittance = 0.0;
                 }
-                float3 finalColor = lerp(col, cloudData.color, 1.0 - cloudData.transmittance);
+                float p = cloudData.transmittance;
+                // float cc = lerp(cloudData.color, col, p);
+                float3 finalColor = lerp(cloudData.color, col, p);
                 return float4(finalColor, 1.0);
             }
             ENDHLSL
