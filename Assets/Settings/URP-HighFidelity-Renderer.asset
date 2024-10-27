@@ -93,7 +93,7 @@ MonoBehaviour:
     zFailOperation: 0
   m_ShadowTransparentReceive: 1
   m_RenderingMode: 0
-  m_DepthPrimingMode: 0
+  m_DepthPrimingMode: 2
   m_CopyDepthMode: 0
   m_AccurateGbufferNormals: 0
   m_IntermediateTextureMode: 1
@@ -109,7 +109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9365b54406bdb9247a22ad550f66daf6, type: 3}
   m_Name: SpeedLineRenderPassFeature
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   settings:
     material: {fileID: 2100000, guid: da4f78e1fd799cb4a8ea717395ca7354, type: 2}
     renderPassEvent: 450
