@@ -11,10 +11,11 @@ Shader "Custom/WaterShader"
         _FlowMap("Flow Map", 2D) = "white" {}
         _FlowSpeed ("Flow Speed", Float) = 0.01
         _FlowStrength ("Flow Strength", Float) = 0.0075
-        _FlowSize ("Flow Map Size", Float) = 2
+        _FlowMapScale("Flow Map Scale", Float) = 10.0
 
         [Header(Foam Properties)]
         _FoamTexture("Foam Texture", 2D) = "white" {}
+        _FoamScale("Foam Texture Scale", Float) = 10.0
         _FoamDistance("Foam Distance", Float) = 0.4
         _LightFoamColour("Light Foam Colour", Color) = (1, 1, 1, 1)
         _DarkFoamColour("Dark Foam Colour", Color) = (0.0314, 0.431, 0.690, 1)
@@ -71,9 +72,10 @@ Shader "Custom/WaterShader"
             float4 _FlowMap_ST;
             float _FlowSpeed;
             float _FlowStrength;
-            float _FlowSize;
+            float _FlowMapScale;
 
             sampler2D _FoamTexture;
+            float _FoamScale;
             float _FoamDistance;
             float4 _LightFoamColour;
             float4 _DarkFoamColour;
@@ -185,9 +187,8 @@ Shader "Custom/WaterShader"
             struct Varyings
             {
                 float4 positionHCS : SV_POSITION;
-                float2 uv : TEXCOORD0;
-                float4 screenPosition : TEXCOORD1;
-                float3 positionWS : TEXCOORD2;
+                float4 screenPosition : TEXCOORD0;
+                float3 positionWS : TEXCOORD1;
             };
 
             Varyings vert(Attributes IN)
@@ -215,7 +216,6 @@ Shader "Custom/WaterShader"
                 // All for the depth texture
                 OUT.positionHCS = TransformObjectToHClip(float4(positionOS, 1));
                 OUT.screenPosition = ComputeScreenPos(OUT.positionHCS);
-                OUT.uv = IN.uv;
                 OUT.positionWS = positionWS;
 
                 return OUT;
@@ -234,8 +234,10 @@ Shader "Custom/WaterShader"
 
                 // FLOW AND VORONOI
                 // Distort UVs based on Flow Map
-                float speedOverSizeTime = (_FlowSpeed / _FlowSize) * _Time.y;
-                float2 flowMapUV = IN.uv + float2(speedOverSizeTime, speedOverSizeTime);
+                float2 worldUV_FlowMap = IN.positionWS.xz / _FlowMapScale;
+                float2 worldUV_Foam = IN.positionWS.xz / _FoamScale;
+                float speedOverScaleTime = (_FlowSpeed / _FlowMapScale) * _Time.y;
+                float2 flowMapUV = worldUV_FlowMap + float2(speedOverScaleTime, speedOverScaleTime);
 
                 // Sample the flow map and unpack normals
                 // and calculate UV offset using flow strength
@@ -243,8 +245,8 @@ Shader "Custom/WaterShader"
                 float2 uvOffset = flowMapNormal.xy * _FlowStrength;
 
                 // Sample the UV and the noise 
-                float2 foamUV = (IN.uv + uvOffset) * _FlowSize;
-                float2 foamPos = (IN.positionWS.xz * 1/_VoronoiScale + uvOffset * 5) * _FlowSize;
+                float2 foamUV = worldUV_Foam + uvOffset;
+                float2 foamPos = (IN.positionWS.xz / _VoronoiScale) + uvOffset * 5.0;
                 float foamSample = tex2D(_FoamTexture, foamUV).r;
 
                 if (_ProceduralVoronoi > 0.5) 
