@@ -1,6 +1,12 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Game/ScriptableObjects/TooltipData.asset.meta
 guid: 040f19c4173c377438c7a15670d8dea1
 NativeFormatImporter:
+========
+guid: db030f8294d564a4a8c9f47b7cb702e8
+folderAsset: yes
+DefaultImporter:
+>>>>>>>> main:Assets/Terrain.meta
   externalObjects: {}
   mainObjectFileID: 11400000
   userData: 
