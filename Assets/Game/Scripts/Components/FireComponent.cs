@@ -36,6 +36,7 @@ public class FireComponent : MonoBehaviour
     [SerializeField] private MeshRenderer _fireRenderer;
     [SerializeField] private SoundManager m_SoundManager;
     [SerializeField] private IntVariable m_connectedPlayers;
+    [SerializeField] private TooltipData m_tooltipData;
 
     private float _fireDamageTimer;
     private float _fireExtinguishTimer;
@@ -96,6 +97,7 @@ public class FireComponent : MonoBehaviour
     // On successful extinguish gain fuel and destroy fire
     private void FireExtinguish() {
         Debug.Log("FireExtinguish!");
+        if (m_tooltipData != null) m_tooltipData.firesExtinguished++;
         m_SoundManager.PlayOneShotRandomPitch("fireExtinguish",0.05f);
         FireDamageEvent?.Invoke(-_fireFuelDamage/2); // gain fuel on success? (Should use its own event)
         Destroy(gameObject);
