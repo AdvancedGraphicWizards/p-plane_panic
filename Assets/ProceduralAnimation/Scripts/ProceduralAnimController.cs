@@ -46,6 +46,7 @@ public class ProceduralAnimController : MonoBehaviour
     private Vector3 m_bodyForward;
     private Vector3 m_bodyRight;
     private Quaternion m_bodyRotation;
+    private float m_maxDistFromRCBody = 0.6f;
 
     void Awake()
     {
@@ -66,6 +67,14 @@ public class ProceduralAnimController : MonoBehaviour
 
     private void Update()
     {
+        // emergency distance check, set all legs to be moveable
+        // if (Vector3.Distance(m_rcTransform.position, m_bodyTransform.position) > m_maxDistFromRCBody) {
+        //     for (int i = 0; i < m_legs.Length; i++)
+        //     {
+        //         m_legs[i].Movable = true;
+        //     }
+        // }
+
         // If the opposite foot step completes, switch the order to make a new step
         if (m_stepWaitTimer <= 0) {
 
@@ -155,9 +164,11 @@ public class ProceduralAnimController : MonoBehaviour
             m_bodyPos = footCenter + m_bodyUp * m_bodyHeightBase + m_bodyUp * bounceConst * m_idleBounceRange;
 
             m_bodyTransform.localPosition = Vector3.Lerp(m_bodyTransform.position, m_bodyPos, m_posAdjustRatio);
+            //m_bodyTransform.position = m_rcTransform.position;
 
             // Currently just chase rc_transformLocation
             m_bodyTransform.rotation = Quaternion.Slerp(m_bodyTransform.rotation, m_rcTransform.rotation, m_rotAdjustRatio);
+
 
             yield return new WaitForFixedUpdate();
         }

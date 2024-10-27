@@ -169,7 +169,7 @@ RectTransform:
   m_Father: {fileID: 8062260831250979215}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -477,8 +477,8 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1244734476366277043}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 17, y: -5}
   m_SizeDelta: {x: 149.49, y: 51}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -536,7 +536,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2250840537337722834
 RectTransform:
   m_ObjectHideFlags: 0
@@ -577,16 +577,20 @@ MonoBehaviour:
   gameStateSO: {fileID: 11400000, guid: 85360dc2073a049ff8bf7a5f7c97d427, type: 2}
   m_slider: {fileID: 4897110452162899355}
   m_fuelImage: {fileID: 1506269863594730192}
+  m_fuelFrame: {fileID: 9000249262106079464}
   m_consumptionRate: 3
   m_startingFuel: 100
   m_currentFuel: {fileID: 11400000, guid: b44e1cdd7b2424528b00a2bb9c39b616, type: 2}
   fuelBreakPoints:
   - 0.3
-  - 0.5
+  - 0.6
   fuelStatesColor:
   - {r: 0.101960786, g: 0.8980392, b: 0.7529412, a: 1}
   - {r: 0.8980392, g: 0.6745098, b: 0.101960786, a: 1}
   - {r: 0.8980392, g: 0.24313726, b: 0.101960786, a: 1}
+  flashPositiveColor: {r: 1, g: 1, b: 1, a: 1}
+  flashNegativeColor: {r: 1, g: 0, b: 0, a: 1}
+  OnAddFuel: {fileID: 11400000, guid: a6f527d2351dc42c6ac9443db9fae3be, type: 2}
 --- !u!1 &5456974284084471504
 GameObject:
   m_ObjectHideFlags: 0
@@ -1106,3 +1110,15 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 4013938499410003648}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &9000249262106079464 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5427700430754084392, guid: ead0f258b7322494bb11e5b478de1fc1,
+    type: 3}
+  m_PrefabInstance: {fileID: 4013938499410003648}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

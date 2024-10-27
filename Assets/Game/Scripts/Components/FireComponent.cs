@@ -79,11 +79,17 @@ public class FireComponent : MonoBehaviour
         _timeToBurn.text = Mathf.Round(_fireDamageTimer).ToString();
     }
 
+    [SerializeField] private FloatEvent OnFireBurn;
     // On unsuccessful extinguish deal fuel-damage and destroy fire
     private void FireDamage() {
         Debug.Log("FireDamage!");
+
+        if (GameObject.Find("RemoveFuelEmit") != null)
+            GameObject.Find("RemoveFuelEmit").transform.position = transform.position;
+
         m_SoundManager.PlayOneShotRandomPitch("fireDamage",0.05f);
         FireDamageEvent?.Invoke(_fireFuelDamage);
+        OnFireBurn?.Raise(_fireFuelDamage);
         Destroy(gameObject);
     }
 

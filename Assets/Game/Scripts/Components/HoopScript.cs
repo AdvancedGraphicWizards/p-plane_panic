@@ -12,7 +12,6 @@ using Rellac.Audio;
 /// </summary>
 
 [RequireComponent(typeof(Collider))]
-[RequireComponent(typeof(Animation))]
 public class HoopScript : MonoBehaviour
 {
     [Header("Variables")]
@@ -26,13 +25,17 @@ public class HoopScript : MonoBehaviour
     [Header("Component References")]
     [SerializeField] private SoundManager m_soundManager;
 
-    private Animation _ringCollectAnim;
+    [SerializeField] private Animation _ringCollectAnim;
 
     public static event Action<float> OnRingEnter;
+    [SerializeField] private FloatEvent OnEnterRing;
+
+    [SerializeField] private ParticleCollectionComponent m_particleComponent;
 
     void Awake()
     {
-        _ringCollectAnim = GetComponent<Animation>();
+        if (_ringCollectAnim == null)
+            _ringCollectAnim = GetComponent<Animation>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -40,11 +43,13 @@ public class HoopScript : MonoBehaviour
         if (other.gameObject.CompareTag(_playerTag)){
             m_soundManager.PlayOneShotRandomPitch("ringPickup",0.1f);
             OnRingEnter?.Invoke(_fuelRecoverAmount);
+            OnEnterRing?.Raise(_fuelRecoverAmount);
             StartCoroutine(Deactivate());
         }
     }
 
     IEnumerator Deactivate() {
+        //m_particleComponent.RegisterParticlesInScreenSpace();
         _ringCollectAnim.Play();
         yield return new WaitForSeconds(_deactivationTimer);
         gameObject.SetActive(false);
