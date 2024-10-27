@@ -31,6 +31,7 @@ public class HoopScript : MonoBehaviour
     [SerializeField] private FloatEvent OnEnterRing;
 
     [SerializeField] private ParticleCollectionComponent m_particleComponent;
+    [SerializeField] private TooltipData tooltipData;
 
     void Awake()
     {
@@ -41,6 +42,7 @@ public class HoopScript : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag(_playerTag)){
+            if (tooltipData != null) tooltipData.ringsPassed++;
             m_soundManager.PlayOneShotRandomPitch("ringPickup",0.1f);
             OnRingEnter?.Invoke(_fuelRecoverAmount);
             OnEnterRing?.Raise(_fuelRecoverAmount);

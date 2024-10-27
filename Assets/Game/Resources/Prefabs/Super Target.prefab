@@ -87,6 +87,7 @@ MonoBehaviour:
   _ringCollectAnim: {fileID: 9217632433368541588}
   OnEnterRing: {fileID: 11400000, guid: 7bcb758ebf0ff46ec8196115e4a5ea50, type: 2}
   m_particleComponent: {fileID: 0}
+  tooltipData: {fileID: 11400000, guid: 040f19c4173c377438c7a15670d8dea1, type: 2}
 --- !u!111 &9217632433368541588
 Animation:
   m_ObjectHideFlags: 0
