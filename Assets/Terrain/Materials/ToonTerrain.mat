@@ -42,9 +42,9 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _FlatContrast: 1
-    - _FlatFade: 5.79
-    - _FlatOffset: 0
+    - _FlatContrast: 3.43
+    - _FlatFade: 1
+    - _FlatOffset: 1
     - _Height: 100
     - _LineScale: 1
     - _NormalMapStrength: 0
@@ -54,12 +54,12 @@ Material:
     - _Smoothness: 100
     - _WavyLineConst: -4
     m_Colors:
-    - _Color_1: {r: 0.6415094, g: 0.56962526, b: 0.5355998, a: 0}
-    - _Color_2: {r: 0.4433962, g: 0.41748393, b: 0.39110893, a: 0}
-    - _FlatColor: {r: 0.51854897, g: 0.8679245, b: 0.47080812, a: 0}
-    - _FlatColorDark: {r: 0.6752951, g: 0.6981132, b: 0.6750623, a: 0}
+    - _Color_1: {r: 0.554717, g: 0.49063963, b: 0.46365967, a: 0}
+    - _Color_2: {r: 0.3886792, g: 0.36696056, b: 0.34834456, a: 0}
+    - _FlatColor: {r: 0.42980307, g: 0.7132075, b: 0.39159122, a: 0}
+    - _FlatColorDark: {r: 0.64619476, g: 0.7584905, b: 0.39928085, a: 0}
     - _UpVector: {r: 0, g: 1, b: 0, a: 0}
-    - _bandColor: {r: 0.5377358, g: 0.28234726, b: 0.012682447, a: 0}
+    - _bandColor: {r: 0.4716981, g: 0.2579993, b: 0.031149808, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &887676877032966742
 MonoBehaviour:
