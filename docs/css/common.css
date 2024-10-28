@@ -1,0 +1,211 @@
+@font-face {
+    font-family: 'LuckiestGuy-Regular';
+    src: url('../fonts/LuckiestGuy-Regular.ttf') format('embedded-opentype'),
+        url('../fonts/LuckiestGuy-Regular.ttf') format('woff2'),
+        url('../fonts/LuckiestGuy-Regular.ttf') format('woff'),
+        url('../fonts/LuckiestGuy-Regular.ttf') format('truetype'),
+        url('../fonts/LuckiestGuy-Regular.ttf') format('svg');
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+}
+
+body {
+    padding-top: 56px;
+}
+
+.navbar {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    font-family: 'LuckiestGuy-Regular', sans-serif;
+    filter: drop-shadow(0px 3px 2px #0000006e);
+}
+
+.navbar a {
+    filter: drop-shadow(-2px 3px 0px #000000);
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+}
+
+.navbar-nav a {
+    color: #FFF;
+    text-transform: lowercase;
+    --bs-navbar-hover-color: rgba(199, 199, 199, 1);
+    --bs-navbar-disabled-color: rgba(87, 87, 87);
+}
+
+.navbar-nav a.nav-link.active {
+    color: rgba(199, 199, 199, 1);
+    text-transform: lowercase;
+    --bs-navbar-hover-color: rgba(199, 199, 199, 1);
+    --bs-navbar-disabled-color: rgba(87, 87, 87);
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand .icon {
+    margin-right: 10px;
+}
+
+h2.text-center {
+    text-transform: uppercase;
+    color: white;
+    font-family: 'LuckiestGuy-Regular', sans-serif;
+    filter: drop-shadow(-2.5px 3px 0px #000000);
+    -webkit-text-stroke-width: 1.5px;
+    -webkit-text-stroke-color: black;
+}
+
+footer {
+    position: relative;
+    padding-bottom: 0px;
+    overflow: hidden;
+    z-index: 1;
+    color: white;
+    font-family: 'LuckiestGuy-Regular', sans-serif;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+}
+
+footer.bg-dark.text-white.text-center.py-4 {
+    padding-bottom: 8px !important;
+}
+
+footer p {
+    filter: drop-shadow(-1px 2px 0px #000000);
+}
+
+footer a {
+    color: white;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: black;
+    text-decoration: none;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
+}
+
+footer a:hover {
+    color: rgba(199, 199, 199);
+}
+
+/* Checkerboard Patterns */
+.checkerboard-area {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    padding-bottom: 3rem !important;
+}
+
+.navbar::before {
+    content: "";
+    position: absolute;
+    top: -25%;
+    left: -25%;
+    width: 1500%;
+    height: 3000%;
+    transform: skew(-10deg, -15deg);
+    transform-origin: top left;
+    background-color: #EE5555;
+    background-image:
+        linear-gradient(45deg, #F27575 25%, transparent 25%),
+        linear-gradient(-45deg, #F27575 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #F27575 75%),
+        linear-gradient(-45deg, transparent 75%, #F27575 75%);
+    background-size: 150px 150px;
+    background-position: 0 0, 0 75px, 75px -75px, -75px 0px;
+    z-index: -1;
+}
+
+.yellow-background::before {
+    content: "";
+    position: absolute;
+    top: -25%;
+    left: -25%;
+    width: 1500%;
+    height: 1500%;
+    transform: skew(-10deg, -15deg);
+    transform-origin: top left;
+    background-color: #EFAD14;
+    background-image:
+        linear-gradient(45deg, #F3BE39 25%, transparent 25%),
+        linear-gradient(-45deg, #F3BE39 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #F3BE39 75%),
+        linear-gradient(-45deg, transparent 75%, #F3BE39 75%);
+    background-size: 150px 150px;
+    background-position: 0 0, 0 75px, 75px -75px, -75px 0px;
+    z-index: -1;
+}
+
+.green-background::before {
+    content: "";
+    position: absolute;
+    top: -25%;
+    left: -25%;
+    width: 1500%;
+    height: 1500%;
+    transform: skew(-10deg, -15deg);
+    transform-origin: top left;
+    background-color: #5CB172;
+    background-image:
+        linear-gradient(45deg, #6FD68A 25%, transparent 25%),
+        linear-gradient(-45deg, #6FD68A 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #6FD68A 75%),
+        linear-gradient(-45deg, transparent 75%, #6FD68A 75%);
+    background-size: 150px 150px;
+    background-position: 0 0, 0 75px, 75px -75px, -75px 0px;
+    z-index: -1;
+}
+
+.pink-background::before, footer::before {
+    content: "";
+    position: absolute;
+    top: -25%;
+    left: -25%;
+    width: 1500%;
+    height: 1500%;
+    transform: skew(-10deg, -15deg);
+    transform-origin: top left;
+    background-color: #EE5555;
+    background-image:
+        linear-gradient(45deg, #F27575 25%, transparent 25%),
+        linear-gradient(-45deg, #F27575 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #F27575 75%),
+        linear-gradient(-45deg, transparent 75%, #F27575 75%);
+    background-size: 150px 150px;
+    background-position: 0 0, 0 75px, 75px -75px, -75px 0px;
+    z-index: -1;
+}
+
+.blue-background::before {
+    content: "";
+    position: absolute;
+    top: -25%;
+    left: -25%;
+    width: 1500%;
+    height: 1500%;
+    transform: skew(-10deg, -15deg);
+    transform-origin: top left;
+    background-color: #4C9BC8;
+    background-image:
+        linear-gradient(45deg, #5ABAF1 25%, transparent 25%),
+        linear-gradient(-45deg, #5ABAF1 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #5ABAF1 75%),
+        linear-gradient(-45deg, transparent 75%, #5ABAF1 75%);
+    background-size: 150px 150px;
+    background-position: 0 0, 0 75px, 75px -75px, -75px 0px;
+    z-index: -1;
+}
