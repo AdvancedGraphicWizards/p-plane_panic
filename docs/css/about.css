@@ -1,0 +1,50 @@
+/* About section styling */
+.logo-image {
+    max-width: 100%;
+    height: auto;
+    max-height: 100px;
+}
+
+.big-yellow-area {
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    padding-bottom: 3rem !important;
+}
+
+#about p.text-center {
+    font-size: large;
+}
+
+section#about {
+    padding-bottom: 1.5rem;
+}
+
+.button-container {
+    display: inline-block;
+    cursor: pointer;
+    width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.play-button {
+    width: 100%;
+    height: 100px;
+    background-image: url('../images/button_play.png');
+    background-repeat: no-repeat;
+    background-size: 400px;
+    background-position: center;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.play-button:hover {
+    transform: scale(1.1);
+    filter: drop-shadow(0px 0px 5px #00000081) brightness(1.1);
+}
+
+img.img-howtoplay {
+    object-fit: cover;
+    width: 230px;
+    height: 230px;
+}

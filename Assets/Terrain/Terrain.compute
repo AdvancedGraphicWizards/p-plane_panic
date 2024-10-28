@@ -1,0 +1,112 @@
+#pragma kernel DisplaceVertices
+#pragma kernel CalculateNormals
+#pragma kernel NormalizeNormals
+
+#include "WorldGenerationNew.hlsl"
+
+// Output Mesh (vertex buffer used by MeshRenderer)
+ByteAddressBuffer _IndexBuffer;
+RWByteAddressBuffer _VertexBuffer;
+
+// Buffer sizes
+uint _IndexCount;
+uint _VertexCount;
+
+// Index buffer layout
+uint _IndexStride;
+
+// Vertex buffer layout
+uint _VertexStride;
+uint _PositionOffset;
+uint _NormalOffset;
+
+// Variables set by the renderer
+float4x4 _LocalToWorld;
+float4x4 _WorldToLocal;
+
+// Vertex displacement compute shader
+[numthreads(64,1,1)]
+void DisplaceVertices(uint3 id : SV_DispatchThreadID) {
+    if (id.x >= _VertexCount) { return; }
+
+    // Get the vertex and modify the y component
+    float3 vertex = asfloat(_VertexBuffer.Load3(id.x * _VertexStride + _PositionOffset));
+    float3 vertexWS = mul(_LocalToWorld, float4(vertex, 1)).xyz;
+    vertex.y = SampleHeight(vertexWS.x, vertexWS.z);
+    
+    // Update the vertex
+    _VertexBuffer.Store3(id.x * _VertexStride + _PositionOffset, asuint(vertex));
+
+    // Reset the normal
+    _VertexBuffer.Store3(id.x * _VertexStride + _NormalOffset, asint(float3(0, 0, 0)));
+
+    // Temporary normal calculation
+    float3 offsetWS = mul(_LocalToWorld, float4(0.1, 0, 0.1, 0)).xyz;
+    float3 v0 = float3(vertex.x + 0.1, SampleHeight(vertexWS.x + offsetWS.x, vertexWS.z), vertex.z);
+    float3 v1 = float3(vertex.x, SampleHeight(vertexWS.x, vertexWS.z + offsetWS.z), vertex.z + 0.1);
+    
+    float3 normal = normalize(cross(v1 - vertex, v0 - vertex));
+    _VertexBuffer.Store3(id.x * _VertexStride + _NormalOffset, asuint(normal));
+}
+
+// Normal calculation compute shader (un-normalized)
+[numthreads(64,1,1)]
+void CalculateNormals(uint3 id : SV_DispatchThreadID) {
+    if (id.x >= _IndexCount / 3) { return; }
+
+    // Get the index mask
+    int indexOffset = _IndexStride == 2 ? 16 : 0;
+
+    // Get the vertex indices, if the index buffer is 16-bit, the indices are packed and need to be unpacked
+    int3 v_id;
+    int byteIndex = (id.x * 3) * 2;
+    if (_IndexStride == 2) {
+        uint2 data = asint(_IndexBuffer.Load2(byteIndex & ~3));
+        if (byteIndex % (uint)4) {
+            v_id.x = (data.x >> 16) & 0xFFFF;
+            v_id.y = data.y         & 0xFFFF;
+            v_id.z = (data.y >> 16) & 0xFFFF;
+        } else {
+            v_id.x = data.x         & 0xFFFF;
+            v_id.y = (data.x >> 16) & 0xFFFF;
+            v_id.z = data.y         & 0xFFFF;
+        }
+    } else {
+        v_id = asint(_IndexBuffer.Load3(id.x * 3 * 4));
+    }
+    
+    // Get the vertices
+    float3 v0 = asfloat(_VertexBuffer.Load3(v_id.x * _VertexStride + _PositionOffset));
+    float3 v1 = asfloat(_VertexBuffer.Load3(v_id.y * _VertexStride + _PositionOffset));
+    float3 v2 = asfloat(_VertexBuffer.Load3(v_id.z * _VertexStride + _PositionOffset));
+
+    // Calculate the normal (100 * normal to increase the precision)
+    float3 normal = -cross(normalize(v1 - v0), normalize(v2 - v0));
+
+    // Update the normals (normalized normals)
+    // _VertexBuffer.Store3(v_id.x * _VertexStride + _NormalOffset, asuint(normal + asfloat(_VertexBuffer.Load3(v_id.x * _VertexStride + _NormalOffset))));
+    // _VertexBuffer.Store3(v_id.y * _VertexStride + _NormalOffset, asuint(normal + asfloat(_VertexBuffer.Load3(v_id.y * _VertexStride + _NormalOffset))));
+    // _VertexBuffer.Store3(v_id.z * _VertexStride + _NormalOffset, asuint(normal + asfloat(_VertexBuffer.Load3(v_id.z * _VertexStride + _NormalOffset))));
+
+    // Update the normals (un-normalized normals)
+    _VertexBuffer.InterlockedAdd(v_id.x * _VertexStride + _NormalOffset + 0, asint(normal.x));
+    _VertexBuffer.InterlockedAdd(v_id.x * _VertexStride + _NormalOffset + 4, asint(normal.y));
+    _VertexBuffer.InterlockedAdd(v_id.x * _VertexStride + _NormalOffset + 8, asint(normal.z));
+
+    _VertexBuffer.InterlockedAdd(v_id.y * _VertexStride + _NormalOffset + 0, asint(normal.x));
+    _VertexBuffer.InterlockedAdd(v_id.y * _VertexStride + _NormalOffset + 4, asint(normal.y));
+    _VertexBuffer.InterlockedAdd(v_id.y * _VertexStride + _NormalOffset + 8, asint(normal.z));
+
+    _VertexBuffer.InterlockedAdd(v_id.z * _VertexStride + _NormalOffset + 0, asint(normal.x));
+    _VertexBuffer.InterlockedAdd(v_id.z * _VertexStride + _NormalOffset + 4, asint(normal.y));
+    _VertexBuffer.InterlockedAdd(v_id.z * _VertexStride + _NormalOffset + 8, asint(normal.z));
+}
+
+// Normalize the normals
+[numthreads(64,1,1)]
+void NormalizeNormals(uint3 id : SV_DispatchThreadID) {
+    if (id.x >= _VertexCount) { return; }
+
+    // Get the normal, normalize it and store it back
+    _VertexBuffer.Store3(id.x * _VertexStride + _NormalOffset, asint(normalize(asfloat(_VertexBuffer.Load3(id.x * _VertexStride + _NormalOffset)))));
+}

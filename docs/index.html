@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plane Panic!</title>
+
+    <meta property="og:title" content="Plane Panic!">
+    <meta property="og:description" content="Join up to 9 players in this exciting, cooperative game where you use your phones to control a plane and see how far you can survive!">
+    <meta property="og:image" content="https://advancedgraphicwizards.github.io/p-plane_panic/images/og_image.png">
+    <meta property="og:url" content="https://advancedgraphicwizards.github.io/p-plane_panic/">
+    <meta property="og:type" content="website">
+
+    <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/repo.css">
+    <link rel="stylesheet" href="css/about.css">
+    <link rel="stylesheet" href="css/team.css">
+    <link rel="stylesheet" href="css/bird.css">
+    <script src="js/gitapi.js"></script>
+    <script src="js/navbarandfooter.js"></script>
+    <script src="js/birdgenerator.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="navbar-container"></div>
+
+    <div class="big-yellow-area yellow-background">
+        <section id="video" class="py-5 text-center">
+            <div class="container">
+                <img src="images/logo_wide.png" alt="Plane Panic!" class="img-fluid mx-auto d-block mb-4 logo-image">
+                <div class="row justify-content-center">
+                    <div class="col-md-8">
+                        <!--
+                        <div class="ratio ratio-16x9">
+                            <iframe src="https://www.youtube.com/embed/CYA-KtCfN6Q" title="Project Video"
+                                allowfullscreen></iframe>
+                        </div>
+                        -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about">
+            <div class="container">
+                <h2 class="text-center">About</h2>
+                <p class="text-center"><i>Plane Panic!</i> is a cooperative game where up to 9 players join forces to pilot
+                    a plane by moving across its wing. Players can easily connect using their mobile devices and set off
+                    to see how far they can go, working together to survive! Coordinate to guide the plane through speed
+                    rings, pull off sharp turns, and extinguish raging fires as a team. How far can you and your team of
+                    flightless birds keep the plane soaring?</p>
+                <div class="button-container img-fluid mx-auto d-block mb-4">
+                    <a href="play.html" class="play-button-link">
+                        <div class="play-button"></div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="howtoplay">
+            <div class="container">
+                <h2 class="text-center">How to Play</h2>
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="d-flex">
+                            <img src="images/connect_phone.jpg" class="img-fluid me-3 img-howtoplay" alt="Image 1">
+                            <div>
+                                <h5>Joining the Game</h5>
+                                <p>To play <i>Plane Panic!</i>, start the game on a shared screen and press "Start." In the lobby,
+                                    scan the QR code in the top left corner, enter your player name, and input the unique
+                                    lobby code displayed at the centre of the screen. Once all players are in the lobby,
+                                    press "Start" to begin!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="d-flex">
+                            <img src="images/lobby.png" class="img-fluid me-3 img-howtoplay" alt="Image 2">
+                            <div>
+                                <h5>Movement</h5>
+                                <p>Hold your phone in portrait mode with the screen facing upwards to control your character using the
+                                    gyroscope. To steer the plane, players must move to specific sides: if more players gather on the
+                                    right side, the plane will turn right, and if more players move forward or backward, the plane will
+                                    climb or descend.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="d-flex">
+                            <img src="images/lobby.png" class="img-fluid me-3 img-howtoplay" alt="Image 3">
+                            <div>
+                                <h5>Fuel and Rings</h5>
+                                <p>As you control the plane, fuel gradually depletes. Replenish fuel by guiding the plane through blue and
+                                    green rings, which provide both fuel and a speed boost. Green rings are smaller, harder to navigate, but
+                                    reward you with more fuel and a greater speed boost.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="d-flex">
+                            <img src="images/lobby.png" class="img-fluid me-3 img-howtoplay" alt="Image 4">
+                            <div>
+                                <h5>Fire!</h5>
+                                <p>Over time, fires will appear on the plane. Extinguish them by coordinating multiple players to stand over each fire.
+                                    The required number of players, indicated above each fire, must be present to successfully put it out and prevent
+                                    fuel loss!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <section id="team" class="py-5">
+        <div class="container">
+            <h2 class="text-center">The Team</h2>
+            <div class="row justify-content-center">
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="team-member text-center" id="stofffe">
+                        <img src="https://github.com/stofffe.png" alt="stofffe" class="team-member-img">
+                        <h5>Christoffer Andersson</h5>
+                        <div class="role-tags">
+                            <span class="role-tag">Tag 1</span>
+                            <span class="role-tag">Tag 2</span>
+                            <span class="role-tag">Tag 3</span>
+                        </div>
+                        <p>Individual contributions</p>
+                        <div class="social-icons">
+                            <a href="#" target="_blank"><i class="bi bi-globe"></i></a>
+                            <a href="https://github.com/stofffe" target="_blank"><i class="bi bi-github"></i></a>
+                            <a href="mailto:email@example.com"><i class="bi bi-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="team-member text-center" id="RasmusMEA">
+                        <img src="images/photos/team/rasmus.jpg" alt="RasmusMEA">
+                        <h5>Rasmus Andersson</h5>
+                        <div class="role-tags">
+                            <span class="role-tag">Tag 1</span>
+                            <span class="role-tag">Tag 2</span>
+                            <span class="role-tag">Tag 3</span>
+                        </div>
+                        <p>Individual contributions</p>
+                        <div class="social-icons">
+                            <a href="#" target="_blank"><i class="bi bi-globe"></i></a>
+                            <a href="https://github.com/RasmusMEA" target="_blank"><i class="bi bi-github"></i></a>
+                            <a href="mailto:email@example.com"><i class="bi bi-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="team-member text-center" id="David">
+                        <img src="https://github.com/DavidGiraldoCode.png" alt="DavidGiraldoCode">
+                        <h5>David Giraldo</h5>
+                        <div class="role-tags">
+                            <span class="role-tag">Tag 1</span>
+                            <span class="role-tag">Tag 2</span>
+                            <span class="role-tag">Tag 3</span>
+                        </div>
+                        <p>Individual contributions</p>
+                        <div class="social-icons">
+                            <a href="#" target="_blank"><i class="bi bi-globe"></i></a>
+                            <a href="https://github.com/DavidGiraldoCode" target="_blank"><i
+                                    class="bi bi-github"></i></a>
+                            <a href="mailto:email@example.com"><i class="bi bi-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="team-member text-center" id="Canaguia">
+                        <img src="https://github.com/Canaguia.png" alt="Canaguia">
+                        <h5>Filip Karlsson</h5>
+                        <div class="role-tags">
+                            <span class="role-tag">Game Design</span>
+                            <span class="role-tag">Gameplay</span>
+                            <span class="role-tag">3D Modelling</span>
+                            <span class="role-tag">Animation</span>
+                            <span class="role-tag">Shaders</span>
+                            <span class="role-tag">Particles</span>
+                        </div>
+                        <p>In the early stages of Plane Panic's development, I focused on Game Design and Gameplay programming, creating systems
+                            for collaborative plane control among multiple players. As the project progressed, my role broadened to include designing
+                            and 3D modelling the player characters, hangar environment, and plane, along with implementing a procedural animation
+                            system for character movement. I also developed shaders for collectible rings, terrain, and screen-space speed-line effects
+                            to enhance visual feedback, contributed to terrain generation through the heightmap function, and assisted with the fuel
+                            particle effects.</p>
+                        <div class="social-icons">
+                            <a href="https://www.linkedin.com/in/filip-karlsson-355685226/" target="_blank"><i class="bi bi-linkedin"></i></a>
+                            <a href="https://canaguia.itch.io/" target="_blank"><img src="images/logos/itch.svg" class="team-icon"></a>
+                            <a href="https://www.artstation.com/filipkarlsson" target="_blank"><img src="images/logos/artstation.svg" class="team-icon"></a>
+                            <a href="https://github.com/Canaguia" target="_blank"><i class="bi bi-github"></i></a>
+                            <a href="mailto:filipgunnarkarlsson@gmail.com"><i class="bi bi-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="team-member text-center" id="udon">
+                        <img src="https://github.com/udon-udon.png" alt="udon">
+                        <h5>udon</h5>
+                        <div class="role-tags">
+                            <span class="role-tag">Networking</span>
+                            <span class="role-tag">Interaction</span>
+                            <span class="role-tag">Shaders</span>
+                            <span class="role-tag">Phone Development</span>
+                            <span class="role-tag">Web Development</span>
+                        </div>
+                        <p>In the early stages of the project, I focused on networking and interaction programming, creating a basic phone UI and establishing
+                            phone-to-Unity connections through Unity Relay. Eventually this evolved into making use of the phone gyroscope to control the
+                            player characters, properly spawning in the players, making a new phone UI, handling player name changing, assigning player colours
+                            with a perceptual colour model, and adding WakeLock as a jslib. I also developed a toon-style water shader featuring procedural Voronoi
+                            noise, as well as assisting with many other areas of the project.</p>
+                        <div class="social-icons">
+                            <a href="https://github.com/udon-udon" target="_blank"><i class="bi bi-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="repo" class="bg-light py-5">
+        <div class="container">
+            <h2 class="text-center">Github Repo</h2>
+        </div>
+
+        <div class="container mt-3">
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-sm-12">
+                    <div class="repo-card" id="repo-card">
+                        <h3><a href="#" id="repo-name">p-plane-panic</a></h3>
+                        <div class="d-none d-md-block">
+                            <p id="repo-description">No description, website, or topics provided.</p>
+                        </div>
+                        <div class="social-icons">
+                            <a href="#" target="_blank" id="repo-icon"><i class="bi bi-github github-logo"></i></a>
+                        </div>
+                        <div class="repo-stats">
+                            <span id="repo-stars">⭐ Stars: <span id="repo-stars-num">0</span></span>
+                            <span id="repo-forks">🍴 Forks: <span id="repo-forks-num">0</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-container"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+</body>
+
+<script>
+    insertBird('stofffe', '#64C4AB');
+    insertBird('RasmusMEA', '#EE5555');
+    insertBird('David', '#5773C5');
+    insertBird('Canaguia', '#BF60FF');
+    insertBird('udon', '#F3BE39');
+</script>
+
+
+</html>

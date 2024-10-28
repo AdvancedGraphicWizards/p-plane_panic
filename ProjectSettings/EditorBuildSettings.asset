@@ -11,8 +11,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Demo/Intro.unity
     guid: ce3d64e24dbca465da0ca50a3546dfe7
-  - enabled: 1
-    path: Assets/Scenes/Demo/Game.unity
+  - enabled: 0
+    path: Assets/Scenes/Demo/Game_w_particles.unity
     guid: 1cfb56fdd49a2f4479b7e440dea3011a
   - enabled: 1
     path: Assets/Scenes/Demo/Result.unity
@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/WebGL/webgl-client.unity
     guid: 400440431c9298c4e8bf13c14dfa4384
+  - enabled: 1
+    path: Assets/Scenes/Demo/Game.unity
+    guid: f943c7a41a214744d9f3aff89ea916ae
   m_configObjects: {}

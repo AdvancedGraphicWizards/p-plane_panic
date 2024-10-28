@@ -2,35 +2,43 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Component controlling a body attatched to several IKLegs
+/// 
+/// Adapted from: https://github.com/Sopiro/Unity-Procedural-Animation/tree/master 
+/// By Soprio 2021
+/// </summary>
+
 public class ProceduralAnimController : MonoBehaviour
 {
+    [Header("Component References")]
     [SerializeField] private Transform m_bodyTransform;
     [SerializeField] private Transform m_rcTransform;
     [SerializeField] private IKLeg[] m_legs;
-    [SerializeField] private float m_bodyHeightBase = 0.3f;
+    [SerializeField] private ParticleSystem m_cloudTrail;
     
-    [SerializeField] private Transform m_offsetTransform;
-    [SerializeField] private int m_LayerInclude = 3; // Layer target for raycast
-
-
+    [Header("Body Position Variables")]
+    [SerializeField] private float m_bodyHeightBase = 0.3f;
     [SerializeField] private float m_minStepWait = 0.5f;
     [SerializeField] private float m_posAdjustRatio = 0.1f;
     [SerializeField] private float m_rotAdjustRatio = 0.2f;
 
+    [Header("Idle Action Variables")]
     [SerializeField] private float m_idleBounceRange = 0.5f;
     [SerializeField] private float m_idleBouncePeriod = 1f;
     [SerializeField] private float m_idleTime = 1f;
     [SerializeField] private float m_lookTime = 1f;
-    [SerializeField] private float m_idleGlanceAngleRange = 45f;
-    [SerializeField] private ParticleSystem m_cloudTrail;
+    // [SerializeField] private float m_idleGlanceAngleRange = 45f;
+
+    [Header("Raycast Variables")]
+    [SerializeField] private int m_LayerInclude = 3; // Layer target for raycast
     
-    
+    private bool m_isIdle = false;
     private float m_idleBounceTimer = 0f;
     private float m_stepWaitTimer = 0.5f;
     private float m_idleTimer = 1f;
     private float m_lookTimer = 1f;
-    private bool m_isIdle = false;
-    private float m_idleGlanceAngle = 0f;
+    // private float m_idleGlanceAngle = 0f;
     private int stepOrder = 1;
 
     private Vector3 m_bodyPos;
@@ -38,6 +46,7 @@ public class ProceduralAnimController : MonoBehaviour
     private Vector3 m_bodyForward;
     private Vector3 m_bodyRight;
     private Quaternion m_bodyRotation;
+    private float m_maxDistFromRCBody = 0.6f;
 
     void Awake()
     {
@@ -58,6 +67,14 @@ public class ProceduralAnimController : MonoBehaviour
 
     private void Update()
     {
+        // emergency distance check, set all legs to be moveable
+        // if (Vector3.Distance(m_rcTransform.position, m_bodyTransform.position) > m_maxDistFromRCBody) {
+        //     for (int i = 0; i < m_legs.Length; i++)
+        //     {
+        //         m_legs[i].Movable = true;
+        //     }
+        // }
+
         // If the opposite foot step completes, switch the order to make a new step
         if (m_stepWaitTimer <= 0) {
 
@@ -103,8 +120,7 @@ public class ProceduralAnimController : MonoBehaviour
                 footCenter += leg.m_currentPos;
             }
 
-            RaycastHit hit;
-            if (Physics.Raycast(m_rcTransform.position, m_rcTransform.up * -1, out hit, 10.0f))
+            if (Physics.Raycast(m_rcTransform.position, m_rcTransform.up * -1, out RaycastHit hit, 10.0f))
             {
                 m_bodyUp += hit.normal;
             }
@@ -116,10 +132,12 @@ public class ProceduralAnimController : MonoBehaviour
             float bounceConst = 0f;
             var emission = m_cloudTrail.emission;
 
-            //Passive Bounce (currently only active during idle)
+            // Passive Bounce (currently only active during idle)
             if (m_isIdle) {
                 m_idleBounceTimer += Time.deltaTime;
-                bounceConst = Mathf.Sin((m_idleBounceTimer * 2 * Mathf.PI) / m_idleBouncePeriod); // could open to be animatable
+                // TODO: Open to be animatable with a curve 
+                // TODO: transition more smoothly perhaps using a float for idle state instead of a binary
+                bounceConst = Mathf.Sin((m_idleBounceTimer * 2 * Mathf.PI) / m_idleBouncePeriod); 
                 emission.enabled = false;
             }
             else {
@@ -146,9 +164,11 @@ public class ProceduralAnimController : MonoBehaviour
             m_bodyPos = footCenter + m_bodyUp * m_bodyHeightBase + m_bodyUp * bounceConst * m_idleBounceRange;
 
             m_bodyTransform.localPosition = Vector3.Lerp(m_bodyTransform.position, m_bodyPos, m_posAdjustRatio);
+            //m_bodyTransform.position = m_rcTransform.position;
 
-            // Match rc_transformLocation
+            // Currently just chase rc_transformLocation
             m_bodyTransform.rotation = Quaternion.Slerp(m_bodyTransform.rotation, m_rcTransform.rotation, m_rotAdjustRatio);
+
 
             yield return new WaitForFixedUpdate();
         }

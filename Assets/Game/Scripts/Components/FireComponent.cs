@@ -4,36 +4,62 @@ using System.Collections.Generic;
 using System.Threading;
 using Rellac.Audio;
 using TMPro;
-using UnityEditor.Networking.PlayerConnection;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// Component that controls the behaviour of the Fire prefab
+/// Deals damage unless the required amount of players get in its vicinity
+/// </summary>
+
+[RequireComponent(typeof(Collider))]
 public class FireComponent : MonoBehaviour
 {
-    // Replace with serailizedObjectValue
+    [Header("Fire Attribute Variables")]
+    [Tooltip("Required Number of Players to put out a fire for each player count")]
     [SerializeField] private int[] _playersToPutOut;
-    [SerializeField] private TMP_Text _requiredPlayersLabel;
-    [SerializeField] private TMP_Text _timeToBurn;
-    [SerializeField] private MeshRenderer _fireRenderer;
-    [SerializeField] private String _playerTag = "Player";
+    [Tooltip("Time to burn and deal damage to the plane")]
+    [SerializeField] private float _timeToDamage = 10f;
+    [Tooltip("Time to extinguish fire with correct number of players")]
+    [SerializeField] private float _timeToExtinguish = 1.5f;
+    [Tooltip("Damage dealt to fuel when burntimer runs out")]
     [SerializeField] private float _fireFuelDamage = -10;
-    [SerializeField] private IntVariable m_connectedPlayers;
-    [SerializeField] private SoundManager m_SoundManager;
-    
 
-    private float _fireDamageTimer = 10f;
-    private float _fireExtinguishTimer = 2f;
+    [Header("Component References")]
+    [Tooltip("Tag used to identify player colliders")]
+    [SerializeField] private string _playerTag = "Player";
+    [Tooltip("Label showing required players")]
+    [SerializeField] private TMP_Text _requiredPlayersLabel;
+    [Tooltip("Label showing time left until damage")]
+    [SerializeField] private TMP_Text _timeToBurn;
+    [Tooltip("Mesh colour changed when extinguishing")]
+    [SerializeField] private MeshRenderer _fireRenderer;
+    [SerializeField] private SoundManager m_SoundManager;
+    [SerializeField] private IntVariable m_connectedPlayers;
+    [SerializeField] private TooltipData m_tooltipData;
+
+    private float _fireDamageTimer;
+    private float _fireExtinguishTimer;
     private bool _extinguishing = false;
     private int _extinguishingPlayers = 0;
 
     public static event Action<float> FireDamageEvent;
 
+    private void Awake()
+    {
+        _fireDamageTimer = _timeToDamage;
+        _fireExtinguishTimer = _timeToExtinguish;
+    }
+
     void Update()
     {
         UpdateText();
-        // halt timer if extinguishing
+    
+        // --> Perhaps could halt timer if at least 1 player is on the fire
+
         if (!_extinguishing) 
         {
+            // No players, decrease damageTimer
             _fireDamageTimer -= Time.deltaTime;
 
             if (_fireDamageTimer <= 0) {
@@ -41,6 +67,7 @@ public class FireComponent : MonoBehaviour
             }
         }
         else {
+            // Enough players, begin extinguishing
             _fireExtinguishTimer -= Time.deltaTime;
             if (_fireExtinguishTimer <= 0) {
                 FireExtinguish();
@@ -53,23 +80,32 @@ public class FireComponent : MonoBehaviour
         _timeToBurn.text = Mathf.Round(_fireDamageTimer).ToString();
     }
 
+    [SerializeField] private FloatEvent OnFireBurn;
+    // On unsuccessful extinguish deal fuel-damage and destroy fire
     private void FireDamage() {
         Debug.Log("FireDamage!");
+
+        if (GameObject.Find("RemoveFuelEmit") != null)
+            GameObject.Find("RemoveFuelEmit").transform.position = transform.position;
+
         m_SoundManager.PlayOneShotRandomPitch("fireDamage",0.05f);
         FireDamageEvent?.Invoke(_fireFuelDamage);
+        OnFireBurn?.Raise(_fireFuelDamage);
         Destroy(gameObject);
     }
 
+    // On successful extinguish gain fuel and destroy fire
     private void FireExtinguish() {
         Debug.Log("FireExtinguish!");
+        if (m_tooltipData != null) m_tooltipData.firesExtinguished++;
         m_SoundManager.PlayOneShotRandomPitch("fireExtinguish",0.05f);
-        FireDamageEvent?.Invoke(-_fireFuelDamage); // gain fuel on success? (Should use its own event)
+        FireDamageEvent?.Invoke(-_fireFuelDamage/2); // gain fuel on success? (Should use its own event)
         Destroy(gameObject);
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag == _playerTag) {
+        if (other.CompareTag(_playerTag)) {
             _extinguishingPlayers++;
             CheckExtinguishingStatus();
         }
@@ -77,12 +113,13 @@ public class FireComponent : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.tag == _playerTag) {
+        if (other.CompareTag(_playerTag)) {
             _extinguishingPlayers--;
             CheckExtinguishingStatus();
         }
     }
 
+    // Check if required number of players are present
     private void CheckExtinguishingStatus() {
         if (_extinguishingPlayers >= _playersToPutOut[m_connectedPlayers.Value]){
             _extinguishing = true;

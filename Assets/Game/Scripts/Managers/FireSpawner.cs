@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Handles the spawning of Fire Prefabs
+/// </summary>
+
 public class FireSpawner : MonoBehaviour
 {
     [Tooltip("Holds the state of runtime varibales")]
@@ -19,6 +23,8 @@ public class FireSpawner : MonoBehaviour
 
     [SerializeField] private float _timeToFirstFire;
     [SerializeField] private float _timeBetweenFireSpawns;
+    [SerializeField] private float _timeBetweenSpawnDecrease = 1f;
+    [SerializeField] private float _minTimeBetweenFireSpawns = 5f;
     [Tooltip("Maximum Fires that can occur at once")]
     [SerializeField] private int _maxFires;
 
@@ -34,7 +40,6 @@ public class FireSpawner : MonoBehaviour
     private int _numActiveFires;
     private Vector3 _spawnLocation;
     private float _timeToFire;
-    
     public bool canSpawnFires = false;
 
 
@@ -59,7 +64,16 @@ public class FireSpawner : MonoBehaviour
         if (_timeToFire <= 0) {
             SpawnFire();
 
+            // Reduce time between fire spawns
+            if (_timeBetweenFireSpawns >= _minTimeBetweenFireSpawns) {
+                _timeBetweenFireSpawns -= _timeBetweenSpawnDecrease;
+            }
+            else {
+                _timeBetweenFireSpawns = _minTimeBetweenFireSpawns;
+            }
+            
             _timeToFire = _timeBetweenFireSpawns;
+
         }
 
         _timeToFire -= Time.deltaTime;
@@ -81,5 +95,11 @@ public class FireSpawner : MonoBehaviour
 
     private void DespawnFire() {
         _numActiveFires--;
+    }
+
+    
+    void OnDestroy()
+    {
+        FireComponent.FireDamageEvent -= amt=> DespawnFire();
     }
 }

@@ -2,6 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Orient a Component to camera
+/// </summary>
+
 public class OrientToCamera : MonoBehaviour
 {
     private Transform targetCamera;
