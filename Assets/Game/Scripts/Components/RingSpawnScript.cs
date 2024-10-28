@@ -37,6 +37,7 @@ public class RingSpawnScript : MonoBehaviour
     private float _zValue = 50f;
     private int m_currentBackPosition = 0;
     private int m_seedNum = 0;
+    private float _sineOffset = 0;
 
     // Hold the closest ring
     public Transform ClosestRing
@@ -90,7 +91,7 @@ public class RingSpawnScript : MonoBehaviour
             //reactivate ring and change position
             // Note currently does not change to reflect if super-rings are used or not
             _hoopArray[m_currentBackPosition].SetActive(true);
-            _hoopArray[m_currentBackPosition].transform.position = new Vector3(_randomSeed[m_seedNum]*_ringOffsetRange, _randomSeed[m_seedNum + 1]*(_ringOffsetRange/2f) + _baseHeight, _zValue);
+            _hoopArray[m_currentBackPosition].transform.position = new Vector3(_randomSeed[m_seedNum]*_ringOffsetRange + _sineOffset, _randomSeed[m_seedNum + 1]*(_ringOffsetRange/2f) + _baseHeight, _zValue);
             
             _ringOffsetRange += _increaseOffsetFactor;
             _zValue += _distanceBetweenRings;
@@ -123,14 +124,14 @@ public class RingSpawnScript : MonoBehaviour
                 // every fifth ring is a super-hoop
                 _hoopArray[i] = Instantiate(
                     _superHoopPrefab, 
-                    new Vector3(_randomSeed[100-i]*_ringOffsetRange*1.3f, _randomSeed[100-i+1]*_ringOffsetRange*1.3f + _baseHeight, _zValue + _distanceBetweenRings/2), 
+                    new Vector3(_randomSeed[100-i]*_ringOffsetRange*1.3f + _sineOffset, _randomSeed[100-i+1]*_ringOffsetRange*1.3f + _baseHeight, _zValue + _distanceBetweenRings/2), 
                     Quaternion.identity);
             }
             else {
                 // spawn a regular hoop
                 _hoopArray[i] = Instantiate(
                     _hoopPrefab, 
-                    new Vector3(_randomSeed[i]*_ringOffsetRange, _randomSeed[i+1]*(_ringOffsetRange/2f) + _baseHeight, _zValue), 
+                    new Vector3(_randomSeed[i]*_ringOffsetRange + _sineOffset, _randomSeed[i+1]*(_ringOffsetRange/2f) + _baseHeight, _zValue), 
                     Quaternion.identity);
 
 
@@ -139,10 +140,17 @@ public class RingSpawnScript : MonoBehaviour
                 _zValue += _distanceBetweenRings;
                 _distanceBetweenRings += _increaseDistanceFactor;
                 _baseHeight += _baseHeightIncreaseFactor;
+                _sineOffset = SineOffset(_zValue);
             }
             
             _hoopArray[i].transform.SetParent(transform);
         }
         m_seedNum = 100;
+    }
+
+    private float SineOffset(float x){
+        float mod = Mathf.Sin(x * 2 * Mathf.PI / 2500);
+        mod *= Mathf.Min(100, Mathf.Abs(x / 50));
+        return mod;
     }
 }
