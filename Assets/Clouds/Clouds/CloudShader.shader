@@ -92,14 +92,14 @@ Shader "Custom/CloudShader"
             float _CloudAbsorption;
             float3 _CloudScrollSpeed;
             float _CloudEdgeBlend;
-            float _CloudDistBlend;
+            float _CloudMaxDist;
 
             // Constants
             #define TRANSMITTANCE_CUTOFF 0.01
             #define LIGHT_COLOR float3(1.0, 1.0, 1.0)
             #define MAX_DISTANCE 1000.0
             #define EPS 0.01
-            #define SHAPES (6*3)
+            #define SHAPES (7*3)
 
             float easeInCubic(float t) {
                 return t * t * t;
@@ -111,7 +111,8 @@ Shader "Custom/CloudShader"
                 float closestDist = FLT_MAX;
                 for (int i = 0; i < SHAPES; i++) {
                     float dist = sdfSphere(pos, _ShapeBuffer[i].origin, _ShapeBuffer[i].dim / 2);
-                    closestDist = sdfUnionSmooth(closestDist, dist, 5.0);
+                    // closestDist = sdfUnionSmooth(closestDist, dist, 5.0);
+                    closestDist = sdfUnion(closestDist, dist);
                 }
                 return closestDist;
             }
@@ -137,13 +138,9 @@ Shader "Custom/CloudShader"
                 float3 uv = pos * _CloudNoiseSampleMultiplier + _Time * _CloudScrollSpeed;
                 float4 samp = tex3D(_CloudNoiseTexture, uv);
                 float4 m = float4(6.0, 1.0, 1.0, 1.0); // how much noise to sample from each texture
-                // float heightMult = smoothstep(1.0, 0.0, pos.y / 100);
-                // float edgeMuDist smoothstep(0.0, 1.0, abs(sdf(pos)) / _CloudEdgeBlend);
-                float edgeMult = smoothstep(0.0, 1.0, abs(sdf(pos)) / _CloudEdgeBlend);
-                // distance = [0, inf]
-                // distance / blend = [0, 1] and [1, inf / blend]
-                float distMult = 1.0 - saturate(distance(pos, _WorldSpaceCameraPos) / _CloudDistBlend);
-                return ((samp.r) * m.r + samp.g * m.g + samp.b * m.b + samp.a * m.a) / (m.r + m.g + m.b + m.a) * edgeMult * distMult;
+                // float edgeMult = smoothstep(0.0, 1.0, abs(sdf(pos)) / _CloudEdgeBlend);
+                float distMult = 1.0 - saturate(distance(pos, _WorldSpaceCameraPos) / _CloudMaxDist);
+                return ((samp.r) * m.r + samp.g * m.g + samp.b * m.b + samp.a * m.a) / (m.r + m.g + m.b + m.a) * distMult;
             }
 
             struct CloudData {          // size align
@@ -246,13 +243,12 @@ Shader "Custom/CloudShader"
                     cloudData.transmittance = 0.0;
                 }
 
-                float alpha = 1.0 - cloudData.transmittance;  // Convert transmittance to alpha
-                float3 finalColor = lerp(cloudData.color, col, cloudData.transmittance);
+                float alpha = cloudData.transmittance;  // Convert transmittance to alpha
+                // alpha *= (1.0 - cloudData.color.x);
+                float3 cloudColor = cloudData.color;
+                // float3 cloudColor = float3(1,1,1);
+                float3 finalColor = lerp(cloudColor, col, alpha);
                 return float4(finalColor, 1.0);  // Use calculated alpha
-                // float p = cloudData.transmittance;
-                // // float cc = lerp(cloudData.color, col, p);
-                // float3 finalColor = lerp(cloudData.color, col, p);
-                // return float4(finalColor, 1.0);
             }
             ENDHLSL
         }

@@ -1,4 +1,3 @@
-
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,8 +25,12 @@ public class CloudParamsUpdater : MonoBehaviour
 
     void UpdateShapes() {
         shapes.Clear();
-        foreach (Transform t in transform) {
-            shapes.Add(new Shape(t.position, t.localScale));
+        // Separate clouds
+        foreach (Transform cloud in transform) {
+            // Spheres per cloud
+            foreach (Transform sphere in cloud) {
+                shapes.Add(new Shape(sphere.position, sphere.localScale));
+            }
         }
         options.UploadShape(shapes);
     }

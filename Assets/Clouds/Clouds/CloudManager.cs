@@ -7,19 +7,20 @@ public class CloudManager : MonoBehaviour
 {
     [SerializeField] CloudParams cloudParams;
 
-    [SerializeField] private Transform cloudBoundingBox;
     [SerializeField] private Camera cam;
     private ScriptableRendererFeature customRenderFeature;
 
     void Update() {
-        float cameraPos = cam.transform.position.z;
-        float cloudPos = cloudBoundingBox.position.z + cloudBoundingBox.localScale.z / 2;
+        foreach (Transform t in transform) {
+            float cameraPos = cam.transform.position.z;
+            float cloudPos = t.position.z;
 
-        if (cameraPos > cloudPos) {
-            float dist = Random.Range(cloudParams.minDistance, cloudParams.maxDistance);
-            // Debug.Log($"DIST {dist}");
-            cloudBoundingBox.position += new Vector3(0,0, dist);
+            if (cameraPos > cloudPos) {
+                float dist = Random.Range(cloudParams.cloudMaxDist, cloudParams.cloudMaxDist + cloudParams.cloudSpawnLength);
+                t.position += new Vector3(0,0, dist);
+            }
         }
+
     }
     void Start()
     {
