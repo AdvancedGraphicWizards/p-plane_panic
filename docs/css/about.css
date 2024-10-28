@@ -47,4 +47,5 @@ img.img-howtoplay {
     object-fit: cover;
     width: 230px;
     height: 230px;
+    border-radius: 5%;
 }
