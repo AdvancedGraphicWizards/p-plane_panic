@@ -21,7 +21,8 @@ MonoBehaviour:
   cloudNoiseTexture: {fileID: 11700000, guid: b8a80563b56354c96996e5064a572658, type: 2}
   cloudNoiseSampleMultiplier: 0.01
   cloudAbsorption: 0.1
-  cloudScrollSpeed: {x: 0, y: 0, z: 0}
+  cloudScrollSpeed: {x: 0, y: -0.1, z: 0}
   cloudEdgeBlend: 0
+  cloudSmoothing: 3
   cloudMaxDist: 1000
   cloudSpawnLength: 1000

@@ -93,11 +93,12 @@ Shader "Custom/CloudShader"
             float3 _CloudScrollSpeed;
             float _CloudEdgeBlend;
             float _CloudMaxDist;
+            float _CloudSmoothing;
 
             // Constants
             #define TRANSMITTANCE_CUTOFF 0.01
             #define LIGHT_COLOR float3(1.0, 1.0, 1.0)
-            #define MAX_DISTANCE 1000.0
+            #define MAX_DISTANCE 3000.0
             #define EPS 0.01
             #define SHAPES (7*3)
 
@@ -112,8 +113,8 @@ Shader "Custom/CloudShader"
                 [unroll]
                 for (int i = 0; i < SHAPES; i++) {
                     float dist = sdfSphere(pos, _ShapeBuffer[i].origin, _ShapeBuffer[i].dim / 2);
-                    // closestDist = sdfUnionSmooth(closestDist, dist, 5.0);
-                    closestDist = sdfUnion(closestDist, dist);
+                    closestDist = sdfUnionSmooth(closestDist, dist, _CloudSmoothing);
+                    // closestDist = sdfUnion(closestDist, dist);
                     // Early exit if we're already closer than needed
                     if (closestDist < _RaymarchHitDist) {
                         break;
@@ -144,9 +145,10 @@ Shader "Custom/CloudShader"
                 float3 uv = pos * _CloudNoiseSampleMultiplier + _Time * _CloudScrollSpeed;
                 float4 samp = tex3D(_CloudNoiseTexture, uv);
                 float4 m = float4(6.0, 1.0, 1.0, 1.0); // how much noise to sample from each texture
-                // float edgeMult = smoothstep(0.0, 1.0, abs(sdf(pos)) / _CloudEdgeBlend);
                 float distMult = 1.0 - saturate(distance(pos, _WorldSpaceCameraPos) / _CloudMaxDist);
-                return ((samp.r) * m.r + samp.g * m.g + samp.b * m.b + samp.a * m.a) / (m.r + m.g + m.b + m.a) * distMult;
+                return samp * m / length(m) * distMult;
+                // float edgeMult = smoothstep(0.0, 1.0, abs(sdf(pos)) / _CloudEdgeBlend);
+                // return ((samp.r) * m.r + samp.g * m.g + samp.b * m.b + samp.a * m.a) / (m.r + m.g + m.b + m.a) * distMult;
             }
 
             struct CloudData {          // size align
@@ -188,7 +190,7 @@ Shader "Custom/CloudShader"
                     // float attenuation = calculateAttenuation(density, cloudData.distInCloud);
                     float attenuation = calculateAttenuation(density, stepSize);
                     cloudData.transmittance *= attenuation;
-                    float3 color = LIGHT_COLOR * density;// * light(pos, lightDir);
+                    float3 color = LIGHT_COLOR * density;
                     cloudData.color += color * cloudData.transmittance * (1.0 - attenuation);
 
                     cloudData.dist += stepSize;
@@ -227,7 +229,7 @@ Shader "Custom/CloudShader"
                 for (int i = 0; i < _RaymarchMaxSteps; i++) {
                     // depth buffer check
                     bool hitObject = cloudData.dist > depthDistance;
-                    bool farAway = cloudData.dist > 3000.0; // TODO cant use as variable
+                    bool farAway = cloudData.dist > MAX_DISTANCE; // TODO cant use as variable
                     if (hitObject || farAway) {
                         break;
                     }
@@ -235,6 +237,8 @@ Shader "Custom/CloudShader"
                     // check for inside cloud bounding box
                     float3 pos = rayOrig + rayDir * cloudData.dist;
                     float closestDist = sdf(pos);
+
+
                     if (closestDist < _RaymarchHitDist) {
                         cloudData = cloud(cloudData, rayOrig, rayDir, depthDistance); // calc acc and transmittance
                         if (cloudData.transmittance < TRANSMITTANCE_CUTOFF)  {
@@ -251,8 +255,8 @@ Shader "Custom/CloudShader"
 
                 float alpha = cloudData.transmittance;  // Convert transmittance to alpha
                 // alpha *= (1.0 - cloudData.color.x);
-                float3 cloudColor = cloudData.color;
-                // float3 cloudColor = float3(1,1,1);
+                // float3 cloudColor = cloudData.color;
+                float3 cloudColor = float3(1,1,1);
                 float3 finalColor = lerp(cloudColor, col, alpha);
                 return float4(finalColor, 1.0);  // Use calculated alpha
             }

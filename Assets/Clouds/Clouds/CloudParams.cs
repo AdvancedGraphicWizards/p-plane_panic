@@ -43,6 +43,7 @@ public class CloudParams: ScriptableObject {
     [SerializeField] private float cloudAbsorption = 1.0f;
     [SerializeField] private Vector3 cloudScrollSpeed = new(0,0,0);
     [SerializeField] private float cloudEdgeBlend = 100f;
+    [SerializeField] private float cloudSmoothing = 5f;
 
     [Header("Cloud spawning")]
     public float cloudMaxDist = 1000 ;
@@ -77,6 +78,8 @@ public class CloudParams: ScriptableObject {
         material.SetVector("_CloudScrollSpeed", cloudScrollSpeed);
         material.SetFloat("_CloudEdgeBlend", cloudEdgeBlend);
         material.SetFloat("_CloudMaxDist", cloudMaxDist);
+        material.SetFloat("_CloudSmoothing", cloudSmoothing);
+
     }
 
     void OnEnable() {
