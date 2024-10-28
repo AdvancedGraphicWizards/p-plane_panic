@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65f5fae53275f438d8b9b20baf353256, type: 3}
   m_Name: CloudShaderFeature
   m_EditorClassIdentifier: 
-  m_Active: 1
+  m_Active: 0
   settings:
     renderPassEvent: 500
     material: {fileID: 2100000, guid: b20c098b3ba764167b2e14f87a3aa6e0, type: 2}

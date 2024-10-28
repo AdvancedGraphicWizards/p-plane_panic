@@ -17,6 +17,8 @@ Shader "Custom/CloudShader"
         ZWrite Off   
         Cull Off    
 
+        Blend SrcAlpha OneMinusSrcAlpha
+
         Pass
         {
             HLSLPROGRAM
@@ -240,10 +242,14 @@ Shader "Custom/CloudShader"
                 if (cloudData.transmittance <= 0.0) {
                     cloudData.transmittance = 0.0;
                 }
-                float p = cloudData.transmittance;
-                // float cc = lerp(cloudData.color, col, p);
-                float3 finalColor = lerp(cloudData.color, col, p);
-                return float4(finalColor, 1.0);
+
+                float alpha = 1.0 - cloudData.transmittance;  // Convert transmittance to alpha
+                float3 finalColor = lerp(cloudData.color, col, cloudData.transmittance);
+                return float4(finalColor, 1.0);  // Use calculated alpha
+                // float p = cloudData.transmittance;
+                // // float cc = lerp(cloudData.color, col, p);
+                // float3 finalColor = lerp(cloudData.color, col, p);
+                // return float4(finalColor, 1.0);
             }
             ENDHLSL
         }
