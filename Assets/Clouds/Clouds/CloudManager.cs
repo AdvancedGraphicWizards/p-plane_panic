@@ -17,7 +17,7 @@ public class CloudManager : MonoBehaviour
 
         if (cameraPos > cloudPos) {
             float dist = Random.Range(cloudParams.minDistance, cloudParams.maxDistance);
-            Debug.Log($"DIST {dist}");
+            // Debug.Log($"DIST {dist}");
             cloudBoundingBox.position += new Vector3(0,0, dist);
         }
     }

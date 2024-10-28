@@ -92,13 +92,14 @@ Shader "Custom/CloudShader"
             float _CloudAbsorption;
             float3 _CloudScrollSpeed;
             float _CloudEdgeBlend;
+            float _CloudDistBlend;
 
             // Constants
             #define TRANSMITTANCE_CUTOFF 0.01
             #define LIGHT_COLOR float3(1.0, 1.0, 1.0)
             #define MAX_DISTANCE 1000.0
             #define EPS 0.01
-            #define SHAPES 1
+            #define SHAPES (6*3)
 
             float easeInCubic(float t) {
                 return t * t * t;
@@ -109,8 +110,8 @@ Shader "Custom/CloudShader"
             {
                 float closestDist = FLT_MAX;
                 for (int i = 0; i < SHAPES; i++) {
-                    float dist = sdfBox(pos, _ShapeBuffer[i].origin, _ShapeBuffer[i].dim / 2);
-                    closestDist = sdfUnion(closestDist, dist);
+                    float dist = sdfSphere(pos, _ShapeBuffer[i].origin, _ShapeBuffer[i].dim / 2);
+                    closestDist = sdfUnionSmooth(closestDist, dist, 5.0);
                 }
                 return closestDist;
             }
@@ -137,10 +138,12 @@ Shader "Custom/CloudShader"
                 float4 samp = tex3D(_CloudNoiseTexture, uv);
                 float4 m = float4(6.0, 1.0, 1.0, 1.0); // how much noise to sample from each texture
                 // float heightMult = smoothstep(1.0, 0.0, pos.y / 100);
-                float dist = -sdf(pos);
-                float heightMult = smoothstep(0.0, 1.0, dist / _CloudEdgeBlend);
-                // float heightMult = exp(-pos.y / 70);
-                return ((samp.r) * m.r + samp.g * m.g + samp.b * m.b + samp.a * m.a) / (m.r + m.g + m.b + m.a) * heightMult;
+                // float edgeMuDist smoothstep(0.0, 1.0, abs(sdf(pos)) / _CloudEdgeBlend);
+                float edgeMult = smoothstep(0.0, 1.0, abs(sdf(pos)) / _CloudEdgeBlend);
+                // distance = [0, inf]
+                // distance / blend = [0, 1] and [1, inf / blend]
+                float distMult = 1.0 - saturate(distance(pos, _WorldSpaceCameraPos) / _CloudDistBlend);
+                return ((samp.r) * m.r + samp.g * m.g + samp.b * m.b + samp.a * m.a) / (m.r + m.g + m.b + m.a) * edgeMult * distMult;
             }
 
             struct CloudData {          // size align
