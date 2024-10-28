@@ -43,6 +43,11 @@ public class CloudParams: ScriptableObject {
     [SerializeField] private float cloudAbsorption = 1.0f;
     [SerializeField] private Vector3 cloudScrollSpeed = new(0,0,0);
     [SerializeField] private float cloudEdgeBlend = 0.1f;
+
+    [Header("Cloud spawning")]
+    public float minDistance = 1000 ;
+    public float maxDistance = 2000;
+
     private ComputeBuffer shapeBuffer;
 
     public void UploadShape(List<Shape> shapes) {
