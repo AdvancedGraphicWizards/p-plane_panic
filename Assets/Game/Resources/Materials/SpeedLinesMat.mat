@@ -116,7 +116,7 @@ Material:
     - _SpecularHighlights: 1
     - _SpeedAnim: 3
     - _SpeedLinesAnimation: 2
-    - _SpeedLinesEnabled: 0
+    - _SpeedLinesEnabled: 1
     - _SpeedLinesPower: 5
     - _SpeedLinesRadialScale: 0
     - _SpeedLinesRemap: 0.118
