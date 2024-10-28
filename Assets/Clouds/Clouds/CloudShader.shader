@@ -109,11 +109,17 @@ Shader "Custom/CloudShader"
             float sdf(float3 pos) 
             {
                 float closestDist = FLT_MAX;
+                [unroll]
                 for (int i = 0; i < SHAPES; i++) {
                     float dist = sdfSphere(pos, _ShapeBuffer[i].origin, _ShapeBuffer[i].dim / 2);
                     // closestDist = sdfUnionSmooth(closestDist, dist, 5.0);
                     closestDist = sdfUnion(closestDist, dist);
+                    // Early exit if we're already closer than needed
+                    if (closestDist < _RaymarchHitDist) {
+                        break;
+                    }
                 }
+                
                 return closestDist;
             }
              
