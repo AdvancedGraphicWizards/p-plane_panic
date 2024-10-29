@@ -1,6 +1,4 @@
 using System.Collections;
-using Unity.Collections;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 [RequireComponent(typeof(ParticleSystem))]

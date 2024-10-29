@@ -77,7 +77,7 @@ public class CirclePlacementComponent : MonoBehaviour
                 m_targetParent
                 ).transform;
 
-            EditorUtility.SetDirty(m_objects[i]);
+            // EditorUtility.SetDirty(m_objects[i]);
 
             currAngle += m_angleOffset;
         }
