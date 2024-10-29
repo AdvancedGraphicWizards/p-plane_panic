@@ -1,5 +1,6 @@
 using UnityEditor;
 using UnityEngine;
+
 [CustomEditor(typeof(WaterPlaneManager))]
 public class WaterPlaneManagerEditor : Editor
 {
