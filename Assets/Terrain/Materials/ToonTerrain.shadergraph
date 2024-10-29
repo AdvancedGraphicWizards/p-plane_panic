@@ -263,6 +263,9 @@
         },
         {
             "m_Id": "44e72aa010fa415ba8beb423669b0875"
+        },
+        {
+            "m_Id": "62f11a3b94ad47b3a929a500f4fa15ec"
         }
     ],
     "m_GroupDatas": [
@@ -519,6 +522,20 @@
                     "m_Id": "9357bf71063b48918e62204b3926efd8"
                 },
                 "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
+                    "m_Id": "4d06cba397c44418a6580291582c6de2"
+                },
+                "m_SlotId": 2
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "62f11a3b94ad47b3a929a500f4fa15ec"
+                },
+                "m_SlotId": 1
             }
         },
         {
@@ -3329,10 +3346,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -507.0000305175781,
-            "y": 1878.0,
-            "width": 146.99993896484376,
-            "height": 153.0001220703125
+            "x": -636.0,
+            "y": 1880.0,
+            "width": 146.4000244140625,
+            "height": 151.199951171875
         }
     },
     "m_Slots": [
@@ -3993,6 +4010,45 @@
 
 {
     "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.StepNode",
+    "m_ObjectId": "62f11a3b94ad47b3a929a500f4fa15ec",
+    "m_Group": {
+        "m_Id": "bab2c863e744485c918deafad67826a5"
+    },
+    "m_Name": "Step",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -508.800048828125,
+            "y": 2038.4000244140625,
+            "width": 144.80001831054688,
+            "height": 117.5999755859375
+        }
+    },
+    "m_Slots": [
+        {
+            "m_Id": "bb15a9d8713f4a4a89b1e2c223bc4c7b"
+        },
+        {
+            "m_Id": "649d73cb086c43ea82db92cc48aabb58"
+        },
+        {
+            "m_Id": "ce259d8b367b455b96635a357616a7f0"
+        }
+    ],
+    "synonyms": [],
+    "m_Precision": 0,
+    "m_PreviewExpanded": false,
+    "m_DismissedVersion": 0,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    }
+}
+
+{
+    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "63041f35c87e44b7acac991127486c9c",
     "m_Id": 1,
@@ -4004,6 +4060,30 @@
     "m_Value": 0.4000000059604645,
     "m_DefaultValue": 500.0,
     "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.DynamicVectorMaterialSlot",
+    "m_ObjectId": "649d73cb086c43ea82db92cc48aabb58",
+    "m_Id": 1,
+    "m_DisplayName": "In",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "In",
+    "m_StageCapability": 3,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_DefaultValue": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    }
 }
 
 {
@@ -6340,8 +6420,32 @@
     "m_ObjectId": "bab2c863e744485c918deafad67826a5",
     "m_Title": "Random Splotches",
     "m_Position": {
-        "x": -839.3132934570313,
-        "y": 1490.14892578125
+        "x": -1249.5999755859375,
+        "y": 1603.199951171875
+    }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.DynamicVectorMaterialSlot",
+    "m_ObjectId": "bb15a9d8713f4a4a89b1e2c223bc4c7b",
+    "m_Id": 0,
+    "m_DisplayName": "Edge",
+    "m_SlotType": 0,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Edge",
+    "m_StageCapability": 3,
+    "m_Value": {
+        "x": 0.5,
+        "y": 1.0,
+        "z": 1.0,
+        "w": 1.0
+    },
+    "m_DefaultValue": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
     }
 }
 
@@ -6922,6 +7026,30 @@
     "m_RangeValues": {
         "x": 0.0,
         "y": 1.0
+    }
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.DynamicVectorMaterialSlot",
+    "m_ObjectId": "ce259d8b367b455b96635a357616a7f0",
+    "m_Id": 2,
+    "m_DisplayName": "Out",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out",
+    "m_StageCapability": 3,
+    "m_Value": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
+    },
+    "m_DefaultValue": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "w": 0.0
     }
 }
 

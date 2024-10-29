@@ -21,7 +21,9 @@ public class PoissonPlacement : MonoBehaviour
     // Rotation are assigned at random
     public Matrix4x4[] GeneratePoints(float offsetX, float offsetZ, float chunkSizeX, float chunkSizeZ) {
         // Generate uniform random points
-		List<Vector2> points = PoissonDiscSampling.GeneratePoints(radius, new Vector2(chunkSizeX, chunkSizeZ), new Vector2(offsetX - chunkSizeX/2f,offsetZ - chunkSizeZ/2f),3);
+		//List<Vector2> points = PoissonDiscSampling.GeneratePoints(radius, new Vector2(chunkSizeX, chunkSizeZ), new Vector2(offsetX - chunkSizeX/2f,offsetZ - chunkSizeZ/2f),3);
+
+        List<Vector2> points = GridPoints.GetPointGrid(offsetX, offsetZ, chunkSizeX, chunkSizeZ, radius);
 
         List<Vector2> maskedPoints = new List<Vector2>();
         List<Vector3> meshPoints = new List<Vector3>();
