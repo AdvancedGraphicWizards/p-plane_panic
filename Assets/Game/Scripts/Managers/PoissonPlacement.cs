@@ -1,9 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.Collections;
-using Unity.VisualScripting;
-using UnityEditor.Rendering;
-using UnityEditor.ShaderGraph;
 using UnityEngine;
 
 public class PoissonPlacement : MonoBehaviour
