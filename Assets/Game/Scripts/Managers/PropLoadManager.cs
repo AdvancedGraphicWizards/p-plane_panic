@@ -50,17 +50,14 @@ public class PropLoadManager : MonoBehaviour
     private void DrawPointsInViewAngle(Vector3 playerPos, Vector3 playerViewDirection, Matrix4x4[] points, int[] objType)
     {
         List<Matrix4x4>[] pointsInView = new List<Matrix4x4>[objArray.Length];
-        for (int i = 0; i < objArray.Length; i++)
-        {
+        for (int i = 0; i < objArray.Length; i++) {
             pointsInView[i] = new List<Matrix4x4>();
         }
 
-        for (int i = 0; i < points.Length; i++)
-        {
-            Vector3 dir = points[i].GetPosition() - playerPos;
-            float angle = Vector3.Angle(dir, playerViewDirection);
-            if (angle < playerViewAngle)
-            {
+        // Frustum Culling
+        Plane[] cameraPlanes = GeometryUtility.CalculateFrustumPlanes(Camera.main);
+        for (int i = 0; i < points.Length; i++){
+            if (GeometryUtility.TestPlanesAABB(cameraPlanes, new Bounds(points[i].GetPosition(), Vector3.one))) {
                 // Draw point
                 Debug.DrawLine(playerPos, points[i].GetPosition(), Color.red);
 

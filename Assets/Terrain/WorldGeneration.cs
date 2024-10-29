@@ -2,6 +2,13 @@ using Unity.Mathematics;
 using static Unity.Mathematics.math;
 
 public class WorldGeneration {
+
+    // Offset for the world generation
+    public static float2 offset;
+
+    // Magic vectors for noise
+    public static float2 m1;  
+    public static float2 m2; 
     
     // Get fractional component of float p
     static float Fract(float p) {
@@ -64,10 +71,11 @@ public class WorldGeneration {
     static float3 FBMErosion(float2 p, int octaves) {
         float a = 0;
         float b = 1;
-        float2 d = (float2)0;
+        float2 d = (float2)0; 
 
-        float2 m1 = float2(0.8f, -0.6f);  
-        float2 m2 = float2(0.6f, 0.8f);  
+        // Apply magic vectors that rotate and scale the noise each octave to add variation each octave
+        p.x = (m1.x * p.x + m1.y * p.y) * 2;
+        p.y = (m2.x * p.x + m2.y * p.y) * 2;
 
         for (int i= 0; i < octaves; i++)
         {
@@ -111,6 +119,8 @@ public class WorldGeneration {
 
     // World heightmap generation function
     public static float SampleHeight(float x, float z) {
+        x += offset.x;
+        z += offset.y;
         
         // Get the height from the heightmap
         float height = FBMErosion(float2(x / 300, z / 300), 10).x * 150;
