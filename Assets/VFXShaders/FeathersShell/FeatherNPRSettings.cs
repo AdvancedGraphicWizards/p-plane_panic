@@ -1,7 +1,7 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "FeatherSettings", menuName = "VFX/Feathers/FeatherSettings", order = 0)]
-public class FeatherSettings : ScriptableObject
+[CreateAssetMenu(fileName = "FeatherNPRSettings", menuName = "VFX/Feathers/FeatherNPRSettings", order = 0)]
+public class FeatherNPRSettings : ScriptableObject
 {
     public bool updateStatics;
     [Range(1, 256)]

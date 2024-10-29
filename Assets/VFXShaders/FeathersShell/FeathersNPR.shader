@@ -1,4 +1,4 @@
-Shader "VFX/Character/FeathersShell"
+Shader "VFX/Character/FeathersNPR"
 {
     Properties
     {
@@ -61,7 +61,7 @@ Shader "VFX/Character/FeathersShell"
             float _Hardness;
             float _PhongExponent;
 
-            //float3 _WindDirection;
+            float3 _WindDirection;
 
             //For random value, implementation detail not important
             float hash(uint n) {
