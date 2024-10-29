@@ -10,6 +10,7 @@ using Random = UnityEngine.Random;
 public class ProceduralTerrainRenderer : MonoBehaviour {
 
     // References
+    [SerializeField] private Light sun;
     [Tooltip("The compute shader to use to modify the mesh.")]
     [SerializeField] private ComputeShader terrainComputeShader;
     private MeshFilter meshFilter;
@@ -105,6 +106,9 @@ public class ProceduralTerrainRenderer : MonoBehaviour {
         instantiatedTerrainComputeShader.SetVector("offset", new Vector4(offset.x, offset.y, 0, 0));
         instantiatedTerrainComputeShader.SetVector("m1", new Vector4(m1.x, m1.y, 0, 0));
         instantiatedTerrainComputeShader.SetVector("m2", new Vector4(m2.x, m2.y, 0, 0));
+
+        // Randomize the sun x rotation.
+        sun.transform.rotation = Quaternion.Euler(Random.Range(0, 180), 30, 0);
     }
 
     void OnDisable() {
