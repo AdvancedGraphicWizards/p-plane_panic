@@ -122,18 +122,27 @@
 
                 <div class="col-lg-4 col-md-6 mb-4">
                     <div class="team-member text-center" id="stofffe">
-                        <img src="https://github.com/stofffe.png" alt="stofffe" class="team-member-img">
+                        <img src="images/photos/team/stofffe.jpg" alt="stofffe" class="team-member-img">
                         <h5>Christoffer Andersson</h5>
                         <div class="role-tags">
-                            <span class="role-tag">Tag 1</span>
-                            <span class="role-tag">Tag 2</span>
-                            <span class="role-tag">Tag 3</span>
+                            <span class="role-tag">Volumetric Clouds</span>
+                            <span class="role-tag">Compute Shaders</span>
+                            <span class="role-tag">HLSL</span>
+                            <span class="role-tag">Game Architecture</span>
+                            <span class="role-tag">Particle Effects</span>
                         </div>
-                        <p>Individual contributions</p>
+                        <p>At the start of the project I focused on the foundational game architecture by creating a versatile event based system. I then
+                            worked on particle effects such as the particles for gaining and losing fuel. Apart from the architecture and particle effects,
+                            most of my time was spent on the procedural volumetric clouds. The first step was generating procedural tiling Voronoi textures
+                            using compute shaders. The second step was creating a raymarching shader which uses signed distance functions in order to render
+                            complex shapes. The third and last step was to combine the previous steps with a shader which uses Beer's law in order to simulate
+                            the transport of light within the clouds. This project taught me a lot about working in a larger team with a tight deadline. It also
+                            improved my GPU and shader programming skills in Unity.</p>
                         <div class="social-icons">
-                            <a href="#" target="_blank"><i class="bi bi-globe"></i></a>
+                            <a href="https://stofffe.github.io/personal-website/ " target="_blank"><i class="bi bi-globe"></i></a>
+                            <a href="https://www.linkedin.com/in/christoffer-andersson-11b106226/" target="_blank"><i class="bi bi-linkedin"></i></a>
                             <a href="https://github.com/stofffe" target="_blank"><i class="bi bi-github"></i></a>
-                            <a href="mailto:email@example.com"><i class="bi bi-envelope"></i></a>
+                            <a href="mailto:christoffer.andersson.dev@gmail.com"><i class="bi bi-envelope"></i></a>
                         </div>
                     </div>
                 </div>
@@ -234,11 +243,11 @@
                             <span class="role-tag">Phone Development</span>
                             <span class="role-tag">Web Development</span>
                         </div>
-                        <p>In the early stages of the project, I focused on networking and interaction programming, creating a basic phone UI and establishing
+                        <p>My focus at the start of the project was on networking and interaction programming, creating a basic phone UI and establishing
                             phone-to-Unity connections through Unity Relay. Eventually this evolved into making use of the phone gyroscope to control the
                             player characters, properly spawning in the players, making a new phone UI, handling player name changing, assigning player colours
-                            with a perceptual colour model, adding WakeLock as a jslib, a toon-style water shader featuring procedural Voronoi
-                            noise, creating the website, as well as assisting with many other areas of the project.</p>
+                            with a perceptual colour model based on Gramazio et al (2017), adding WakeLock as a jslib, a toon-style water shader featuring
+                            procedural Voronoi noise, implementing the leaderboard, creating the website, as well as assisting with many other areas of the project.</p>
                         <div class="social-icons">
                             <a href="https://github.com/udon-udon" target="_blank"><i class="bi bi-github"></i></a>
                             <a href="mailto:udon-udon@outlook.com"><i class="bi bi-envelope"></i></a>
@@ -282,7 +291,7 @@
 </body>
 
 <script>
-    insertBird('stofffe', '#64C4AB');
+    insertBird('stofffe', '#4A86E8');
     insertBird('RasmusMEA', '#2CE0E0');
     insertBird('David', '#EE5555');
     insertBird('Canaguia', '#BF60FF');
