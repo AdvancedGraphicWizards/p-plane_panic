@@ -822,8 +822,6 @@ GameObject:
   - component: {fileID: 5100013669273788798}
   - component: {fileID: 2665864209145159676}
   - component: {fileID: 665439346002654902}
-  - component: {fileID: 1784621468136530589}
-  - component: {fileID: 7825015860243587180}
   m_Layer: 0
   m_Name: Target
   m_TagString: Untagged
@@ -866,7 +864,7 @@ MonoBehaviour:
   m_soundManager: {fileID: 11400000, guid: 7cd1bd6edca55df43b3a34c2ede55fe0, type: 2}
   _ringCollectAnim: {fileID: 6321722024323253718}
   OnEnterRing: {fileID: 11400000, guid: 7bcb758ebf0ff46ec8196115e4a5ea50, type: 2}
-  m_particleComponent: {fileID: 7825015860243587180}
+  m_particleComponent: {fileID: 0}
   tooltipData: {fileID: 11400000, guid: 040f19c4173c377438c7a15670d8dea1, type: 2}
 --- !u!54 &665439346002654902
 Rigidbody:
@@ -895,69 +893,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1784621468136530589
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2820548137086030269}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dee98417fd7f991419bf002596f07f1c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_circleRadius: 12.5
-  m_objectQuantity: 20
-  m_rotationOffset: 0
-  Rotates: 1
-  UpdatesLocally: 1
-  m_rotationPeriod: 10
-  m_circleOffset: {x: 0, y: 0, z: 0}
-  m_targetParent: {fileID: 3749084695979910422}
-  m_circleObjectPrefab: {fileID: 4332376139455074976, guid: 844e66ea8931b424d92282cb67f9bed1,
-    type: 3}
-  m_populateOnActivation: 0
-  m_objects:
-  - {fileID: 7595021846498743867}
-  - {fileID: 1238102854040259373}
-  - {fileID: 3069756126402988722}
-  - {fileID: 119095933065055442}
-  - {fileID: 1624214143169301043}
-  - {fileID: 6581706604114885249}
-  - {fileID: 6584027841825403320}
-  - {fileID: 5223607925563378329}
-  - {fileID: 1009573206788482857}
-  - {fileID: 58591233666181589}
-  - {fileID: 8775795584742614169}
-  - {fileID: 4423394971633920546}
-  - {fileID: 5500573577231645341}
-  - {fileID: 2128688164093250270}
-  - {fileID: 8186225714169553062}
-  - {fileID: 1964732460060176805}
-  - {fileID: 1063947046049758532}
-  - {fileID: 5086887585093658713}
-  - {fileID: 8035075386991409467}
-  - {fileID: 2026525416218070878}
-  m_angleOffset: 0.31415927
-  m_currentRotationOffset: 0
---- !u!114 &7825015860243587180
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2820548137086030269}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65b1d6cc6cd63094282cbead6274201b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_particleGroupParent: {fileID: 3749084695979910422}
-  m_cpComponent: {fileID: 1784621468136530589}
-  m_mainCamera: {fileID: 0}
-  m_zValue: 5
-  m_offsetTransform: {fileID: 0}
 --- !u!1 &3650102144618993556
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,6 +4,11 @@
 
 static const float PI = 3.14159265f;
 
+float2 offset;// = float2(0, 0);
+
+float2 m1;// = float2(0.8, -0.6);  
+float2 m2;// = float2(0.6, 0.8); 
+
 // Get fractional component of float p
 float Fract(float p) {
     return p - floor(p);
@@ -67,8 +72,9 @@ float3 FBMErosion(float2 p, int octaves) {
     float b = 1;
     float2 d = (float2)0;
 
-    float2 m1 = float2(0.8, -0.6);  
-    float2 m2 = float2(0.6, 0.8);  
+    // Apply magic vectors that rotate and scale the noise each octave to add variation each octave
+    p.x = (m1.x * p.x + m1.y * p.y) * 2;
+    p.y = (m2.x * p.x + m2.y * p.y) * 2;
 
     for (int i= 0; i < octaves; i++)
     {
@@ -104,7 +110,7 @@ float CanyonCarve(float2 p, float canyonWidth, float canyonBaseWidth, float cany
 
     float sinSDF = abs(p.x -axisOffset - mod);
 
-    sinSDF = (pow(Smin(canyonWidth, max(0, sinSDF -canyonBaseWidth), 2), 2) / pow(canyonWidth, 2));
+    sinSDF = (pow(Smin(canyonWidth, max(0, sinSDF -canyonBaseWidth),1),4) / pow(canyonWidth, 4));
     sinSDF = 1 - sinSDF;
 
     return sinSDF * canyonDepth;
@@ -112,19 +118,21 @@ float CanyonCarve(float2 p, float canyonWidth, float canyonBaseWidth, float cany
 
 // World heightmap generation function
 float SampleHeight(float x, float z) {
+    x += offset.x;
+    z += offset.y;
     
     // Get the height from the heightmap
     float height = FBMErosion(float2(x / 300, z / 300), 10).x * 150;
 
     // Carve a canyon
-	
-	// Get canyon depth
-	float sinSDF = CanyonCarve(float2(x, z), 80, 30, 50, 0, 500, 100, 0);
-	sinSDF += CanyonCarve(float2(x, z), 50, 80, 35, 0, 1500, 100, 30);
-	sinSDF += CanyonCarve(float2(x, z), 30, 130, 10, 0, 2500, 100, 65);
+    
+    // Get canyon depth
+    float sinSDF = CanyonCarve(float2(x, z), 30, 5, 35, 0, 2500, 100, 0);
+    sinSDF += CanyonCarve(float2(x, z), 30, 50, 30, 0, 2500, 100, 0);
+    sinSDF += CanyonCarve(float2(x, z), 50, 100, 30, 0, 2500, 100, 0);
 
     // Decrease the height of the terrain in the canyon
-    height *= min(1, 60 / sinSDF);
+    height *= min(1, 80 / sinSDF);
 
     height -= sinSDF;
     

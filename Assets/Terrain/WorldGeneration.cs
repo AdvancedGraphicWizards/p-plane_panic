@@ -2,6 +2,13 @@ using Unity.Mathematics;
 using static Unity.Mathematics.math;
 
 public class WorldGeneration {
+
+    // Offset for the world generation
+    public static float2 offset;
+
+    // Magic vectors for noise
+    public static float2 m1;  
+    public static float2 m2; 
     
     // Get fractional component of float p
     static float Fract(float p) {
@@ -64,10 +71,11 @@ public class WorldGeneration {
     static float3 FBMErosion(float2 p, int octaves) {
         float a = 0;
         float b = 1;
-        float2 d = (float2)0;
+        float2 d = (float2)0; 
 
-        float2 m1 = float2(0.8f, -0.6f);  
-        float2 m2 = float2(0.6f, 0.8f);  
+        // Apply magic vectors that rotate and scale the noise each octave to add variation each octave
+        p.x = (m1.x * p.x + m1.y * p.y) * 2;
+        p.y = (m2.x * p.x + m2.y * p.y) * 2;
 
         for (int i= 0; i < octaves; i++)
         {
@@ -103,7 +111,7 @@ public class WorldGeneration {
 
         float sinSDF = abs(p.x -axisOffset - mod);
 
-        sinSDF = (pow(Smin(canyonWidth, max(0, sinSDF -canyonBaseWidth), 2), 2) / pow(canyonWidth, 2));
+        sinSDF = (pow(Smin(canyonWidth, max(0, sinSDF -canyonBaseWidth), 1), 4) / pow(canyonWidth, 4));
         sinSDF = 1 - sinSDF;
 
         return sinSDF * canyonDepth;
@@ -111,6 +119,8 @@ public class WorldGeneration {
 
     // World heightmap generation function
     public static float SampleHeight(float x, float z) {
+        x += offset.x;
+        z += offset.y;
         
         // Get the height from the heightmap
         float height = FBMErosion(float2(x / 300, z / 300), 10).x * 150;
@@ -118,12 +128,12 @@ public class WorldGeneration {
         // Carve a canyon
         
         // Get canyon depth
-        float sinSDF = CanyonCarve(float2(x, z), 80, 30, 50, 0, 500, 100, 0);
-        sinSDF += CanyonCarve(float2(x, z), 50, 80, 35, 0, 1500, 100, 30);
-        sinSDF += CanyonCarve(float2(x, z), 30, 130, 10, 0, 2500, 100, 65);
+        float sinSDF = CanyonCarve(float2(x, z), 30, 5, 35, 0, 2500, 100, 0);
+        sinSDF += CanyonCarve(float2(x, z), 30, 50, 30, 0, 2500, 100, 0);
+        sinSDF += CanyonCarve(float2(x, z), 50, 100, 30, 0, 2500, 100, 0);
 
         // Decrease the height of the terrain in the canyon
-        height *= min(1, 60 / sinSDF);
+        height *= min(1, 80 / sinSDF);
 
         height -= sinSDF;
         

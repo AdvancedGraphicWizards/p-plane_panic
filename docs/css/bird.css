@@ -1,0 +1,19 @@
+/* Bird styling */
+.bird-character {
+    display: inline-block;
+    vertical-align: bottom;
+    margin-left: 3px;
+    margin-bottom: -3px;
+    width: 30px;
+    height: 30px;
+    background-color: var(--bird-color, #ff0000);
+    background-image:
+        url('../images/bird/detail-mask.png'),
+        url('../images/bird/color-mask.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-blend-mode: screen, multiply;
+    mask-image: url('../images/bird/detail-mask.png');
+    mask-size: cover;
+    mask-repeat: no-repeat;
+}

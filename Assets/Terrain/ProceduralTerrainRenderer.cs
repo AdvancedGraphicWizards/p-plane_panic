@@ -2,11 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using Unity.Mathematics;
+
+using Random = UnityEngine.Random;
 
 [ExecuteInEditMode, RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
 public class ProceduralTerrainRenderer : MonoBehaviour {
 
     // References
+    [SerializeField] private Light sun;
     [Tooltip("The compute shader to use to modify the mesh.")]
     [SerializeField] private ComputeShader terrainComputeShader;
     private MeshFilter meshFilter;
@@ -88,6 +92,23 @@ public class ProceduralTerrainRenderer : MonoBehaviour {
 
         // Set the initialized flag.
         _isInitialized = true;
+
+        // Randomize the terrain.
+        float2 offset = new float2(0, 0);
+        offset.x = -Mathf.Min(100, Mathf.Abs(0 / 50)) * Mathf.Sin(0 * 2 * Mathf.PI / 2500);
+        float2 m1 = new float2(0.5f + Random.value * 0.35f, -0.5f + Random.value * 0.35f);
+        float2 m2 = new float2(0.5f + Random.value * 0.35f, 0.5f + Random.value * 0.35f);
+
+        WorldGeneration.offset = offset;
+        WorldGeneration.m1 = m1;
+        WorldGeneration.m2 = m2;
+
+        instantiatedTerrainComputeShader.SetVector("offset", new Vector4(offset.x, offset.y, 0, 0));
+        instantiatedTerrainComputeShader.SetVector("m1", new Vector4(m1.x, m1.y, 0, 0));
+        instantiatedTerrainComputeShader.SetVector("m2", new Vector4(m2.x, m2.y, 0, 0));
+
+        // Randomize the sun x rotation.
+        sun.transform.rotation = Quaternion.Euler(Random.Range(0, 180), 30, 0);
     }
 
     void OnDisable() {
