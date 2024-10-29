@@ -99,7 +99,8 @@ public class RingSpawnScript : MonoBehaviour
             if (_distanceBetweenRings < _maxDistanceBetweenRings)
                 _distanceBetweenRings += _increaseDistanceFactor;
 
-            _baseHeight += _baseHeightIncreaseFactor;
+            _baseHeight =  50f + HeightVariation(_zValue);
+            _sineOffset = SineOffset(_zValue);
 
             // update next ring to pool
             m_currentBackPosition++;
@@ -138,8 +139,10 @@ public class RingSpawnScript : MonoBehaviour
                 // Update offsetvalues
                 _ringOffsetRange += _increaseOffsetFactor;
                 _zValue += _distanceBetweenRings;
+                if (_distanceBetweenRings < _maxDistanceBetweenRings)
+                    _distanceBetweenRings += _increaseDistanceFactor;
                 _distanceBetweenRings += _increaseDistanceFactor;
-                _baseHeight += _baseHeightIncreaseFactor;
+                _baseHeight =  50f + HeightVariation(_zValue);
                 _sineOffset = SineOffset(_zValue);
             }
             
@@ -152,5 +155,10 @@ public class RingSpawnScript : MonoBehaviour
         float mod = Mathf.Sin(x * 2 * Mathf.PI / 2500);
         mod *= Mathf.Min(100, Mathf.Abs(x / 50));
         return mod;
+    }
+
+    private float HeightVariation(float x) {
+        float period = 0.0002f;
+        return -200*(Mathf.Cos(Mathf.PI/2f * x *period) - 1) * (Mathf.Sin(x/2f * period) - Mathf.Abs(SineOffset(x/2f*period)));
     }
 }

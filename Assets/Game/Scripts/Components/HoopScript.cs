@@ -32,6 +32,7 @@ public class HoopScript : MonoBehaviour
 
     [SerializeField] private ParticleCollectionComponent m_particleComponent;
     [SerializeField] private TooltipData tooltipData;
+    [SerializeField] private bool m_cantReactivate = false;
 
     void Awake()
     {
@@ -41,7 +42,8 @@ public class HoopScript : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag(_playerTag)){
+        if (other.gameObject.CompareTag(_playerTag) && !m_cantReactivate){
+            m_cantReactivate = true;
             if (tooltipData != null) tooltipData.ringsPassed++;
             m_soundManager.PlayOneShotRandomPitch("ringPickup",0.1f);
             OnRingEnter?.Invoke(_fuelRecoverAmount);
@@ -54,6 +56,7 @@ public class HoopScript : MonoBehaviour
         //m_particleComponent.RegisterParticlesInScreenSpace();
         _ringCollectAnim.Play();
         yield return new WaitForSeconds(_deactivationTimer);
+        m_cantReactivate = false;
         gameObject.SetActive(false);
     }
 }
