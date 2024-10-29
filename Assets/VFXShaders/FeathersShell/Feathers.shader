@@ -145,7 +145,7 @@ Shader "VFX/Character/FeathersShell"
 
                 //ambient shading
                 float ambientLightIntensity = _OcclusionBias;//_AmbientCoefficient;
-                float4 ambientColor = surfaceColor * 0.9;
+                float4 ambientColor = surfaceColor * 0.5;
                 float4 ambientShading = ambientColor * surfaceColor * ambientLightIntensity;
 
                 float3 cameraPosWS = GetCameraPositionWS();
@@ -167,7 +167,7 @@ Shader "VFX/Character/FeathersShell"
                 ambientOcclusion += _OcclusionBias;
                 ambientOcclusion = saturate(ambientOcclusion);
 
-                float4 colorBlinnPhongShading =  diffuseColor + specularColor + ambientShading * ambientOcclusion;
+                float4 colorBlinnPhongShading =  diffuseColor + /*specularColor +*/ ambientShading;// * ambientOcclusion;
 
 
                 return colorBlinnPhongShading;
