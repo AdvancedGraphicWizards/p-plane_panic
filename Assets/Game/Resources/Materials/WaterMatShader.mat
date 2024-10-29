@@ -116,7 +116,7 @@ Material:
     - _ClearCoatSmoothness: 0
     - _Cull: 2
     - _Cutoff: 0.5
-    - _DepthMaxDistance: 2.98
+    - _DepthMaxDistance: 1
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -125,12 +125,14 @@ Material:
     - _EnableFade: 1
     - _EnvironmentReflections: 1
     - _FadeDistance: 50
+    - _FlowMapScale: 10
     - _FlowMapSize: 10
     - _FlowSize: 10
     - _FlowSpeed: 0.01
     - _FlowStrength: 0.0075
     - _FoamDistance: 0.4
     - _FoamIntensity: 1
+    - _FoamScale: 10
     - _FoamSize: 10
     - _GlossMapScale: 0
     - _Glossiness: 0
@@ -170,7 +172,7 @@ Material:
     - _Color: {r: 0.4162548, g: 0.61523974, b: 0.68301874, a: 1}
     - _DarkFoamColor: {r: 0.18123916, g: 0.5608159, b: 0.872, a: 1}
     - _DarkFoamColour: {r: 0.10323961, g: 0.4987795, b: 0.754717, a: 1}
-    - _DepthGradientDeep: {r: 0.007843138, g: 0.44313726, b: 0.7333333, a: 1}
+    - _DepthGradientDeep: {r: 0.17661978, g: 0.48801082, b: 0.5943396, a: 1}
     - _DepthGradientShallow: {r: 0.3249999, g: 0.807, b: 0.971, a: 0.8862745}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FoamColor: {r: 1, g: 0, b: 0, a: 1}

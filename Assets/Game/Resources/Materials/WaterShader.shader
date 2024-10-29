@@ -60,7 +60,10 @@ Shader "Custom/WaterShader"
             #pragma vertex vert
             #pragma fragment frag
 
+            // Include some helper functions from URP
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/ShaderVariablesFunctions.hlsl"
 
             float4 _DepthGradientShallow;
             float4 _DepthGradientDeep;
@@ -189,6 +192,7 @@ Shader "Custom/WaterShader"
                 float4 positionHCS : SV_POSITION;
                 float4 screenPosition : TEXCOORD0;
                 float3 positionWS : TEXCOORD1;
+                float3 normalWS : TEXCOORD2;
             };
 
             Varyings vert(Attributes IN)
@@ -212,6 +216,7 @@ Shader "Custom/WaterShader"
 
                 // Apply displacement to y component of positionOS
                 positionOS.y += waveDisplacement;
+                positionWS.y += waveDisplacement;
 
                 // All for the depth texture
                 OUT.positionHCS = TransformObjectToHClip(float4(positionOS, 1));
@@ -303,9 +308,21 @@ Shader "Custom/WaterShader"
                     darkFoamColour = lerp(waterColour, _DarkFoamColour, darkFoamSample);
                     finalWaterColour = lerp(darkFoamColour, _LightFoamColour, foamSample);
                 }
-
                 float4 outputColor = alphaBlend(surfaceNoiseColour, finalWaterColour);
-                return outputColor;
+
+                // Use URP Blinn-Phong lighting model
+                InputData lightingData = (InputData)0;
+                lightingData.positionWS = IN.positionWS;
+                lightingData.normalWS = float3(0, 1, 0);
+                lightingData.viewDirectionWS = GetWorldSpaceViewDir(lightingData.positionWS);
+                lightingData.shadowCoord = TransformWorldToShadowCoord(IN.positionWS);
+
+                SurfaceData surfaceData = (SurfaceData)0;
+                surfaceData.albedo = outputColor.rgb;
+                surfaceData.alpha = outputColor.a;
+
+                half4 lighting = UniversalFragmentBlinnPhong(lightingData, surfaceData);
+                return (lighting * 0.6 + outputColor * 0.4);
             }
             ENDHLSL
         }
