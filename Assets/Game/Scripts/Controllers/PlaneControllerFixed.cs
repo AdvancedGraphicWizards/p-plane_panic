@@ -127,7 +127,7 @@ public class PlaneControllerFixed : MonoBehaviour
         }
 
         // Update the camera FOV
-        Camera.main.fieldOfView = cameraDefaultFov + (cameraTurboFov - cameraDefaultFov) * (forwardSpeed - baseSpeed) / _turboSpeed;
+        Camera.main.fieldOfView = cameraDefaultFov + Mathf.Max(0, Mathf.Log(forwardSpeed - baseSpeed, 10)) * (cameraTurboFov - cameraDefaultFov);
 
         // Update speed lines screen effect
         m_SpeedLines.SetFloat("_SpeedLinesEnabled", (forwardSpeed - baseSpeed) / _turboSpeed);
