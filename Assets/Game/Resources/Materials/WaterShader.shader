@@ -46,7 +46,7 @@ Shader "Custom/WaterShader"
     SubShader
     {
         Tags { 
-            "RenderPipeline" = "UniversalRenderPipeline"
+            "RenderPipeline" = "UniversalPipeline"
 	        "Queue" = "Transparent"
         }
 

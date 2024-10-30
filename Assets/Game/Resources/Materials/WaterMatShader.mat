@@ -53,8 +53,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _FlowMap:
         m_Texture: {fileID: 2800000, guid: f6e56e12e1c2c2145a4e651b19dc8491, type: 3}
-        m_Scale: {x: 8, y: 8}
-        m_Offset: {x: 0.5, y: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _FoamNoise:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -116,7 +116,7 @@ Material:
     - _ClearCoatSmoothness: 0
     - _Cull: 2
     - _Cutoff: 0.5
-    - _DepthMaxDistance: 1
+    - _DepthMaxDistance: 29.8
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -125,14 +125,14 @@ Material:
     - _EnableFade: 1
     - _EnvironmentReflections: 1
     - _FadeDistance: 50
-    - _FlowMapScale: 10
+    - _FlowMapScale: 1000
     - _FlowMapSize: 10
     - _FlowSize: 10
     - _FlowSpeed: 0.01
     - _FlowStrength: 0.0075
-    - _FoamDistance: 0.4
+    - _FoamDistance: 4.3
     - _FoamIntensity: 1
-    - _FoamScale: 10
+    - _FoamScale: 100
     - _FoamSize: 10
     - _GlossMapScale: 0
     - _Glossiness: 0
@@ -156,12 +156,12 @@ Material:
     - _SrcBlendAlpha: 1
     - _Surface: 0
     - _SurfaceNoiseCutoff: 0.483
-    - _VoronoiAAFactor: 1
+    - _VoronoiAAFactor: 0.5
     - _VoronoiEnableAA: 1
     - _VoronoiLineThickness: 0.031
     - _VoronoiSS: 0.01
-    - _VoronoiScale: 100
-    - _WaveChoppiness: 0.01
+    - _VoronoiScale: 10
+    - _WaveChoppiness: 1.02
     - _WaveHeight: 0.1
     - _WaveScale: 5
     - _WaveSpeed: 1
@@ -171,13 +171,13 @@ Material:
     - _BaseColor: {r: 0.41625482, g: 0.61523974, b: 0.6830188, a: 1}
     - _Color: {r: 0.4162548, g: 0.61523974, b: 0.68301874, a: 1}
     - _DarkFoamColor: {r: 0.18123916, g: 0.5608159, b: 0.872, a: 1}
-    - _DarkFoamColour: {r: 0.10323961, g: 0.4987795, b: 0.754717, a: 1}
-    - _DepthGradientDeep: {r: 0.17661978, g: 0.48801082, b: 0.5943396, a: 1}
-    - _DepthGradientShallow: {r: 0.3249999, g: 0.807, b: 0.971, a: 0.8862745}
+    - _DarkFoamColour: {r: 0.03137255, g: 0.43137258, b: 0.6901961, a: 1}
+    - _DepthGradientDeep: {r: 0.19607845, g: 0.57254905, b: 1, a: 1}
+    - _DepthGradientShallow: {r: 0.32549015, g: 0.8078432, b: 0.972549, a: 0.8}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _FoamColor: {r: 1, g: 0, b: 0, a: 1}
     - _LightFoamColor: {r: 1, g: 1, b: 1, a: 1}
-    - _LightFoamColour: {r: 0.83921576, g: 0.98823535, b: 0.9960785, a: 1}
+    - _LightFoamColour: {r: 1, g: 1, b: 1, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _SurfaceNoiseColour: {r: 1, g: 1, b: 1, a: 1}
     - _WaterColor: {r: 0, g: 0.5, b: 0.7, a: 1}
