@@ -1,4 +1,4 @@
-Shader "VFX/Character/FeathersShell"
+Shader "VFX/Character/FeathersNPR"
 {
     Properties
     {
@@ -61,7 +61,7 @@ Shader "VFX/Character/FeathersShell"
             float _Hardness;
             float _PhongExponent;
 
-            //float3 _WindDirection;
+            float3 _WindDirection;
 
             //For random value, implementation detail not important
             float hash(uint n) {
@@ -145,7 +145,7 @@ Shader "VFX/Character/FeathersShell"
 
                 //ambient shading
                 float ambientLightIntensity = _OcclusionBias;//_AmbientCoefficient;
-                float4 ambientColor = surfaceColor * 0.5;
+                float4 ambientColor = surfaceColor * 0.9;
                 float4 ambientShading = ambientColor * surfaceColor * ambientLightIntensity;
 
                 float3 cameraPosWS = GetCameraPositionWS();
@@ -167,7 +167,7 @@ Shader "VFX/Character/FeathersShell"
                 ambientOcclusion += _OcclusionBias;
                 ambientOcclusion = saturate(ambientOcclusion);
 
-                float4 colorBlinnPhongShading =  diffuseColor + /*specularColor +*/ ambientShading;// * ambientOcclusion;
+                float4 colorBlinnPhongShading =  diffuseColor + specularColor + ambientShading * ambientOcclusion;
 
 
                 return colorBlinnPhongShading;

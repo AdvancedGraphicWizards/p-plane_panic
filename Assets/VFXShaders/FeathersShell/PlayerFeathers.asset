@@ -10,18 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0553fb50411ab4fde8f40337ca72abb0, type: 3}
-  m_Name: BlueFeathers
+  m_Name: PlayerFeathers
   m_EditorClassIdentifier: 
   updateStatics: 1
   shellCount: 32
   shellLength: 0.478
-  distanceAttenuation: 2.84
-  density: 27
-  noiseMin: 0.562
-  noiseMax: 1
+  distanceAttenuation: 2.5
+  density: 23
+  noiseMin: 0.505
+  noiseMax: 0.858
   thickness: 10
-  curvature: 2.05
-  displacementStrength: 0.178
+  curvature: 7
+  displacementStrength: 0.12
   shellColor: {r: 0.061409745, g: 0.25316867, b: 0.8679245, a: 0}
-  occlusionAttenuation: 5
-  occlusionBias: 0.682
+  occlusionAttenuation: 1.37
+  occlusionBias: 0.231
+  hardness: 0.469
+  phongExponent: 11.8

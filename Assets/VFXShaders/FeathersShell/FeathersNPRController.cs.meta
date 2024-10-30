@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 51302cd45393240248e13a020392c009
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - characterMesh: {instanceID: 0}
+  - shellFurShader: {fileID: 4800000, guid: f749168654fa64f078d34757711fbb85, type: 3}
+  - featherSettings: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

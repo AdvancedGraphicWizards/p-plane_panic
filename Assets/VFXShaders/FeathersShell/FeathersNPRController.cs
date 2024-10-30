@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FeathersController : MonoBehaviour
+public class FeathersNPRController : MonoBehaviour
 {
     public Mesh characterMesh;
     public Shader shellFurShader;
-    public FeatherSettings featherSettings;
+    public FeatherNPRSettings featherSettings;
     public Color featherColor;
 
     //private:
