@@ -14,24 +14,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clipGroups:
   - id: footstep
-    mixer: {fileID: 24300002, guid: 20d6031f75e92e146acc4aa52cf5b6ec, type: 2}
+    mixer: {fileID: -1231739740772039604, guid: 8c2ab876b12e9f04c8d9307e0ee9b81b,
+      type: 2}
     clips:
     - {fileID: 8300000, guid: 1561395c76640584f8843b4a9c9ad6d8, type: 3}
     - {fileID: 8300000, guid: 519613b93a4ea2848b3307352fd8d479, type: 3}
     - {fileID: 8300000, guid: c45ee73ff5452094f80ab368b289fc3f, type: 3}
   - id: ringPickup
-    mixer: {fileID: 0}
+    mixer: {fileID: -8188437815775052610, guid: 8c2ab876b12e9f04c8d9307e0ee9b81b,
+      type: 2}
     clips:
     - {fileID: 8300000, guid: 38cf2b56927e09f4482a0a1067ae205a, type: 3}
   - id: fireCrackle
-    mixer: {fileID: 24300002, guid: 02b298370a509e8429bde44510d8c12d, type: 2}
+    mixer: {fileID: -3160532079609829531, guid: 8c2ab876b12e9f04c8d9307e0ee9b81b,
+      type: 2}
     clips:
     - {fileID: 8300000, guid: 41c333f504ee31146a7cc3d65bdb91e9, type: 3}
   - id: fireDamage
-    mixer: {fileID: 0}
+    mixer: {fileID: 5609506072456229286, guid: 8c2ab876b12e9f04c8d9307e0ee9b81b, type: 2}
     clips:
     - {fileID: 8300000, guid: 432f4dc5e3d82e845a12bb240b601332, type: 3}
   - id: fireExtinguish
-    mixer: {fileID: 0}
+    mixer: {fileID: -6780515761164300031, guid: 8c2ab876b12e9f04c8d9307e0ee9b81b,
+      type: 2}
     clips:
     - {fileID: 8300000, guid: 733712e1ee288004d92378b0fa207f34, type: 3}
+  - id: planeCrash
+    mixer: {fileID: 2767160644183454011, guid: 8c2ab876b12e9f04c8d9307e0ee9b81b, type: 2}
+    clips:
+    - {fileID: 8300000, guid: 19cae834734422943998cf1c81a44ef0, type: 3}

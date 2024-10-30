@@ -49,6 +49,7 @@ public class PlaneControllerFixed : MonoBehaviour
 
     [Header("Audio Settings")]
     [SerializeField] private AudioSource engineSoundSource;
+    [SerializeField] private AudioSource alarmSoundSource;
     [SerializeField] private float maxEngineSound = 1f;
     [SerializeField] private float defaultSoundPitch = 1f;
     [SerializeField] private float turboSoundPitch = 1.5f;
@@ -111,10 +112,15 @@ public class PlaneControllerFixed : MonoBehaviour
             foreach (ParticleSystem ps in m_exhaustParticles) { ps.Stop(); }
             m_bladeRotateAnim.Stop();
             m_recoverState = true;
+            if (gameStateSO.HasStarted){
+                alarmSoundSource.volume = 0.3f;
+                alarmSoundSource.Play();
+            }
         } else if (!gameStateSO.OutOfFuel && m_recoverState) {
             foreach (ParticleSystem ps in m_exhaustParticles) { ps.Play(); }
             m_bladeRotateAnim.Play();
             m_recoverState = false;
+            alarmSoundSource.Stop();
         }
 
         // Update the engine sound
@@ -124,6 +130,9 @@ public class PlaneControllerFixed : MonoBehaviour
                 engineSoundSource.pitch = Mathf.Lerp(engineSoundSource.pitch, currentEngineSoundPitch, 10f * Time.deltaTime);
                 engineSoundSource.volume = Mathf.Lerp(engineSoundSource.volume, maxEngineSound, 1f * Time.deltaTime);
             }
+        }
+        else {
+            if (alarmSoundSource.isPlaying) { alarmSoundSource.pitch += 0.1f * Time.deltaTime;}
         }
 
         // Update the camera FOV

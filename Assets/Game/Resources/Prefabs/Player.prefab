@@ -6527,8 +6527,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PCAnimator: {fileID: 6741921064147314034}
-  maxWaitTime: 5
-  minWaitTime: 3
+  maxWaitTime: 4
+  minWaitTime: 2.5
   doubleBlinkChance: 0.1
 --- !u!1 &7670537409000766538
 GameObject:

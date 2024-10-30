@@ -158,7 +158,7 @@ public class RingSpawnScript : MonoBehaviour
     }
 
     private float HeightVariation(float x) {
-        float period = 0.0002f;
-        return -200*(Mathf.Cos(Mathf.PI/2f * x *period) - 1) * (Mathf.Sin(x/2f * period) - Mathf.Abs(SineOffset(x/2f*period)));
+        float period = 0.001f;
+        return 30*(Mathf.Cos(Mathf.PI/2f * x *period) - 1) * (Mathf.Sin(x/2f * period) - Mathf.Abs(Mathf.Sin(x/2f*period)));
     }
 }
