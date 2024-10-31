@@ -18,9 +18,9 @@ public class RingSpawnScript : MonoBehaviour
 
     [Header("Spawning Variables")]
     [SerializeField] private float _distanceBetweenRings = 100f;
-    [SerializeField] private float _maxDistanceBetweenRings = 400f;
+    [SerializeField] private float _maxDistanceBetweenRings = 350f;
     [SerializeField] private float _increaseDistanceFactor = 10f;
-    [SerializeField] private float _increaseOffsetFactor = 1.5f;
+    [SerializeField] private float _increaseOffsetFactor = 2f;
     [SerializeField] private float _ringOffsetRange = 10f;
     [SerializeField] private float _firstRingDistance = 500f;
     [SerializeField] private float _baseHeight = 10f;
@@ -153,7 +153,7 @@ public class RingSpawnScript : MonoBehaviour
 
     private float SineOffset(float x){
         float mod = Mathf.Sin(x * 2 * Mathf.PI / 2500);
-        mod *= Mathf.Min(100, Mathf.Abs(x / 50));
+        mod *= Mathf.Min(150, Mathf.Abs(x / 30));
         return mod;
     }
 

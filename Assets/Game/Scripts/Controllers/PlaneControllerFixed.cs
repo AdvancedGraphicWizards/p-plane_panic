@@ -72,6 +72,8 @@ public class PlaneControllerFixed : MonoBehaviour
     private float m_maxForwardSpeed = 20f;
     private float m_maxHorizontalSpeed = 10f;
     private float m_maxVerticalSpeed = 10f;
+    private float m_speedIncrease = 1f;
+
 
     private void Start() {   
         // Check for missing references
@@ -118,6 +120,9 @@ public class PlaneControllerFixed : MonoBehaviour
             }
         } else if (!gameStateSO.OutOfFuel && m_recoverState) {
             foreach (ParticleSystem ps in m_exhaustParticles) { ps.Play(); }
+            // Reward for recovering from out of fuel
+            ActivateTurbo(0);
+            ActivateTurbo(0);
             m_bladeRotateAnim.Play();
             m_recoverState = false;
             alarmSoundSource.Stop();
@@ -173,6 +178,9 @@ public class PlaneControllerFixed : MonoBehaviour
 
     // Activates turbo boost, strength modifier currently unused
     public void ActivateTurbo(float strength) {
+        maxForwardSpeed += m_speedIncrease;
+        maxVerticalSpeed += m_speedIncrease / 2;
+        maxHorizontalSpeed += m_speedIncrease / 2;
         m_turboTimer = _turboTime;
         _isTurbo = Mathf.Min(3, _isTurbo + 1);
     }

@@ -106,7 +106,7 @@ float CanyonCarve(float2 p, float canyonWidth, float canyonBaseWidth, float cany
 
     // Calc x-axis distance from sine wave (not currently sdf)
     float mod = sin(p.y * 2 * PI / period + periodOffset);
-    mod = min(amplitude, abs(p.y / 50)) * mod; // Damping factor
+    mod = min(amplitude, abs(p.y / 30)) * mod; // Damping factor
 
     float sinSDF = abs(p.x -axisOffset - mod);
 
@@ -127,9 +127,9 @@ float SampleHeight(float x, float z) {
     // Carve a canyon
     
     // Get canyon depth
-    float sinSDF = CanyonCarve(float2(x, z), 30, 5, 35, 0, 2500, 100, 0);
-    sinSDF += CanyonCarve(float2(x, z), 30, 50, 30, 0, 2500, 100, 0);
-    sinSDF += CanyonCarve(float2(x, z), 50, 100, 30, 0, 2500, 100, 0);
+    float sinSDF = CanyonCarve(float2(x, z), 30, 5, 35, 0, 2500, 150, 0);
+    sinSDF += CanyonCarve(float2(x, z), 30, 50, 30, 0, 2500, 150, 0);
+    sinSDF += CanyonCarve(float2(x, z), 50, 100, 30, 0, 2500, 150, 0);
 
     // Decrease the height of the terrain in the canyon
     height *= min(1, 80 / sinSDF);

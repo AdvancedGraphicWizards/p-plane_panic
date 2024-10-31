@@ -29,7 +29,7 @@ public class LoopingAudioManager : MonoBehaviour
     private IEnumerator PlayRandomClip()
     {
         _audioSource.volume = _defaultVolume;
-        _audioSource.clip = _audioClips[Random.Range(0, _audioClips.Length)];
+        _audioSource.clip = _audioClips[Random.Range(0, 4)];
         _audioSource.Play();
         yield return new WaitForSeconds(_audioSource.clip.length);
         if (_audioSource.volume > 0){
