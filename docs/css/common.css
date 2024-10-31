@@ -71,6 +71,15 @@ h2.text-center {
     -webkit-text-stroke-color: black;
 }
 
+h4 {
+    text-transform: uppercase;
+    color: white  !important;
+    font-family: 'LuckiestGuy-Regular', sans-serif;
+    filter: drop-shadow(-1.5px 2px 0px #000000);
+    -webkit-text-stroke-width: 1.5px;
+    -webkit-text-stroke-color: black;
+}
+
 footer {
     position: relative;
     padding-bottom: 0px;
