@@ -124,6 +124,9 @@ float SampleHeight(float x, float z) {
     // Get the height from the heightmap
     float height = FBMErosion(float2(x / 300, z / 300), 10).x * 150;
 
+    height += abs(FBMErosion(float2(x / 2000, z /2000), 10).x * 2000) * min(1, abs(x) / 4000);
+
+
     // Carve a canyon
     
     // Get canyon depth

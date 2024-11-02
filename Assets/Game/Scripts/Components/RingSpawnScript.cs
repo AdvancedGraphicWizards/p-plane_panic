@@ -18,7 +18,7 @@ public class RingSpawnScript : MonoBehaviour
 
     [Header("Spawning Variables")]
     [SerializeField] private float _distanceBetweenRings = 100f;
-    [SerializeField] private float _maxDistanceBetweenRings = 350f;
+    [SerializeField] private float _maxDistanceBetweenRings = 300f;
     [SerializeField] private float _increaseDistanceFactor = 10f;
     [SerializeField] private float _increaseOffsetFactor = 2f;
     [SerializeField] private float _ringOffsetRange = 10f;
