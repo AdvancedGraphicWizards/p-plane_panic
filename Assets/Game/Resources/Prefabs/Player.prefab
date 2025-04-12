@@ -263,7 +263,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   m_maxFootHeight: 0.3
-  m_animationTime: 0.15
+  m_animationTime: 0.5
   m_AnimationFrameTime: 0.01
   m_maxDistFromTarget: 0.4
   m_maxRaycastDist: 7
@@ -5470,7 +5470,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   m_maxFootHeight: 0.3
-  m_animationTime: 0.15
+  m_animationTime: 0.5
   m_AnimationFrameTime: 0.01
   m_maxDistFromTarget: 0.4
   m_maxRaycastDist: 7

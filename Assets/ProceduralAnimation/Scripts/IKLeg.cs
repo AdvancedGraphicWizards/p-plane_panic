@@ -64,71 +64,72 @@ public class IKLeg : MonoBehaviour
         UpdateIKTargetTransform();
     }
         
-    private void Update()
+private void FixedUpdate()
+{
+    // Calculate target position
+    if (!Animating)
     {
-        // Calculate target position
-        if (!Animating) {
-            RaycastHit hit;
-            if (Physics.Raycast(m_raySource.position, m_bodyTransform.up.normalized * -1, out hit, m_maxRaycastDist, m_LayerInclude))
-            {
-                stepTarget.transform.position = hit.point;
-                stepTarget.transform.up = hit.normal;
-                m_raycastHitPos = stepTarget.transform.localPosition;
-                m_raycastHitNormal = stepTarget.transform.up;
-            }
+        RaycastHit hit;
+        if (Physics.Raycast(m_raySource.position, m_bodyTransform.up.normalized * -1, out hit, m_maxRaycastDist, m_LayerInclude))
+        {
+            stepTarget.transform.position = hit.point;
+            stepTarget.transform.up = hit.normal;
+            m_raycastHitPos = stepTarget.transform.localPosition;
+            m_raycastHitNormal = stepTarget.transform.up;
         }
-
         DistFromTarget = (m_raycastHitPos - m_currentPos).magnitude;
-
-        // If the distance gets too far, animate and move the foot
-        if (!Animating && (DistFromTarget > m_maxDistFromTarget && Movable))
-        {
-            StartCoroutine(AnimateLeg());
-            Movable = false;
-        }
     }
 
 
-    private IEnumerator AnimateLeg()
+    // If the distance gets too far, animate and move the foot
+    if (!Animating && (DistFromTarget > m_maxDistFromTarget && Movable))
     {
-        Animating = true;
-
-        float timer = 0.0f;
-        float animTime;
-
-        Vector3 startingFootPos = m_currentPos;
-        m_footForwardDir = m_raycastHitPos - m_currentPos;
-        m_footForwardDir += m_footForwardDir.normalized * m_footOvershoot;
-
-        Vector3 right = Vector3.Cross(m_bodyTransform.up, m_footForwardDir.normalized).normalized;
-        m_footUpDir = Vector3.Cross(m_footForwardDir.normalized, right);
-        m_rotatedForwardDir = m_footForwardDir;
-
-        float m_scaledAnimationTime = m_animationTime / Mathf.Max(DistFromTarget/m_maxDistFromTarget, 1f);
-
-        while (timer < m_scaledAnimationTime + m_AnimationFrameTime)
-        {
-            animTime = m_speedCurve.Evaluate(timer / m_scaledAnimationTime);
-
-            // If the target is keep moving, apply acceleration to correct the end point
-            float footAcceleration = Mathf.Max((m_raycastHitPos - startingFootPos).magnitude / m_footForwardDir.magnitude, 1.0f);
-
-            m_currentPos = startingFootPos + m_footForwardDir * footAcceleration * animTime; // Forward direction of foot vector
-            m_currentPos += m_footUpDir * m_heightCurve.Evaluate(animTime) * m_maxFootHeight; // Upward direction of foot vector
-
-            m_rotatedForwardDir = Quaternion.AngleAxis(m_rotationCurve.Evaluate(animTime) * 90f, right) * m_footForwardDir; // rotate rotationvector about axis 
-
-            UpdateIKTargetTransform();
-
-            timer += m_AnimationFrameTime;
-
-            yield return new WaitForSeconds(m_AnimationFrameTime);
-        }
-
-        m_soundManager.PlayOneShotRandomPitch("footstep",0.1f);
-
-        Animating = false;
+        StartCoroutine(AnimateLeg());
+        Movable = false;
     }
+}
+
+private IEnumerator AnimateLeg()
+{
+    Animating = true;
+
+    float timer = 0.0f;
+    float animTime;
+
+    Vector3 startingFootPos = m_currentPos;
+    m_footForwardDir = m_raycastHitPos - m_currentPos;
+    m_footForwardDir += m_footForwardDir.normalized * m_footOvershoot;
+
+    Vector3 right = Vector3.Cross(m_bodyTransform.up, m_footForwardDir.normalized).normalized;
+    m_footUpDir = Vector3.Cross(m_footForwardDir.normalized, right);
+    m_rotatedForwardDir = m_footForwardDir;
+
+    float m_scaledAnimationTime = m_animationTime / Mathf.Max(DistFromTarget / m_maxDistFromTarget, 1f);
+
+    // Animation loop based on fixed timestep
+    while (timer < m_scaledAnimationTime)
+    {
+        float normalizedTime = timer / m_scaledAnimationTime;
+        animTime = m_speedCurve.Evaluate(normalizedTime);
+
+        float footAcceleration = Mathf.Max((m_raycastHitPos - startingFootPos).magnitude / m_footForwardDir.magnitude, 1.0f);
+
+        m_currentPos = startingFootPos + m_footForwardDir * footAcceleration * animTime;
+        m_currentPos += m_footUpDir * m_heightCurve.Evaluate(animTime) * m_maxFootHeight;
+
+        m_rotatedForwardDir = Quaternion.AngleAxis(m_rotationCurve.Evaluate(animTime) * 90f, right) * m_footForwardDir;
+
+        UpdateIKTargetTransform();
+
+        timer += Time.fixedDeltaTime;
+
+        yield return new WaitForFixedUpdate();
+    }
+
+    m_soundManager.PlayOneShotRandomPitch("footstep", 0.1f);
+
+    Animating = false;
+}
 
     private void UpdateIKTargetTransform()
     {

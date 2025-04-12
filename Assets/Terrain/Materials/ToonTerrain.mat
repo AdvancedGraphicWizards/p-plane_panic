@@ -52,6 +52,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Smoothness: 100
+    - _TerrainVertexScaleFactor: 1
     - _WavyLineConst: -4
     m_Colors:
     - _Color_1: {r: 0.554717, g: 0.49063963, b: 0.46365967, a: 0}
