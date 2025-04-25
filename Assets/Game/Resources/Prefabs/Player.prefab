@@ -263,15 +263,13 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   m_maxFootHeight: 0.3
-  m_animationTime: 0.1
+  m_animationTime: 0.5
   m_AnimationFrameTime: 0.01
   m_maxDistFromTarget: 0.4
   m_maxRaycastDist: 7
   m_footOvershoot: 0.15
   m_footOffset: 0.05
   m_LayerInclude: 3
-  m_stepSpeedPerFixedUpdate: 0.4
-  m_footRotationSpeed: 0.1
 --- !u!1 &907726969762196104
 GameObject:
   m_ObjectHideFlags: 0
@@ -5322,7 +5320,7 @@ MonoBehaviour:
   - {fileID: 5572373149282920341}
   m_cloudTrail: {fileID: 1372475078524247618}
   m_bodyHeightBase: 0.25
-  m_minStepWait: 0.1
+  m_minStepWait: 0
   m_posAdjustRatio: 1
   m_rotAdjustRatio: 1
   m_idleBounceRange: 0.1
@@ -5472,15 +5470,13 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   m_maxFootHeight: 0.3
-  m_animationTime: 0.1
+  m_animationTime: 0.5
   m_AnimationFrameTime: 0.01
   m_maxDistFromTarget: 0.4
   m_maxRaycastDist: 7
   m_footOvershoot: 0.15
   m_footOffset: 0.05
   m_LayerInclude: 3
-  m_stepSpeedPerFixedUpdate: 0.4
-  m_footRotationSpeed: 0.1
 --- !u!1 &1968371879394013684
 GameObject:
   m_ObjectHideFlags: 0

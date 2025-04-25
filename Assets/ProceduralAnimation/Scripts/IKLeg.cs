@@ -35,9 +35,6 @@ public class IKLeg : MonoBehaviour
     [SerializeField] private float m_footOvershoot = 0.55f / 2.0f; // Overshoot passed target along foot forward direction
     [SerializeField] private float m_footOffset = 0f; // offset of ikTarget away from the hit position Parallel to the normal
     [SerializeField] private int m_LayerInclude = 3; // Layer target for raycast
-    [SerializeField] float m_stepSpeedPerFixedUpdate = 0.1f; // Speed of the foot per FixedUpdate tick
-    [SerializeField] private float m_footRotationSpeed = 0.1f; // Speed of the foot rotation per FixedUpdate tick
-
 
     // TODO: fix naming violation
     public Vector3 m_currentPos { get; private set; }
@@ -96,6 +93,9 @@ private IEnumerator AnimateLeg()
 {
     Animating = true;
 
+    float timer = 0.0f;
+    float animTime;
+
     Vector3 startingFootPos = m_currentPos;
     m_footForwardDir = m_raycastHitPos - m_currentPos;
     m_footForwardDir += m_footForwardDir.normalized * m_footOvershoot;
@@ -104,34 +104,30 @@ private IEnumerator AnimateLeg()
     m_footUpDir = Vector3.Cross(m_footForwardDir.normalized, right);
     m_rotatedForwardDir = m_footForwardDir;
 
-    float totalDistance = m_footForwardDir.magnitude;
-    float distanceMoved = 0f;
+    float m_scaledAnimationTime = m_animationTime / Mathf.Max(DistFromTarget / m_maxDistFromTarget, 1f);
 
-    float footAcceleration = Mathf.Max((m_raycastHitPos - startingFootPos).magnitude / m_footForwardDir.magnitude, 1.0f);
-
-    // This is your configurable "speed" per FixedUpdate tick
-    float stepDistancePerUpdate = m_stepSpeedPerFixedUpdate; // <-- new var you define
-
-    while (distanceMoved < totalDistance)
+    // Animation loop based on fixed timestep
+    while (timer < m_scaledAnimationTime)
     {
-        // Clamp to avoid overshooting the end
-        float step = Mathf.Min(stepDistancePerUpdate, totalDistance - distanceMoved);
-        distanceMoved += step;
+        float normalizedTime = timer / m_scaledAnimationTime;
+        animTime = m_speedCurve.Evaluate(normalizedTime);
 
-        float normalizedDistance = distanceMoved / totalDistance;
-        float curveValue = m_speedCurve.Evaluate(normalizedDistance);
+        float footAcceleration = Mathf.Max((m_raycastHitPos - startingFootPos).magnitude / m_footForwardDir.magnitude, 1.0f);
 
-        m_currentPos = startingFootPos + m_footForwardDir * footAcceleration * curveValue;
-        m_currentPos += m_footUpDir * m_heightCurve.Evaluate(curveValue) * m_maxFootHeight;
+        m_currentPos = startingFootPos + m_footForwardDir * footAcceleration * animTime;
+        m_currentPos += m_footUpDir * m_heightCurve.Evaluate(animTime) * m_maxFootHeight;
 
-        m_rotatedForwardDir = Quaternion.AngleAxis(m_rotationCurve.Evaluate(curveValue) * 90f, right) * m_footForwardDir;
+        m_rotatedForwardDir = Quaternion.AngleAxis(m_rotationCurve.Evaluate(animTime) * 90f, right) * m_footForwardDir;
 
         UpdateIKTargetTransform();
+
+        timer += Time.fixedDeltaTime;
 
         yield return new WaitForFixedUpdate();
     }
 
     m_soundManager.PlayOneShotRandomPitch("footstep", 0.1f);
+
     Animating = false;
 }
 
