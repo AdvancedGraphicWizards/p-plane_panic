@@ -143,4 +143,5 @@ float SampleHeight(float x, float z) {
     return height + 70;
 }
 
+
 #endif // WORLDGENERATION_HLSL
