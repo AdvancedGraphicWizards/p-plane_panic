@@ -4,8 +4,6 @@
 
 **[Plane Panic!](https://advancedgraphicwizards.github.io/p-plane_panic)** is a cooperative game where up to 9 players join forces to pilot a plane by moving across its wing. Players can easily connect using their mobile devices and set off to see how far they can go, working together to survive! Coordinate to guide the plane through speed rings, pull off sharp turns, and extinguish raging fires as a team. How far can you and your team of flightless birds keep the plane soaring?
 
-Made as part of the [DH2413](https://www.kth.se/student/kurser/kurs/DH2413?l=en) course at KTH. 🧙
-
 ## 🕹️ How to Play
 
 ### 🖥️ Hosting the game
